@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Chain — Social Media Strategy Report 2026</title>
+  <style>
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --navy: #06111F;
+      --navy-light: #0d1f35;
+      --navy-mid: #112240;
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --gold-pale: #f5e8c0;
+      --white: #FFFFFF;
+      --text-light: #b8c5d6;
+      --text-mid: #8899aa;
+      --accent: #1e3a5f;
+      --card-bg: #0d1f35;
+      --card-border: rgba(201, 168, 76, 0.2);
+      --success: #4caf80;
+      --warning: #e8a44c;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Rajdhani', system-ui, -apple-system, sans-serif;
+      background: var(--navy);
+      color: var(--text-light);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* =========== HEADER =========== */
+    .report-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #0a1628 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 60px 40px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      padding: 8px 20px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    .report-header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .report-header h1 span { color: var(--gold); }
+
+    .report-header .subtitle {
+      font-size: 18px;
+      color: var(--text-mid);
+      margin-bottom: 30px;
+    }
+
+    .report-meta {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      text-align: center;
+    }
+
+    .meta-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-mid);
+      display: block;
+    }
+
+    .meta-item .value {
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .verse {
+      margin-top: 24px;
+      font-style: italic;
+      color: var(--gold-pale);
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* =========== NAV =========== */
+    .toc {
+      background: var(--navy-mid);
+      border-bottom: 1px solid var(--card-border);
+      padding: 20px 40px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .toc a {
+      color: var(--text-mid);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--gold);
+      border-color: var(--card-border);
+      background: rgba(201,168,76,0.05);
+    }
+
+    /* =========== CONTENT =========== */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    section {
+      padding: 60px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 32px;
+      color: var(--white);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    h2 span { color: var(--gold); }
+
+    h3 {
+      font-size: 20px;
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 16px;
+      color: var(--white);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      font-size: 17px;
+      color: var(--text-light);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    /* =========== CARDS =========== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: rgba(201,168,76,0.5); }
+
+    .card .icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h4 { color: var(--gold); }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      color: var(--text-light);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 14px;
+    }
+
+    .card ul li:last-child { border-bottom: none; }
+
+    .card ul li::before {
+      content: '→ ';
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    /* =========== STAT BOXES =========== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-box .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+    }
+
+    .stat-box .stat-label {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-top: 4px;
+    }
+
+    /* =========== HIGHLIGHT BOX =========== */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(6,17,31,0.5) 100%);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+
+    .highlight-box h4 { color: var(--gold-light); }
+
+    /* =========== PLATFORM TABLE =========== */
+    .platform-grid {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .platform-row {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .platform-name {
+      font-weight: 700;
+      color: var(--white);
+      font-size: 16px;
+    }
+
+    .platform-role {
+      font-size: 13px;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .platform-details {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .platform-kpi {
+      text-align: right;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      color: var(--text-mid);
+    }
+
+    /* =========== TIER SYSTEM =========== */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .tier-card {
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tier-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 60px; height: 60px;
+      border-radius: 0 16px 0 60px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .tier-bronze {
+      background: linear-gradient(135deg, #2d1a06 0%, #1a0f03 100%);
+      border: 1px solid rgba(180, 100, 40, 0.5);
+    }
+
+    .tier-silver {
+      background: linear-gradient(135deg, #1a2030 0%, #0d1525 100%);
+      border: 1px solid rgba(160, 180, 200, 0.5);
+    }
+
+    .tier-gold {
+      background: linear-gradient(135deg, #1e1500 0%, #120e00 100%);
+      border: 2px solid rgba(201, 168, 76, 0.7);
+    }
+
+    .tier-badge {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .tier-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .tier-bronze .tier-name { color: #cd7f32; }
+    .tier-silver .tier-name { color: #c0c0c0; }
+    .tier-gold .tier-name { color: var(--gold); }
+
+    .tier-reward {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin: 12px 0;
+    }
+
+    .tier-tasks {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tier-tasks li {
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 13px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-tasks li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* =========== CALENDAR =========== */
+    .calendar-week {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+
+    .calendar-header {
+      background: linear-gradient(90deg, rgba(201,168,76,0.15) 0%, transparent 100%);
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .week-badge {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .calendar-header .title {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .calendar-body {
+      padding: 20px 24px;
+    }
+
+    .day-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .day-row:last-child { border-bottom: none; }
+
+    .day-name {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .day-content {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .content-tag {
+      display: inline-block;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--gold);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .lang-tag {
+      display: inline-block;
+      background: rgba(30,90,150,0.2);
+      border: 1px solid rgba(30,90,150,0.4);
+      color: #80b3e0;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-right: 4px;
+    }
+
+    /* =========== PHASE TIMELINE =========== */
+    .timeline {
+      position: relative;
+      margin: 30px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .timeline-item {
+      padding: 0 0 32px 64px;
+      position: relative;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 14px;
+      top: 4px;
+      width: 20px;
+      height: 20px;
+      background: var(--navy);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-dot span {
+      font-size: 9px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .phase-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .phase-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    /* =========== INFLUENCER REGIONS =========== */
+    .region-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .region-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .region-flag {
+      font-size: 24px;
+    }
+
+    .region-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .region-stats {
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .influencer-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .influencer-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .influencer-name {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .influencer-type {
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+
+    /* =========== KPI TABLE =========== */
+    .kpi-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .kpi-table th {
+      background: rgba(201,168,76,0.1);
+      color: var(--gold);
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .kpi-table td {
+      padding: 13px 20px;
+      color: var(--text-light);
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .kpi-table tr:last-child td { border-bottom: none; }
+
+    .kpi-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .kpi-table .platform-icon { font-size: 18px; margin-right: 8px; }
+
+    /* =========== PARTNERSHIP =========== */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .hub-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .hub-level {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(201,168,76,0.1);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      border: 1px solid var(--card-border);
+    }
+
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+    }
+
+    .step-list li {
+      counter-increment: step;
+      padding: 12px 0 12px 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--text-light);
+      font-size: 14px;
+      position: relative;
+    }
+
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========== FOOTER =========== */
+    .report-footer {
+      background: var(--navy-mid);
+      border-top: 2px solid var(--gold);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .report-footer .footer-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .report-footer p {
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    /* =========== TAG PILLS =========== */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tag {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold-light);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .tag-blue {
+      background: rgba(30,90,160,0.15);
+      border-color: rgba(30,90,160,0.4);
+      color: #80b0e0;
+    }
+
+    .tag-green {
+      background: rgba(50,160,100,0.1);
+      border-color: rgba(50,160,100,0.35);
+      color: #80d0a8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .report-header h1 { font-size: 28px; }
+      .platform-row { grid-template-columns: 1fr; }
+      .day-row { grid-template-columns: 1fr; }
+      .toc { padding: 16px 20px; }
+      section { padding: 40px 0; }
+      .container { padding: 0 20px; }
+    }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="logo-badge">⛓ Mission Chain · Research Report 2026</div>
+  <h1>Social Media Strategy<br><span>for Christian Global Community</span></h1>
+  <p class="subtitle">Market Research · Airdrop Design · 90-Day Plan · Partnership Strategy</p>
+  <div class="report-meta">
+    <div class="meta-item">
+      <span class="label">Prepared by</span>
+      <span class="value">Claudia — Strategic AI</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Date</span>
+      <span class="value">March 2026</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Target Market</span>
+      <span class="value">2.6B Christians Worldwide</span>
+    </div>
+    <div class="meta-item">
+      <span class="label">Token</span>
+      <span class="value">MIC · 7B Hard Cap</span>
+    </div>
+  </div>
+  <div class="verse">✦ "You are the light of the world. A city on a hill cannot be hidden." — Matthew 5:14 ✦</div>
+</div>
+
+<!-- NAV -->
+<nav class="toc">
+  <a href="#executive">Executive Summary</a>
+  <a href="#gap-analysis">Gap Analysis & Budget</a>
+  <a href="#market">A. Market Analysis</a>
+  <a href="#free-tools">Free Tools Stack</a>
+  <a href="#airdrop">B. MIC Airdrop Strategy</a>
+  <a href="#calendar">C. 90-Day Social Media Plan</a>
+  <a href="#content-pillars">Content Pillars</a>
+  <a href="#partnership">D. Influencer & Church Partnership</a>
+  <a href="#kpi">KPIs & Metrics</a>
+  <a href="#vietnam">Vietnam Strategy</a>
+  <a href="#sophia-word">SOPHIA WORD</a>
+  <a href="#weaknesses">⚠️ Điểm Yếu</a>
+</nav>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive">
+  <div class="container">
+    <div class="section-label">Overview</div>
+    <h2>Executive <span>Summary</span></h2>
+    <p class="lead">Mission Chain is entering a strategic window: 2.6 billion Christians worldwide, the majority in the underserved Global South, are seeking digital platforms that align with their values. No existing system combines faith-aligned education, verified work, on-chain economy, and community governance in one stack. This report outlines how to capture that market through targeted social media, an accessible MIC airdrop, and authentic church partnerships.</p>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-number">2.6B</span>
+        <div class="stat-label">Christians Worldwide</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">200M+</span>
+        <div class="stat-label">Christian Creators</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">$50B+</span>
+        <div class="stat-label">Christian Media Market</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">$1.5T+</span>
+        <div class="stat-label">Convergence Opportunity</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">0</span>
+        <div class="stat-label">Direct Competitors</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h4>🎯 Strategic North Star</h4>
+      <p>Mission Chain is NOT just another crypto project seeking Christian users. It is a <strong>purpose-built digital economy</strong> for the Christian creative class — where faith, skill, and income converge on-chain. The social media strategy must reflect this depth: community-first, doctrine-free, creator-empowering.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GAP ANALYSIS & BUDGET SCENARIOS -->
+<section id="gap-analysis">
+  <div class="container">
+    <div class="section-label">Reality Check</div>
+    <h2>Gap Analysis &amp; <span>3 Budget Scenarios</span></h2>
+    <p class="lead">Các targets ban đầu trong report được xây dựng trên giả định có ngân sách marketing đáng kể. Phần này cung cấp 3 kịch bản thực tế hơn — từ $0 đến $5,000 — để Thomas và team có thể lập kế hoạch phù hợp với thực tế.</p>
+
+    <div class="highlight-box">
+      <h4>⚠️ Honest Assessment</h4>
+      <p>Targets gốc (150K members Day 90) giả định paid ads + influencer budget đáng kể. Không có budget, con số thực tế thấp hơn <strong>93–97%</strong>. Điều đó không có nghĩa là thất bại — nó có nghĩa là cần set đúng kỳ vọng và làm đúng thứ tự ưu tiên.</p>
+    </div>
+
+    <div class="tier-grid">
+      <!-- Scenario A -->
+      <div class="tier-card" style="background: linear-gradient(135deg, #0d1a0d 0%, #081008 100%); border: 1px solid rgba(76, 175, 128, 0.4);">
+        <div class="tier-badge">🆓</div>
+        <div class="tier-name" style="color: #4caf80;">Kịch bản A</div>
+        <div style="font-size: 13px; color: #4caf80; margin-bottom: 8px;">$0 — Pure Free</div>
+        <div class="tier-reward" style="font-size: 20px; color: #4caf80;">Organic Only</div>
+        <ul class="tier-tasks">
+          <li>Chỉ dùng tools free + AI team</li>
+          <li>Day 30: <strong>500–1,500</strong> members</li>
+          <li>Day 60: <strong>1,500–4,000</strong> members</li>
+          <li>Day 90: <strong>3,000–8,000</strong> members</li>
+          <li>Gap vs. original: <strong style="color: var(--warning);">-93% đến -97%</strong></li>
+        </ul>
+        <div class="highlight-box" style="margin-top: 16px; padding: 12px 16px;">
+          <h4 style="font-size: 13px;">⚡ Điểm Nghẽn</h4>
+          <p style="font-size: 12px;">Cold account warm-up mất 2–4 tuần · Trust gap giữa Christian vs. crypto · Cần Thomas làm "human face" visible — AI không thể thay thế hoàn toàn</p>
+        </div>
+        <div class="tag-row"><span class="tag-green">Khả thi</span><span class="tag">Cần kiên nhẫn</span></div>
+      </div>
+
+      <!-- Scenario B -->
+      <div class="tier-card tier-silver" style="border: 1px solid rgba(232, 164, 76, 0.5);">
+        <div class="tier-badge">💰</div>
+        <div class="tier-name" style="color: var(--gold);">Kịch bản B</div>
+        <div style="font-size: 13px; color: var(--gold); margin-bottom: 8px;">$500–1,000 — Smart Spend</div>
+        <div class="tier-reward">Recommended</div>
+        <ul class="tier-tasks">
+          <li>Facebook Ads $300 (Africa/SEA target)</li>
+          <li>Twitter Ads $100</li>
+          <li>Micro-influencers $200</li>
+          <li>Gleam.io $39 · Buffer Pro $18 · Brevo $0</li>
+          <li>Day 30: <strong>1,500–4,000</strong> members</li>
+          <li>Day 60: <strong>5,000–12,000</strong> members</li>
+          <li>Day 90: <strong>10,000–25,000</strong> members</li>
+        </ul>
+        <div class="highlight-box" style="margin-top: 16px; padding: 12px 16px;">
+          <h4 style="font-size: 13px;">💡 Investor Potential</h4>
+          <p style="font-size: 12px;">Seed leads: 200–800 leads → 20–80 qualified investors → Est. raise <strong>$5K–$40K</strong></p>
+        </div>
+        <div class="tag-row"><span class="tag">Best ROI</span><span class="tag-blue">Realistic</span></div>
+      </div>
+
+      <!-- Scenario C -->
+      <div class="tier-card tier-gold">
+        <div class="tier-badge">🚀</div>
+        <div class="tier-name">Kịch bản C</div>
+        <div style="font-size: 13px; color: var(--gold); margin-bottom: 8px;">$2,000–5,000 — Full Launch</div>
+        <div class="tier-reward">Aggressive</div>
+        <ul class="tier-tasks">
+          <li>Social Ads $800–2,000</li>
+          <li>Influencers $400–1,200</li>
+          <li>PR / Press releases $200–500</li>
+          <li>Content production $150–400</li>
+          <li>Tools &amp; automation $200–500</li>
+          <li>Day 30: <strong>3,000–8,000</strong> members</li>
+          <li>Day 60: <strong>15,000–35,000</strong> members</li>
+          <li>Day 90: <strong>40,000–100,000</strong> members</li>
+        </ul>
+        <div class="tag-row"><span class="tag">Gần với targets gốc</span><span class="tag">Cần nguồn vốn</span></div>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <h3>📊 So sánh nhanh</h3>
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>Kịch bản</th>
+          <th>Day 30</th>
+          <th>Day 60</th>
+          <th>Day 90</th>
+          <th>Investment</th>
+          <th>Est. Return</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: #4caf80;">A — Pure Free</strong></td>
+          <td>500–1,500</td>
+          <td>1,500–4,000</td>
+          <td>3,000–8,000</td>
+          <td>$0</td>
+          <td>Community base</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--gold);">B — Smart Spend ⭐</strong></td>
+          <td>1,500–4,000</td>
+          <td>5,000–12,000</td>
+          <td>10,000–25,000</td>
+          <td>$500–1,000</td>
+          <td>$5K–$40K raise</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--gold-light);">C — Full Launch</strong></td>
+          <td>3,000–8,000</td>
+          <td>15,000–35,000</td>
+          <td>40,000–100,000</td>
+          <td>$2,000–5,000</td>
+          <td>Significant traction</td>
+        </tr>
+        <tr style="opacity: 0.5;">
+          <td><em>Original Targets</em></td>
+          <td><em>10,000</em></td>
+          <td><em>50,000</em></td>
+          <td><em>150,000</em></td>
+          <td><em>Unspecified</em></td>
+          <td><em>—</em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MARKET ANALYSIS -->
+<section id="market">
+  <div class="container">
+    <div class="section-label">Section A</div>
+    <h2>Christian Social Media <span>Market Analysis</span></h2>
+    <p class="lead">Understanding where Christian communities already gather — and the white spaces Mission Chain can fill.</p>
+
+    <!-- Platforms -->
+    <h3>🌐 Major Christian Community Platforms</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">📱</span>
+        <h4>Facebook Groups & Pages</h4>
+        <ul>
+          <li>Largest Christian community platform globally</li>
+          <li>Groups like "Christian Worship" 5M+ members</li>
+          <li>Strong in Africa, Philippines, Brazil</li>
+          <li>Best for: Community building, older demographics</li>
+          <li>Weakness: Declining among Gen Z</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🎬</span>
+        <h4>YouTube</h4>
+        <ul>
+          <li>Primary platform for sermons, worship, devotionals</li>
+          <li>Channels like Elevation Worship: 7M+ subscribers</li>
+          <li>Hillsong, Bethel Music: massive global reach</li>
+          <li>Best for: Long-form content, reach, trust-building</li>
+          <li>SEA + Africa: fastest-growing Christian audience</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🎵</span>
+        <h4>TikTok / Instagram Reels</h4>
+        <ul>
+          <li>#ChristianTikTok: 10B+ views</li>
+          <li>#WorshipMusic viral trends weekly</li>
+          <li>Gen Z Christians highly active</li>
+          <li>Best for: Virality, youth engagement, creators</li>
+          <li>Short testimonials, Bible verses, worship clips</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">💬</span>
+        <h4>Telegram</h4>
+        <ul>
+          <li>Growing Christian communities in Nigeria, Indonesia</li>
+          <li>Prayer channels, Bible study groups</li>
+          <li>Crypto-native audience: perfect for MIC</li>
+          <li>Best for: Direct community, announcements, airdrop</li>
+          <li>Low noise, high engagement</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🐦</span>
+        <h4>Twitter/X</h4>
+        <ul>
+          <li>#ChristianTwitter active faith community</li>
+          <li>Theology debates, scripture sharing</li>
+          <li>Web3 + crypto audience intersection</li>
+          <li>Best for: Thought leadership, Web3 narrative</li>
+          <li>Strong among pastors, academics, builders</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🎙</span>
+        <h4>Podcasts & Niche Platforms</h4>
+        <ul>
+          <li>GodTube, Faithlife, YouVersion</li>
+          <li>Christian podcast ecosystem: $2B+ market</li>
+          <li>YouVersion Bible App: 600M+ installs</li>
+          <li>Best for: Deep engagement, high-trust audience</li>
+          <li>Partnership opportunity via devotional content</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Regional Influencers -->
+    <h3>🌍 Christian KOLs by Region</h3>
+
+    <div class="region-card">
+      <div class="region-header">
+        <span class="region-flag">🌍</span>
+        <div>
+          <div class="region-name">Sub-Saharan Africa</div>
+          <div class="region-stats">700M+ Christians · Nigeria, Ghana, Kenya, Ethiopia lead</div>
+        </div>
+      </div>
+      <div class="influencer-list">
+        <div class="influencer-item">
+          <div class="influencer-name">Pastor Adeboye</div>
+          <div class="influencer-type">RCCG · Nigeria · 20M+ followers</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Nathaniel Bassey</div>
+          <div class="influencer-type">Worship Music · Nigeria · 2M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Sinach</div>
+          <div class="influencer-type">Gospel Artist · "Way Maker" · 3M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Pastor Chris Oyakhilome</div>
+          <div class="influencer-type">LoveWorld · TV + Digital · 10M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Preye Odede</div>
+          <div class="influencer-type">Gospel Music · Nigeria</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Wale Adenuga</div>
+          <div class="influencer-type">Creative Media · Lagos</div>
+        </div>
+      </div>
+      <div class="tag-row" style="margin-top: 16px;">
+        <span class="tag">Pidgin English key language</span>
+        <span class="tag">WhatsApp viral key channel</span>
+        <span class="tag">Mobile-first audience</span>
+        <span class="tag">Pentecostal dominant</span>
+      </div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-header">
+        <span class="region-flag">🌏</span>
+        <div>
+          <div class="region-name">Southeast Asia</div>
+          <div class="region-stats">Philippines (90M Christians), Indonesia, South Korea, Vietnam</div>
+        </div>
+      </div>
+      <div class="influencer-list">
+        <div class="influencer-item">
+          <div class="influencer-name">Francis Kong</div>
+          <div class="influencer-type">Business + Faith · Philippines</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Bo Sanchez</div>
+          <div class="influencer-type">Author/Speaker · Philippines · 2M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Ligaya Mañalac</div>
+          <div class="influencer-type">Praise & Worship · Philippines</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">GBI Church Indonesia</div>
+          <div class="influencer-type">Megachurch Network · Jakarta</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">YFC Philippines</div>
+          <div class="influencer-type">Youth for Christ · 500K+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Manny Pacquiao</div>
+          <div class="influencer-type">Celebrity Christian · Philippines · 10M+</div>
+        </div>
+      </div>
+      <div class="tag-row" style="margin-top: 16px;">
+        <span class="tag">Tagalog content essential</span>
+        <span class="tag">Facebook dominant</span>
+        <span class="tag">Strong Creator Economy potential</span>
+        <span class="tag">Tech-savvy youth</span>
+      </div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-header">
+        <span class="region-flag">🌎</span>
+        <div>
+          <div class="region-name">Latin America</div>
+          <div class="region-stats">500M+ Christians · Brazil (200M), Mexico, Colombia lead</div>
+        </div>
+      </div>
+      <div class="influencer-list">
+        <div class="influencer-item">
+          <div class="influencer-name">Gustavo Sacomori</div>
+          <div class="influencer-type">Gospel Music · Brazil · 3M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Nívea Soares</div>
+          <div class="influencer-type">Worship · Brazil · 5M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Padre Fábio de Melo</div>
+          <div class="influencer-type">Catholic Influencer · 8M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Laura Souguellis</div>
+          <div class="influencer-type">Gospel · Brazil · 2M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Alex Campos</div>
+          <div class="influencer-type">Gospel Music · Colombia · 2M+</div>
+        </div>
+        <div class="influencer-item">
+          <div class="influencer-name">Christine D'Clario</div>
+          <div class="influencer-type">Bilingual Worship · 3M+</div>
+        </div>
+      </div>
+      <div class="tag-row" style="margin-top: 16px;">
+        <span class="tag">Portuguese (Brazil) critical</span>
+        <span class="tag">Spanish secondary</span>
+        <span class="tag">YouTube dominant</span>
+        <span class="tag">High Gospel music consumption</span>
+      </div>
+    </div>
+
+    <!-- Viral Content Trends -->
+    <h3>🔥 Viral Christian Content Trends (2025–2026)</h3>
+    <div class="card-grid-3">
+      <div class="card">
+        <span class="icon">🙏</span>
+        <h4>AI + Scripture</h4>
+        <p style="font-size:13px;">Content exploring "what AI can never do vs. what God calls humans to" — huge engagement among both tech and faith communities.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🎵</span>
+        <h4>Worship Covers</h4>
+        <p style="font-size:13px;">Original worship remixes and covers going viral on TikTok. Local language versions especially popular (Pidgin, Tagalog).</p>
+      </div>
+      <div class="card">
+        <span class="icon">📖</span>
+        <h4>Daily Bible Verse + Real Life</h4>
+        <p style="font-size:13px;">"How this verse helped me survive [situation]" format — authentic storytelling driving shares and saves.</p>
+      </div>
+      <div class="card">
+        <span class="icon">💼</span>
+        <h4>Faith + Finance</h4>
+        <p style="font-size:13px;">Christian entrepreneurs sharing money principles grounded in scripture. "Jubilee Economics" gaining traction.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🌍</span>
+        <h4>Mission Trip + Creator</h4>
+        <p style="font-size:13px;">Documenting ministry work visually. Young Christians showing "calling in action" resonates deeply with Gen Z.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🏆</span>
+        <h4>Challenges + Community</h4>
+        <p style="font-size:13px;">"21-Day Prayer Challenge", "Scripture a Day" — gamified faith content with community participation drives massive organic reach.</p>
+      </div>
+    </div>
+
+    <!-- Competitors -->
+    <h3>⚔️ Competitive Landscape: Web3 + Christian</h3>
+    <div class="highlight-box">
+      <h4>Blue Ocean: No True Competitor Exists</h4>
+      <p>No project currently combines <strong>Christian identity + Creator Economy + Web3 infrastructure + DAO governance</strong> in one coherent ecosystem. The closest adjacent players are:</p>
+    </div>
+    <div class="card-grid-2">
+      <div class="card">
+        <h4>🔶 Faith-Based Platforms (No Web3)</h4>
+        <ul>
+          <li>YouVersion — Bible app, no economy layer</li>
+          <li>GodTube — Video platform, limited community</li>
+          <li>Faithlife — Church software, not creator-focused</li>
+          <li>RightNow Media — Content library, subscription-only</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">Non-competitor — potential partner</span></div>
+      </div>
+      <div class="card">
+        <h4>🔷 Web3 Creator Platforms (No Faith Layer)</h4>
+        <ul>
+          <li>Audius — Music streaming on blockchain</li>
+          <li>Mirror.xyz — Writing + NFT, no community focus</li>
+          <li>Rally / Creator Coins — No faith/mission alignment</li>
+          <li>Lens Protocol — Social graph, no vertical</li>
+        </ul>
+        <div class="tag-row"><span class="tag-blue">No mission-faith alignment</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TOOLS STACK -->
+<section id="free-tools">
+  <div class="container">
+    <div class="section-label">Resources</div>
+    <h2>Free Tools <span>Stack</span></h2>
+    <p class="lead">Tất cả tools dưới đây đã được verify là free tier thực sự — không cần credit card, không có trial period giới hạn. Đây là stack đủ để chạy Kịch bản A hoàn toàn.</p>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">📅</span>
+        <h4>Scheduling &amp; Publishing</h4>
+        <ul>
+          <li><strong>Buffer Free</strong> — 3 accounts, 10 posts/account, forever free</li>
+          <li><strong>Meta Business Suite</strong> — Schedule Facebook + Instagram free</li>
+          <li><strong>TikTok Studio</strong> — Native scheduler, free</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">🎨</span>
+        <h4>Design</h4>
+        <ul>
+          <li><strong>Canva Free</strong> — Templates, social graphics, presentations</li>
+          <li><strong>Adobe Express Free</strong> — Quick graphics + short videos</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">🎬</span>
+        <h4>Video Editing</h4>
+        <ul>
+          <li><strong>CapCut</strong> — Mobile + desktop, AI features included</li>
+          <li><strong>DaVinci Resolve Free</strong> — Professional-grade, no watermark</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">📧</span>
+        <h4>Email Marketing</h4>
+        <ul>
+          <li><strong style="color: var(--gold);">Brevo / Sendinblue</strong> — 300 emails/day, unlimited contacts — <em>BEST FREE OPTION</em></li>
+          <li><strong>MailerLite</strong> — 1K subscribers, 12K emails/month</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span><span class="tag">No CC needed</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">🌐</span>
+        <h4>Landing Pages</h4>
+        <ul>
+          <li><strong>Carrd.co</strong> — Free plan, 3 sites, simple one-pagers</li>
+          <li><strong>Framer</strong> — Free subdomain, modern design builder</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">🎁</span>
+        <h4>Airdrop &amp; Giveaway</h4>
+        <ul>
+          <li><strong>Gleam.io</strong> — 1 free campaign (unlimited entries)</li>
+          <li><strong>Premint.xyz</strong> — Free for small projects (NFT/Web3 allowlist)</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">🤖</span>
+        <h4>Community Bots</h4>
+        <ul>
+          <li><strong>@MissRose_bot</strong> — Telegram moderation bot, completely free</li>
+          <li><strong>Carl-bot</strong> — Discord moderation + automod, free</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+
+      <div class="card">
+        <span class="icon">📊</span>
+        <h4>Analytics</h4>
+        <ul>
+          <li><strong>Google Analytics 4 (GA4)</strong> — Free, unlimited</li>
+          <li><strong>Metricool Free</strong> — Social media analytics + basic scheduling</li>
+        </ul>
+        <div class="tag-row"><span class="tag-green">✓ Confirmed Free</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h4>💡 Scenario A Stack: Start Here</h4>
+      <p>Buffer Free + Canva Free + CapCut + Brevo + @MissRose_bot + GA4 = một bộ công cụ hoàn chỉnh, $0/tháng, đủ để vận hành tất cả platforms trong 90 ngày đầu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AIRDROP STRATEGY -->
+<section id="airdrop">
+  <div class="container">
+    <div class="section-label">Section B</div>
+    <h2>MIC Airdrop Strategy <span>for the Christian Community</span></h2>
+    <p class="lead">The MIC airdrop is Mission Chain's most powerful community acquisition tool. The design must be accessible to non-crypto users — most Christians in the Global South have never used a Web3 wallet.</p>
+
+    <div class="highlight-box">
+      <h4>💡 Core Design Principle: "Earn by Serving, Not by Speculating"</h4>
+      <p>Every airdrop task must align with Mission Chain's values. Tasks are called <strong>"Missions"</strong> — small acts of faith, creativity, and community building that reward participants with MIC. This is not a traditional airdrop; it's an <em>activation event</em>.</p>
+    </div>
+
+    <!-- Onboarding Flow -->
+    <h3>🚀 Non-Crypto User Onboarding Flow</h3>
+    <ol class="step-list">
+      <li><strong>Join via familiar channel</strong> — Telegram link, Facebook group, church WhatsApp. No wallet required at first.</li>
+      <li><strong>Register with email + phone</strong> — Mission Chain creates a custodial wallet automatically. User sees "MIC Balance" not technical addresses.</li>
+      <li><strong>Complete Welcome Mission</strong> — Simple task (watch intro video, answer 3 questions about faith). Earn 100 MIC instantly.</li>
+      <li><strong>Guided wallet upgrade</strong> — After earning, prompted to set up MetaMask / Trust Wallet to "own your MIC." Step-by-step tutorial in local language.</li>
+      <li><strong>Church/Group Referral</strong> — Share your referral link in your church group. Both you and each new member earn bonus MIC.</li>
+    </ol>
+
+    <!-- Tier System -->
+    <h3>🏅 Airdrop Tier System</h3>
+    <div class="tier-grid">
+      <div class="tier-card tier-bronze">
+        <div class="tier-badge">🥉</div>
+        <div class="tier-name">BRONZE</div>
+        <div style="font-size:13px; color:#cd7f32; margin-bottom:8px;">Entry Level · Week 1–4</div>
+        <div class="tier-reward">500–2,000 MIC</div>
+        <ul class="tier-tasks">
+          <li>Join official Telegram channel</li>
+          <li>Register account (email + wallet)</li>
+          <li>Watch "Mission Chain Introduction" video</li>
+          <li>Share your testimony in 1–3 sentences</li>
+          <li>Follow on Twitter/X + retweet 1 post</li>
+          <li>Join local language community group</li>
+        </ul>
+        <div class="tag-row"><span class="tag">No crypto experience needed</span></div>
+      </div>
+
+      <div class="tier-card tier-silver">
+        <div class="tier-badge">🥈</div>
+        <div class="tier-name">SILVER</div>
+        <div style="font-size:13px; color:#c0c0c0; margin-bottom:8px;">Active Contributor · Week 2–8</div>
+        <div class="tier-reward">5,000–20,000 MIC</div>
+        <ul class="tier-tasks">
+          <li>Complete Bronze tier requirements</li>
+          <li>Submit original creative content (music clip, artwork, poem)</li>
+          <li>Refer 5 new community members</li>
+          <li>Participate in 1 Challenge (worship, art, testimony)</li>
+          <li>Complete 1 Mission Learn module</li>
+          <li>Write & submit a faith + creator story (300 words)</li>
+          <li>Attend 1 live community event / Twitter Space</li>
+        </ul>
+        <div class="tag-row"><span class="tag">Basic creator skills needed</span></div>
+      </div>
+
+      <div class="tier-card tier-gold">
+        <div class="tier-badge">🥇</div>
+        <div class="tier-name">GOLD</div>
+        <div style="font-size:13px; color:var(--gold); margin-bottom:8px;">Mission Leader · Week 4–12</div>
+        <div class="tier-reward">50,000–200,000 MIC</div>
+        <ul class="tier-tasks">
+          <li>Complete Silver tier requirements</li>
+          <li>Become verified Mission Ambassador</li>
+          <li>Onboard 25+ new community members</li>
+          <li>Lead or co-host a local Mission Hub event</li>
+          <li>Publish 3 pieces of content on missionchain.world</li>
+          <li>Complete full Mission Learn track</li>
+          <li>Complete first paid job via Mission Work marketplace</li>
+          <li>Vote in first DAO governance proposal</li>
+        </ul>
+        <div class="tag-row"><span class="tag">MFP-NFT credential eligible</span></div>
+      </div>
+    </div>
+
+    <!-- Special Programs -->
+    <h3>✨ Special Airdrop Programs</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">⛪</span>
+        <h4>Church Airdrop Drop</h4>
+        <p style="font-size:14px;">Partner churches receive a bulk MIC allocation to distribute to their congregation. Pastor becomes "Mission Hub Coordinator." Minimum congregation: 200 members.</p>
+        <div class="tag-row"><span class="tag">5,000 MIC per church</span><span class="tag">50 MIC per verified member</span></div>
+      </div>
+      <div class="card">
+        <span class="icon">🎵</span>
+        <h4>Creator Launch Reward</h4>
+        <p style="font-size:14px;">Any Christian creator who publishes their first piece (music, art, film) on missionchain.world in the first 90 days earns a "Founding Creator" airdrop bonus.</p>
+        <div class="tag-row"><span class="tag">10,000 MIC Founder Bonus</span><span class="tag">Builder NFT included</span></div>
+      </div>
+      <div class="card">
+        <span class="icon">📖</span>
+        <h4>Scripture Challenge Rewards</h4>
+        <p style="font-size:14px;">Weekly "SOPHIA WORD Challenge" — read daily reflection, answer reflection question, share insight. Consistent participants earn escalating MIC rewards.</p>
+        <div class="tag-row"><span class="tag">100 MIC/day</span><span class="tag">7-day streak: 1,500 bonus</span></div>
+      </div>
+      <div class="card">
+        <span class="icon">🌍</span>
+        <h4>Global South Priority Bonus</h4>
+        <p style="font-size:14px;">Users from Africa, Southeast Asia, and Latin America receive a 2× multiplier on all Bronze and Silver tier rewards — recognizing that infrastructure inequality should not be an economic penalty.</p>
+        <div class="tag-row"><span class="tag">2× MIC Multiplier</span><span class="tag">Dignity-based economics</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 90-DAY PLAN -->
+<section id="calendar">
+  <div class="container">
+    <div class="section-label">Section C</div>
+    <h2>90-Day Social Media <span>Action Plan</span></h2>
+    <p class="lead">A phased launch sequence across Telegram, Twitter/X, YouTube, Facebook, and TikTok. Each phase builds on the last — from awareness to community to economy activation.</p>
+
+    <!-- Phase Overview -->
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>1</span></div>
+        <div class="phase-label">Days 1–30</div>
+        <div class="phase-title">Phase 1: Foundation & Awareness</div>
+        <p style="font-size:14px;">Establish presence, define brand voice, seed communities in all 5 languages. Launch Bronze tier airdrop. Goal: <strong>10,000 community members</strong>, 5 languages active, all channels set up with consistent identity.</p>
+        <div class="tag-row">
+          <span class="tag">Brand identity live</span>
+          <span class="tag">Airdrop Bronze launch</span>
+          <span class="tag">First 10K members</span>
+          <span class="tag-blue">5 languages activated</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>2</span></div>
+        <div class="phase-label">Days 31–60</div>
+        <div class="phase-title">Phase 2: Community Activation & Creator Onboarding</div>
+        <p style="font-size:14px;">Launch first Challenges. Begin church partnership outreach. Silver tier airdrop opens. First Mission Work job postings go live. Creator spotlights weekly. Goal: <strong>50,000 members</strong>, 100 creators active, 10 church partnerships.</p>
+        <div class="tag-row">
+          <span class="tag">First Global Challenge</span>
+          <span class="tag">100 creators onboarded</span>
+          <span class="tag">Silver Airdrop launch</span>
+          <span class="tag-green">10 church partners</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>3</span></div>
+        <div class="phase-label">Days 61–90</div>
+        <div class="phase-title">Phase 3: Economy Launch & Gold Tier</div>
+        <p style="font-size:14px;">Activate Mission Work marketplace publicly. Gold tier airdrop. First DAO vote. Mission Hub launch events. TGE preparation content. Goal: <strong>150,000 members</strong>, 500 creators, $50K in marketplace activity.</p>
+        <div class="tag-row">
+          <span class="tag">Mission Work live</span>
+          <span class="tag">First DAO vote</span>
+          <span class="tag">Gold Airdrop launch</span>
+          <span class="tag-blue">TGE countdown begins</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Calendar by Platform -->
+    <h3>📅 Weekly Content Calendar (Sample)</h3>
+
+    <div class="calendar-week">
+      <div class="calendar-header">
+        <span class="week-badge">Telegram</span>
+        <span class="title">Daily rhythm — 2–3 posts/day, community-first</span>
+      </div>
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Monday</div>
+          <div class="day-content">
+            <span class="content-tag">Mission Monday</span> New weekly challenge announcement. Airdrop task of the week. MIC reward highlighted.
+            <div style="margin-top:6px;"><span class="lang-tag">EN</span><span class="lang-tag">Pidgin</span><span class="lang-tag">Tagalog</span></div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Tuesday</div>
+          <div class="day-content">
+            <span class="content-tag">SOPHIA WORD</span> Daily Scripture + reflection. AI-generated contextual reflection linking faith to modern work/creativity.
+            <div style="margin-top:6px;"><span class="lang-tag">EN</span><span class="lang-tag">VI</span><span class="lang-tag">Swahili</span></div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Wednesday</div>
+          <div class="day-content">
+            <span class="content-tag">Creator Spotlight</span> Feature a community member — their story, their work, their faith journey. Link to their portfolio.
+            <div style="margin-top:6px;"><span class="lang-tag">EN</span><span class="lang-tag">Tagalog</span></div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Thursday</div>
+          <div class="day-content">
+            <span class="content-tag">Education</span> "How Mission Chain works" explainer series — 1 concept per week. Tokenomics, MICE, NFT credentials explained simply.
+            <div style="margin-top:6px;"><span class="lang-tag">EN</span><span class="lang-tag">Pidgin</span></div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Friday</div>
+          <div class="day-content">
+            <span class="content-tag">Testimony Friday</span> Community member shares how platform helped their creative/economic journey. Encouragement + MIC tip to poster.
+            <div style="margin-top:6px;"><span class="lang-tag">ALL</span></div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekend</div>
+          <div class="day-content">
+            <span class="content-tag">Prayer + Connection</span> Lighter content — worship music share, prayer request thread, creative community showcase. Community moderators lead.
+            <div style="margin-top:6px;"><span class="lang-tag">EN</span><span class="lang-tag">PT</span><span class="lang-tag">ES</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calendar-week">
+      <div class="calendar-header">
+        <span class="week-badge">Twitter/X</span>
+        <span class="title">2–4 posts/day — thought leadership + Web3 narrative</span>
+      </div>
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Daily</div>
+          <div class="day-content">
+            <span class="content-tag">Scripture Thread</span> One verse + thread unpacking its relevance to creators, economics, tech. Quote-tweet from community.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">3x/week</div>
+          <div class="day-content">
+            <span class="content-tag">Ecosystem Update</span> Protocol milestones, MICE stats, new creators joined, Challenge winners. Transparency builds trust.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">Twitter Space</span> Live audio: "Faith, Work & Web3" — guest creators, pastors, church tech leaders. 60–90 min, recorded for YouTube.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">Airdrop CTA</span> "Earn free MIC today" campaign post — simple instructions, link to registration. Track conversion.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calendar-week">
+      <div class="calendar-header">
+        <span class="week-badge">YouTube</span>
+        <span class="title">2 videos/week — trust anchor content, evergreen</span>
+      </div>
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">SOPHIA WORD Video</span> 5–7 min: AI narrated devotional. "When AI Creates, What Remains Human?" series. SOPHIA voice + scripture + visuals.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">Creator Documentary</span> Short documentary (8–12 min) following a real Christian creator. Lagos worship producer, Manila graphic designer, São Paulo filmmaker.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Monthly</div>
+          <div class="day-content">
+            <span class="content-tag">Mission State</span> Official ecosystem update — milestone report, roadmap progress, community growth. Hosted by founding team.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calendar-week">
+      <div class="calendar-header">
+        <span class="week-badge">TikTok</span>
+        <span class="title">1–2 videos/day — viral, Gen Z, worship + creator economy</span>
+      </div>
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Daily</div>
+          <div class="day-content">
+            <span class="content-tag">Worship Clips</span> 30–60 sec worship music by community creators. Use trending sounds. "#MissionChain #ChristianTikTok"
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">3x/week</div>
+          <div class="day-content">
+            <span class="content-tag">"Earn MIC for this?"</span> Duets/reactions showing simple tasks that earn MIC. Demystify crypto through action, not explanation.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">Testimony Reel</span> 60-sec creator testimonials from Nigeria, Philippines, Brazil. Raw, authentic, subtitled. High share rate.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calendar-week">
+      <div class="calendar-header">
+        <span class="week-badge">Facebook</span>
+        <span class="title">1–2 posts/day — community groups by region and language</span>
+      </div>
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Strategy</div>
+          <div class="day-content">
+            Create <strong>5 regional Facebook Groups</strong>: Africa, Philippines, Latin America, Southeast Asia, Global English. Each moderated in local language. Weekly live events, prayer threads, challenge posts.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Daily</div>
+          <div class="day-content">
+            <span class="content-tag">Morning Devotional</span> Scripture image + 2-line reflection. Designed for sharing to personal timelines and church groups.
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Weekly</div>
+          <div class="day-content">
+            <span class="content-tag">Marketplace Feature</span> Highlight a Mission Work job posting. "This church needs a worship music producer — apply with MIC."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT PILLARS -->
+<section id="content-pillars">
+  <div class="container">
+    <div class="section-label">Content Strategy</div>
+    <h2>Content <span>Pillars</span></h2>
+    <p class="lead">5 trụ cột nội dung tạo nên nhịp điệu hàng tuần cho Mission Chain — mỗi pillar có mục tiêu, tần suất, và giọng điệu riêng. Cùng nhau, chúng xây dựng cộng đồng từ 3 chiều: <em>Faith · Economy · Community.</em></p>
+
+    <!-- Pillar 1 -->
+    <div class="region-card" style="border-left: 4px solid #c9a84c;">
+      <div class="region-header">
+        <span class="region-flag">🙏</span>
+        <div>
+          <div class="region-name">Pillar 1: Faith &amp; Calling</div>
+          <div class="region-stats">3x/tuần · Telegram, Facebook, Instagram</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; margin-bottom: 16px;">Nhắc nhở cộng đồng rằng sáng tạo không phải là nghề nghiệp — đó là thiên chức. Nội dung kết nối kinh thánh với thực tế cuộc sống người sáng tạo hiện đại.</p>
+      <div class="card-grid-3">
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 1</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Jeremiah 1:5 says God knew you before you were born. That includes your voice, your camera skills, your music. Your calling was designed — not an accident. 🎵 #MissionChain #FaithAndCreativity"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 2</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Most people spend their whole life trying to find their purpose. You already have it: love God, love people, and use your gifts. The platform is just the tool. 🙌 #CalledToCreate"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 3</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Question: What would you create if money wasn't the issue? Drop it below 👇 Because at Mission Chain, we're building the economy where your answer becomes your income."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 2 -->
+    <div class="region-card" style="border-left: 4px solid #4caf80; margin-top: 20px;">
+      <div class="region-header">
+        <span class="region-flag">💼</span>
+        <div>
+          <div class="region-name">Pillar 2: Creator Economy</div>
+          <div class="region-stats">2x/tuần · Twitter/X, LinkedIn, YouTube Shorts</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; margin-bottom: 16px;">Giáo dục về cách kiếm tiền từ sáng tạo — không phải hype crypto, mà là real skills, real work, real pay. Xây dựng niềm tin bằng transparency.</p>
+      <div class="card-grid-3">
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 1</div>
+          <p style="font-size: 13px; margin-top: 8px;">"A worship producer in Lagos just got paid $200 for a church background track — via Mission Work marketplace. First payment ever from his music. This is what we're building. 🇳🇬💰"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 2</div>
+          <p style="font-size: 13px; margin-top: 8px;">"5 ways Christian creators leave money on the table: [thread] 1/ Not owning your audience 2/ Platform dependency 3/ Giving away work for 'exposure' 4/ No digital product 5/ No community infrastructure. We fix all 5. 🧵"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 3</div>
+          <p style="font-size: 13px; margin-top: 8px;">"The creator economy is $100B+ and growing. But 95% of Christian creators get 0. Not because their work isn't good — but because there's no platform built for them. Until now. ⛓"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 3 -->
+    <div class="region-card" style="border-left: 4px solid #80b0e0; margin-top: 20px;">
+      <div class="region-header">
+        <span class="region-flag">🔗</span>
+        <div>
+          <div class="region-name">Pillar 3: Web3 Made Human</div>
+          <div class="region-stats">2x/tuần · Twitter/X, Telegram, YouTube</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; margin-bottom: 16px;">Demystify blockchain/crypto cho người không có background kỹ thuật. Giải thích MIC, NFT, DAO bằng ngôn ngữ đời thường — không jargon, không hype.</p>
+      <div class="card-grid-3">
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 1</div>
+          <p style="font-size: 13px; margin-top: 8px;">"MIC is not a get-rich scheme. It's a reward system — like loyalty points, but you own them and can trade them. Think of it as 'church offering, but digital, and it pays you back.' Simple as that. 💡"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 2</div>
+          <p style="font-size: 13px; margin-top: 8px;">"NFT sounds scary. Here's what it means at Mission Chain: your creator certificate. Proof that YOU published work, you completed training, you contributed. No one can take that away. 🏅"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 3</div>
+          <p style="font-size: 13px; margin-top: 8px;">"DAO = the congregation votes. In our system, MIC holders vote on how the platform is run. It's not democracy for its own sake — it's stewardship. 'For the common good.' (1 Cor 12:7) ⛓🗳️"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 4 -->
+    <div class="region-card" style="border-left: 4px solid #e8a44c; margin-top: 20px;">
+      <div class="region-header">
+        <span class="region-flag">🌍</span>
+        <div>
+          <div class="region-name">Pillar 4: Community Stories</div>
+          <div class="region-stats">2x/tuần · All platforms · User-generated content priority</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; margin-bottom: 16px;">Con người tin con người. Các câu chuyện thật từ cộng đồng — nhà thờ, nghệ sĩ, freelancer, gia đình — là loại nội dung có engagement cao nhất và build trust nhanh nhất.</p>
+      <div class="card-grid-3">
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 1</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Meet @AdeolaSings — worship leader from Ibadan, Nigeria. 3 months ago she didn't know what blockchain was. Today she earned her first $150 from a church in Canada who found her on Mission Work. 🙏🇳🇬→🇨🇦"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 2</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Pastor Ben in Manila used Mission Chain to find a graphic designer for his church's anniversary booklet. Total cost: 500 MIC. Designer earned $30 equivalent. Both happy. This is how it works. 🇵🇭"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Post mẫu 3</div>
+          <p style="font-size: 13px; margin-top: 8px;">"📸 Community Challenge Week 3 winners announced! 47 entries from 12 countries. Every single one is proof: talent is everywhere, opportunity just needed an address. See all winners → [link]"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 5 -->
+    <div class="region-card" style="border-left: 4px solid #c9a84c; margin-top: 20px;">
+      <div class="region-header">
+        <span class="region-flag">👑</span>
+        <div>
+          <div class="region-name">Pillar 5: Kingdom Vision</div>
+          <div class="region-stats">1x/tuần — ưu tiên Chủ Nhật · All platforms</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; margin-bottom: 16px;">Big picture. Tầm nhìn dài hạn về "kingdom economics" — một hệ thống kinh tế phản ánh giá trị Tin Lành. Chủ Nhật là ngày lý tưởng để nội dung này reach được vào sau giờ lễ.</p>
+      <div class="card-grid-3">
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Sunday Post 1</div>
+          <p style="font-size: 13px; margin-top: 8px;">"What if the global church had an economic layer? Not just charity — but a sustainable ecosystem where your creativity funds ministry, your skills feed your family, and your community owns the platform. That's Mission Chain. ⛓✝️"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Sunday Post 2</div>
+          <p style="font-size: 13px; margin-top: 8px;">"The first Christians shared everything. Not because they had to — because they trusted each other. Web3 gives us tools to build that trust at global scale, across cultures and languages. 2.6 billion of us. 🌍"</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div class="content-tag">Sunday Post 3</div>
+          <p style="font-size: 13px; margin-top: 8px;">"Kingdom economics = jubilee principles made digital. Debt forgiveness. Wealth redistribution. Opportunity for all. We're not reinventing the wheel — we're putting it on the blockchain. 🎡⛓"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Rhythm -->
+    <h3 style="margin-top: 40px;">📅 Weekly Content Rhythm</h3>
+    <table class="kpi-table">
+      <thead>
+        <tr><th>Ngày</th><th>Pillar</th><th>Platform chính</th><th>Format</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Thứ Hai</td><td>🔗 Web3 Made Human</td><td>Twitter/X, Telegram</td><td>Educational thread</td></tr>
+        <tr><td>Thứ Ba</td><td>🙏 Faith &amp; Calling</td><td>Facebook, Instagram</td><td>Quote card + short reflection</td></tr>
+        <tr><td>Thứ Tư</td><td>🌍 Community Stories</td><td>All platforms</td><td>Creator spotlight / testimony</td></tr>
+        <tr><td>Thứ Năm</td><td>💼 Creator Economy</td><td>Twitter/X, YouTube Shorts</td><td>Tip / case study</td></tr>
+        <tr><td>Thứ Sáu</td><td>🙏 Faith &amp; Calling</td><td>Telegram, Facebook</td><td>SOPHIA WORD devotional</td></tr>
+        <tr><td>Thứ Bảy</td><td>💼 Creator Economy</td><td>TikTok, Reels</td><td>Short video / behind scenes</td></tr>
+        <tr><td>Chủ Nhật</td><td>👑 Kingdom Vision</td><td>All platforms</td><td>Inspirational long-form</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PARTNERSHIP -->
+<section id="partnership">
+  <div class="container">
+    <div class="section-label">Section D</div>
+    <h2>Christian Influencer &amp; <span>Church Partnership Strategy</span></h2>
+    <p class="lead">The highest-trust pathway into the Christian community is through existing trusted leaders. Mission Chain's partnership approach is <em>servant-first</em> — we bring value to pastors and church networks before asking anything in return.</p>
+
+    <!-- Approach -->
+    <h3>🤝 Approach: Serve First, Partner Second</h3>
+    <div class="highlight-box">
+      <h4>The Fatal Mistake of Web3 Projects</h4>
+      <p>Most crypto projects approach churches with "shill our token to your congregation." That destroys trust immediately. Mission Chain's approach is fundamentally different: <strong>we solve real problems churches already have</strong> — finding skilled volunteer creators, funding ministry media, equipping young people with economic skills — and MIC is the natural reward mechanism within that.</p>
+    </div>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">📩</span>
+        <h4>Initial Outreach Script (Pastor/Leader)</h4>
+        <ul>
+          <li>"We are building a creative economy for Christian talent"</li>
+          <li>"We'd love to feature your church's worship team"</li>
+          <li>"We want to help your young people earn from their gifts"</li>
+          <li>"Zero cost — we provide the platform, you provide the community"</li>
+          <li>Never lead with token investment or price</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🎁</span>
+        <h4>What We Offer Church Partners</h4>
+        <ul>
+          <li>Free portfolio platform for their worship/creative team</li>
+          <li>MIC airdrop for congregation members (bulk allocation)</li>
+          <li>Certified "Mission Hub" branding and recognition</li>
+          <li>Access to Mission Work marketplace for hiring talent</li>
+          <li>SOPHIA WORD daily devotional customized for their context</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mission Hub Model -->
+    <h3>🏛️ Mission Hub Partnership Tiers</h3>
+    <div class="hub-grid">
+      <div class="hub-card">
+        <span class="hub-level">Starter</span>
+        <span class="icon">🌱</span>
+        <h4>Community Node</h4>
+        <p style="font-size:13px; color:var(--text-mid); margin-bottom:12px;">Online only · 200+ congregation</p>
+        <ul class="card" style="background:transparent; border:none; padding:0;">
+          <ul style="list-style:none; padding:0;">
+            <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ 5,000 MIC welcome allocation</li>
+            <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Mission Hub profile on platform</li>
+            <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Access to talent marketplace</li>
+            <li style="padding:6px 0; font-size:13px; color:var(--text-light);">→ Monthly ecosystem newsletter</li>
+          </ul>
+        </ul>
+      </div>
+
+      <div class="hub-card">
+        <span class="hub-level">Active</span>
+        <span class="icon">⚡</span>
+        <h4>Mission Hub</h4>
+        <p style="font-size:13px; color:var(--text-mid); margin-bottom:12px;">Online + offline events · 1,000+ congregation</p>
+        <ul style="list-style:none; padding:0;">
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ 25,000 MIC allocation</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Quarterly onsite activation events</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Co-branded content creation</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Priority talent matching</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light);">→ DAO governance participation</li>
+        </ul>
+      </div>
+
+      <div class="hub-card">
+        <span class="hub-level">Strategic</span>
+        <span class="icon">🌟</span>
+        <h4>Anchor Hub</h4>
+        <p style="font-size:13px; color:var(--text-mid); margin-bottom:12px;">Regional flagship · 10,000+ network</p>
+        <ul style="list-style:none; padding:0;">
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ 100,000 MIC + MFP-NFT allocation</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Regional Ambassador designation</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ Co-development of local content</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light); border-bottom:1px solid rgba(255,255,255,0.04);">→ SOPHIA WORD integration for church</li>
+          <li style="padding:6px 0; font-size:13px; color:var(--text-light);">→ DAO governance seat</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Influencer Partnership -->
+    <h3>🎤 Christian KOL Partnership Framework</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">🔑</span>
+        <h4>Tier 1: Macro KOLs (1M+ followers)</h4>
+        <ul>
+          <li>Gospel artists (Sinach, Nathaniel Bassey, Nívea Soares)</li>
+          <li>Approach: Co-create content, not just sponsored posts</li>
+          <li>Offer: Founding Creator status + large MIC allocation</li>
+          <li>Ask: 1 authentic YouTube video, ongoing community presence</li>
+          <li>Never pay for inauthentic "shilling" — only genuine alignment</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🌱</span>
+        <h4>Tier 2: Micro/Nano KOLs (5K–200K)</h4>
+        <ul>
+          <li>Local worship leaders, youth pastors, Christian creators</li>
+          <li>These have higher trust and engagement than macro</li>
+          <li>Offer: Silver/Gold airdrop + Ambassador program</li>
+          <li>Ask: Regular authentic sharing within their community</li>
+          <li>Target: 100 micro-ambassadors per region by Day 60</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Outreach Calendar -->
+    <h3>📅 Partnership Outreach Timeline</h3>
+    <div class="calendar-week">
+      <div class="calendar-body">
+        <div class="day-row">
+          <div class="day-name">Week 1–2</div>
+          <div class="day-content">Research and shortlist 50 target KOLs + 20 target churches per region. Build personalized outreach database. Prepare pitch decks in local languages.</div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Week 3–4</div>
+          <div class="day-content">Begin outreach to Tier 2 micro-KOLs (lower barrier). Offer early access + founding benefits. Target: 10 confirmations by end of month.</div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Week 5–8</div>
+          <div class="day-content">Church partnership emails + WhatsApp outreach. Follow up with interested parties. Host "Partnership Info Call" webinars in EN, VI, Tagalog, Pidgin.</div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">Week 9–12</div>
+          <div class="day-content">Launch first Anchor Hub partnerships publicly. Feature in all social channels. Begin Tier 1 KOL conversations backed by proven community traction.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI SECTION -->
+<section id="kpi">
+  <div class="container">
+    <div class="section-label">Measurement</div>
+    <h2>KPIs &amp; <span>Success Metrics</span></h2>
+    <p class="lead">Clear, measurable targets across all channels and phases. All KPIs reviewed weekly; major pivots allowed at Day 30 and Day 60 reviews.</p>
+
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Day 30 Target</th>
+          <th>Day 60 Target</th>
+          <th>Day 90 Target</th>
+          <th>Key Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="platform-icon">💬</span> <strong>Telegram</strong></td>
+          <td>5,000 members</td>
+          <td>25,000 members</td>
+          <td>80,000 members</td>
+          <td>30% DAU/MAU</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">🐦</span> <strong>Twitter/X</strong></td>
+          <td>2,000 followers</td>
+          <td>10,000 followers</td>
+          <td>30,000 followers</td>
+          <td>5% engagement rate</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">▶️</span> <strong>YouTube</strong></td>
+          <td>500 subscribers</td>
+          <td>5,000 subscribers</td>
+          <td>20,000 subscribers</td>
+          <td>40% avg. watch time</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">📘</span> <strong>Facebook</strong></td>
+          <td>3,000 page likes</td>
+          <td>15,000 page likes</td>
+          <td>50,000 page likes</td>
+          <td>10% post reach rate</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">🎵</span> <strong>TikTok</strong></td>
+          <td>1,000 followers</td>
+          <td>10,000 followers</td>
+          <td>50,000 followers</td>
+          <td>1 viral video (100K+ views)</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">🏅</span> <strong>Airdrop — Bronze</strong></td>
+          <td>2,000 claims</td>
+          <td>10,000 claims</td>
+          <td>20,000 claims</td>
+          <td>60% wallet activation rate</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">🥈</span> <strong>Airdrop — Silver</strong></td>
+          <td>–</td>
+          <td>1,000 claims</td>
+          <td>5,000 claims</td>
+          <td>50% Bronze→Silver conversion</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">⛪</span> <strong>Church Partners</strong></td>
+          <td>5 partners</td>
+          <td>30 partners</td>
+          <td>100 partners</td>
+          <td>3 regions represented</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">🎨</span> <strong>Creators Active</strong></td>
+          <td>50 creators</td>
+          <td>300 creators</td>
+          <td>1,000 creators</td>
+          <td>Portfolio published on platform</td>
+        </tr>
+        <tr>
+          <td><span class="platform-icon">💰</span> <strong>Mission Work GMV</strong></td>
+          <td>$500</td>
+          <td>$10,000</td>
+          <td>$50,000</td>
+          <td>MIC-denominated transactions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Language Targets -->
+    <h3>🌐 Language-Specific Community Targets (Day 90)</h3>
+    <div class="card-grid-3">
+      <div class="card">
+        <span class="icon">🇬🇧</span>
+        <h4>English (EN)</h4>
+        <p style="font-size:13px;">Global community anchor. Primary platform language. Target: 60,000 members.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🇳🇬</span>
+        <h4>Nigerian Pidgin</h4>
+        <p style="font-size:13px;">West Africa focus. High viral potential. WhatsApp + Telegram primary. Target: 20,000 members.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🇵🇭</span>
+        <h4>Tagalog (TL)</h4>
+        <p style="font-size:13px;">Philippines — 90M Christians. Facebook dominant. Target: 25,000 members.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🇰🇪</span>
+        <h4>Swahili (SW)</h4>
+        <p style="font-size:13px;">East Africa — Kenya, Tanzania, Uganda. Growing creator class. Target: 10,000 members.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🇻🇳</span>
+        <h4>Vietnamese (VI)</h4>
+        <p style="font-size:13px;">Southeast Asia + diaspora. <strong>Facebook (92%) + Zalo (82%) + YouTube.</strong> Target: <strong>5,000–8,000 members</strong> (updated — Zalo + Facebook combined). <a href="#vietnam" style="color: var(--gold); font-size: 12px;">→ Xem Vietnam Strategy</a></p>
+      </div>
+      <div class="card">
+        <span class="icon">🇧🇷</span>
+        <h4>Portuguese (PT)</h4>
+        <p style="font-size:13px;">Brazil — 200M Catholics/Evangelicals. YouTube dominant. Target: 15,000 members.</p>
+      </div>
+    </div>
+
+    <!-- Budget Allocation -->
+    <h3>💸 Estimated Budget Allocation (90 Days)</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <h4>Content Production</h4>
+        <ul>
+          <li>Video production (YouTube, TikTok): 35%</li>
+          <li>Graphic design + brand assets: 15%</li>
+          <li>Translation + localization: 10%</li>
+          <li>Audio/music production: 10%</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Community & Growth</h4>
+        <ul>
+          <li>MIC Airdrop pool (incentives): 45% of dedicated budget</li>
+          <li>Influencer partnerships: 20%</li>
+          <li>Paid ads (Facebook, YouTube): 20%</li>
+          <li>Community events + moderators: 15%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIETNAM MARKET STRATEGY -->
+<section id="vietnam">
+  <div class="container">
+    <div class="section-label">Market Focus</div>
+    <h2>Vietnam <span>Market Strategy</span></h2>
+    <p class="lead">Vietnam là thị trường ưu tiên đặc biệt với Thomas — nhưng cần approach khác so với Philippines hay Nigeria vì Christian là minority group và có đặc thù văn hóa riêng.</p>
+
+    <div class="highlight-box">
+      <h4>🇻🇳 Vietnam Christian Profile</h4>
+      <p>Christian chiếm khoảng <strong>8–9% dân số</strong> (~8 triệu người), chủ yếu là Tin Lành (Evangelical) và Công Giáo (Catholic). Cộng đồng nhỏ nhưng <strong>rất gắn kết nội bộ</strong> — các hội thánh là network nodes mạnh. Người Việt Christian thường có học vấn cao hơn bình quân và active online.</p>
+    </div>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <span class="icon">📱</span>
+        <h4>Platforms Ưu tiên</h4>
+        <ul>
+          <li><strong>Facebook</strong> — 92% internet users dùng FB · Groups là điểm tập hợp chính</li>
+          <li><strong>Zalo</strong> — 82% người dùng internet · OA miễn phí · Group tối đa 1,000 members</li>
+          <li><strong>YouTube</strong> — Sermons, worship, devotionals · Growing fast</li>
+          <li>TikTok — Thứ yếu, nhưng tốt cho Gen Z Christian</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="icon">🎯</span>
+        <h4>Approach Đặc Thù</h4>
+        <ul>
+          <li>Tìm admin các Facebook Groups: "Cơ Đốc Nhân Việt Nam", "Hội Thánh Tin Lành", "Christian Vietnam"</li>
+          <li>Cold outreach cá nhân hóa — offer MIC allocation + visibility cho hội thánh</li>
+          <li>Tạo Zalo Official Account (miễn phí) + Zalo Groups</li>
+          <li>Thomas làm "human face" — người Việt trust người, không trust brand</li>
+          <li>Content song ngữ Việt–Anh · Tone: khiêm tốn, chân thành</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-number">~8M</span>
+        <div class="stat-label">Christians tại VN</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">92%</span>
+        <div class="stat-label">Internet users dùng Facebook</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">82%</span>
+        <div class="stat-label">Internet users dùng Zalo</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">5,000–8,000</span>
+        <div class="stat-label">Target Day 90 (realistic)</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h4>📈 Vietnam Target Adjustment</h4>
+      <p>Target gốc: 8,000 members. Target cập nhật: <strong>5,000–8,000 members</strong> — nhờ kết hợp Zalo + Facebook (tăng reach vs. chỉ dùng 1 platform). Với Scenario B budget, target 8K là achievable trong 90 ngày.</p>
+    </div>
+
+    <!-- Vietnamese Sample Posts -->
+    <h3>📝 5 Post Mẫu Tiếng Việt</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="content-tag">Post 1 — Giới thiệu Mission Chain</div>
+        <p style="font-size: 14px; margin-top: 12px;">🙏 Bạn có biết rằng tài năng của bạn — âm nhạc, thiết kế, video, viết lách — có thể trở thành nguồn thu nhập thực sự?<br><br>Mission Chain đang xây dựng nền kinh tế số đầu tiên dành riêng cho người sáng tạo Cơ Đốc. Không phải đầu cơ crypto. Mà là: làm việc thật → nhận thưởng thật → cộng đồng thật.<br><br>Join cộng đồng → nhận MIC miễn phí → bắt đầu hành trình ⛓<br>👉 [link]<br><br>#MissionChain #CơĐốcNhânViệtNam #SángTạo</p>
+      </div>
+      <div class="card">
+        <div class="content-tag">Post 2 — SOPHIA WORD Tiếng Việt</div>
+        <p style="font-size: 14px; margin-top: 12px;">✨ <strong>Lời Chúa Hôm Nay</strong><br><br>"Vì chúng ta là tác phẩm của Ngài, được dựng nên trong Đức Chúa Jêsus Christ để làm các việc lành..." — Êphêsô 2:10<br><br>Bạn không phải tình cờ ở đây. Mỗi bức ảnh bạn chụp, mỗi bài hát bạn viết, mỗi video bạn dựng — đó là việc lành mà Chúa đã chuẩn bị trước.<br><br>Hôm nay, hãy sáng tạo với mục đích. 🙌<br><br>#SOPHIAWord #CơĐốcNhânViệtNam</p>
+      </div>
+      <div class="card">
+        <div class="content-tag">Post 3 — Airdrop CTA</div>
+        <p style="font-size: 14px; margin-top: 12px;">🎁 Nhận MIC miễn phí — dành cho Cơ Đốc nhân Việt Nam!<br><br>MIC là token của Mission Chain — nền tảng kinh tế số cho người sáng tạo Cơ Đốc toàn cầu.<br><br>3 bước đơn giản:<br>1️⃣ Tham gia Telegram/Zalo group<br>2️⃣ Đăng ký tài khoản (miễn phí)<br>3️⃣ Hoàn thành "Welcome Mission" → nhận 100 MIC ngay<br><br>Không cần kiến thức crypto. Không cần ví từ trước.<br>👉 [link đăng ký]</p>
+      </div>
+      <div class="card">
+        <div class="content-tag">Post 4 — Community Story</div>
+        <p style="font-size: 14px; margin-top: 12px;">🎵 Gặp Minh — nhạc sĩ Tin Lành tại TP.HCM.<br><br>Anh viết nhạc thờ phượng đã 7 năm. Chia sẻ trên YouTube nhưng chưa bao giờ kiếm được tiền từ đam mê của mình.<br><br>Tháng trước, anh tham gia Mission Chain và đăng bài đầu tiên lên Mission Work. Tuần này, một hội thánh tại California thuê anh soạn nhạc cho album mùa Giáng sinh.<br><br>Đây là lý do chúng ta xây dựng điều này. 🙏<br><br>#MissionWork #NhạcSĩCơĐốc</p>
+      </div>
+      <div class="card">
+        <div class="content-tag">Post 5 — Vision / Kingdom</div>
+        <p style="font-size: 14px; margin-top: 12px;">💭 Nếu Hội Thánh trên toàn cầu có một nền kinh tế chung — nơi tài năng được trả công, ân tứ được chia sẻ, và mọi người đều có cơ hội bình đẳng?<br><br>Không phải ước mơ. Đang được xây dựng.<br><br>2.6 tỷ Cơ Đốc nhân. 200 triệu người sáng tạo. Và một token: MIC.<br><br>Bạn là một phần của chuyện này. 🌍⛓<br><br>#KingdomEconomics #MissionChain</p>
+      </div>
+    </div>
+
+    <!-- Zalo Strategy Box -->
+    <div class="highlight-box" style="margin-top: 30px;">
+      <h4>📲 Zalo Strategy — Chi tiết</h4>
+      <p><strong>Zalo OA (Official Account):</strong> Tạo miễn phí tại oa.zalo.me — dùng để broadcast messages đến followers, tương tự Facebook Page. Limit broadcast free tier: 50 messages/ngày.</p>
+      <p style="margin-top: 8px;"><strong>Zalo Groups:</strong> Tối đa 1,000 thành viên/group. Tạo 3–5 groups theo chủ đề (Nhạc, Thiết kế, Chung, Vietnam Hub...). Mỗi group có bot automod và welcome message.</p>
+      <p style="margin-top: 8px;"><strong>Lưu ý:</strong> Zalo cần số điện thoại Việt Nam để tạo OA. Thomas nên tạo bằng SĐT cá nhân hoặc nhờ người quen tại VN tạo giúp.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOPHIA WORD DEVOTIONALS -->
+<section id="sophia-word">
+  <div class="container">
+    <div class="section-label">Daily Content</div>
+    <h2>SOPHIA WORD — <span>7 Devotional Mẫu</span></h2>
+    <p class="lead">SOPHIA WORD là tính năng devotional hàng ngày của Mission Chain — kết hợp Kinh Thánh với reflection về sáng tạo, công nghệ, và đức tin. <em>Note: SOPHIA AI hiện là placeholder — nội dung sẽ do team chuẩn bị trước cho đến khi SOPHIA được deploy.</em></p>
+
+    <div class="highlight-box">
+      <h4>⚠️ SOPHIA Status Note</h4>
+      <p>SOPHIA hiện <strong>chưa tồn tại</strong> như một AI hoạt động độc lập. Đây là tính năng được plan cho future roadmap. Trong giai đoạn đầu, "SOPHIA WORD" sẽ là nội dung được Claudia + team chuẩn bị theo format thống nhất, đăng với brand SOPHIA. 7 devotionals dưới đây là templates sẵn dùng ngay.</p>
+    </div>
+
+    <div class="platform-grid">
+      <!-- Devotional 1 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">📖</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 1</span>
+          </div>
+          <div>
+            <div class="platform-name">Ephesians 2:10 — "God's Handiwork"</div>
+            <div class="platform-role">Sáng tạo là thiên chức, không phải sở thích</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"For we are God's handiwork, created in Christ Jesus to do good works..." — Êphêsô 2:10<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Bạn không "chỉ thích" thiết kế, viết lách, hay âm nhạc. Bạn được tạo dựng cho điều đó. Mỗi lần bạn tạo ra thứ gì đó có giá trị — bạn đang hiển lộ bản chất thật của mình: là ảnh tượng của Đấng Tạo Hóa. Hôm nay, hãy sáng tạo có chủ đích.</p>
+            <div class="tag-row"><span class="tag">Creation</span><span class="tag">Identity</span><span class="tag">Purpose</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 2 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">💡</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 2</span>
+          </div>
+          <div>
+            <div class="platform-name">Matthew 5:14 — "Light of the World"</div>
+            <div class="platform-role">Tác phẩm của bạn là ánh sáng</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"You are the light of the world. A city on a hill cannot be hidden." — Mathiơ 5:14<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Video của bạn, âm nhạc của bạn, thiết kế của bạn — đó không chỉ là "content." Đó là ánh sáng được đặt trên ngọn đồi digital. Đừng giấu đi. Đừng chờ đến khi hoàn hảo. Ánh sáng chiếu sáng ngay lúc được thắp lên.</p>
+            <div class="tag-row"><span class="tag">Visibility</span><span class="tag">Courage</span><span class="tag">Influence</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 3 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">🏆</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 3</span>
+          </div>
+          <div>
+            <div class="platform-name">Proverbs 22:29 — "Skilled in Their Work"</div>
+            <div class="platform-role">Xuất sắc là thờ phượng</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"Do you see someone skilled in their work? They will serve before kings; they will not serve before obscure men." — Châm Ngôn 22:29<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Chúa không kêu gọi bạn làm mọi thứ — Ngài kêu gọi bạn làm một việc thật tốt. Sự xuất sắc không phải kiêu ngạo — đó là sự trân trọng quà tặng bạn nhận được. Hôm nay, hãy dành thêm 10 phút để làm một thứ tốt hơn.</p>
+            <div class="tag-row"><span class="tag">Excellence</span><span class="tag">Craft</span><span class="tag">Worship</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 4 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">💰</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 4</span>
+          </div>
+          <div>
+            <div class="platform-name">Luke 10:7 — "Worker Deserves Wages"</div>
+            <div class="platform-role">Được trả công xứng đáng là công lý, không phải tham lam</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"Stay there, eating and drinking whatever they give you, for the worker deserves his wages." — Luca 10:7<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Nhiều Cơ Đốc nhân cảm thấy tội lỗi khi nhận tiền cho công việc sáng tạo của mình. Nhưng Chúa Giêsu nói rõ: người làm việc xứng đáng được trả công. Việc định giá đúng cho công sức không phải tham lam — đó là sự công bằng. Bạn được phép nhận những gì bạn xứng đáng.</p>
+            <div class="tag-row"><span class="tag">Fairness</span><span class="tag">Economics</span><span class="tag">Dignity</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 5 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">🌱</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 5</span>
+          </div>
+          <div>
+            <div class="platform-name">Genesis 1:1 — "In the Beginning, God Created"</div>
+            <div class="platform-role">Chúng ta tạo ra vì chúng ta được tạo dựng theo hình ảnh Ngài</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"In the beginning God created the heavens and the earth." — Sáng Thế Ký 1:1<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Chữ đầu tiên chúng ta biết về Chúa là: Ngài tạo ra. Và chúng ta được dựng nên theo hình ảnh Ngài (imago Dei). Điều đó có nghĩa gì? Nghĩa là sáng tạo không phải ngoại lệ của con người — đó là bản chất căn cốt của chúng ta. Khi bạn tạo ra, bạn phản chiếu Đấng Tạo Hóa.</p>
+            <div class="tag-row"><span class="tag">Imago Dei</span><span class="tag">Creation</span><span class="tag">Identity</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 6 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 16px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">🙌</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 6</span>
+          </div>
+          <div>
+            <div class="platform-name">Colossians 3:23 — "Work as for the Lord"</div>
+            <div class="platform-role">Mọi dự án đều là thờ phượng</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"Whatever you do, work at it with all your heart, as working for the Lord, not for human masters." — Côlôse 3:23<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Không có sự phân biệt giữa "công việc thánh" và "công việc thường." Mọi dự án bạn nhận — từ thiết kế logo đến soạn nhạc thờ phượng — đều có thể là thờ phượng nếu bạn làm với tất cả tâm huyết. Mission Chain không phải "ministry job board" — đó là nơi mọi việc tốt được ghi nhận.</p>
+            <div class="tag-row"><span class="tag">Worship</span><span class="tag">Wholehearted</span><span class="tag">Work</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devotional 7 -->
+      <div class="platform-row" style="grid-template-columns: 1fr; display: block;">
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+          <div style="background: rgba(201,168,76,0.1); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; min-width: 60px; text-align: center;">
+            <span style="font-size: 20px; display: block;">🌟</span>
+            <span style="font-size: 11px; color: var(--gold); font-weight: 700;">Day 7</span>
+          </div>
+          <div>
+            <div class="platform-name">Jeremiah 29:11 — "Plans to Prosper You"</div>
+            <div class="platform-role">Technology là công cụ của kế hoạch Chúa</div>
+            <p style="font-size: 14px; margin-top: 10px; color: var(--text-light);">"'For I know the plans I have for you,' declares the Lord, 'plans to prosper you and not to harm you, plans to give you hope and a future.'" — Giêrêmi 29:11<br><br><strong style="color: var(--gold-pale);">Reflection:</strong> Kế hoạch thịnh vượng của Chúa không loại trừ công nghệ — Ngài dùng mọi công cụ có sẵn trong mỗi thời đại. Hôm nay, AI, blockchain, và Web3 là những công cụ trong tay Ngài — và trong tay bạn. Mission Chain là một phần của kế hoạch đó. Bạn không phải sợ công nghệ; hãy quản trị nó.</p>
+            <div class="tag-row"><span class="tag">Hope</span><span class="tag">Technology</span><span class="tag">Future</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEAKNESSES / ACTION ITEMS -->
+<section id="weaknesses">
+  <div class="container">
+    <div class="section-label">Critical Review</div>
+    <h2>⚠️ Top 5 Điểm Yếu <span>Cần Fix Ngay</span></h2>
+    <p class="lead">Đây là những gap quan trọng nhất được phát hiện trong quá trình review strategy — cần address trước khi launch để tránh waste effort và ảnh hưởng đến credibility.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>1</span></div>
+        <div class="phase-label">Critical · Fix Before Launch</div>
+        <div class="phase-title">Targets Quá Aggressive — Reset Expectations</div>
+        <p style="font-size: 14px;">Targets gốc (150K members Day 90) không thực tế với $0 budget. Đội ngũ cần align về Scenario B hoặc C trước khi commit targets ra ngoài. Dùng bảng Gap Analysis (Section 2 của report này) làm cơ sở cho mọi communication.</p>
+        <div class="tag-row"><span class="tag" style="background: rgba(220,80,80,0.15); border-color: rgba(220,80,80,0.4); color: #ff8080;">High Priority</span><span class="tag">Internal alignment cần thiết</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>2</span></div>
+        <div class="phase-label">Important · Vietnam-specific</div>
+        <div class="phase-title">Thiếu Zalo trong Vietnam Strategy</div>
+        <p style="font-size: 14px;">Strategy gốc hoàn toàn bỏ qua Zalo — nền tảng mà 82% người dùng internet Việt Nam sử dụng. Không có Zalo OA = bỏ lỡ significant reach tại thị trường ưu tiên. Cần tạo Zalo OA ngay trong Phase 0.</p>
+        <div class="tag-row"><span class="tag" style="background: rgba(220,80,80,0.15); border-color: rgba(220,80,80,0.4); color: #ff8080;">High Priority</span><span class="tag">Cần SĐT VN để tạo OA</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>3</span></div>
+        <div class="phase-label">Important · Messaging clarity</div>
+        <div class="phase-title">SOPHIA Chưa Tồn Tại — Cần Note Rõ</div>
+        <p style="font-size: 14px;">SOPHIA được mention như một AI hoạt động, nhưng thực tế là placeholder. Nếu community expect SOPHIA respond thật sự rồi thấy là canned content, sẽ mất trust. Giải pháp: Frame rõ ràng là "SOPHIA WORD is curated content inspired by AI" — không oversell capabilities chưa có.</p>
+        <div class="tag-row"><span class="tag" style="background: rgba(220,150,0,0.15); border-color: rgba(220,150,0,0.4); color: #ffcc60;">Medium Priority</span><span class="tag">Messaging cần update</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>4</span></div>
+        <div class="phase-label">Critical · Trust Factor</div>
+        <div class="phase-title">Thomas Phải Là "Human Face" Visible</div>
+        <p style="font-size: 14px;">AI team có thể produce content, nhưng Christian community cần nhìn thấy một <em>người thật</em> đứng sau mission. Đặc biệt với niềm tin liên quan đến tiền và faith — con người trust con người. Thomas cần appear trong video, Twitter Spaces, và community events ít nhất 2x/tuần. Claudia support, Thomas leads publicly.</p>
+        <div class="tag-row"><span class="tag" style="background: rgba(220,80,80,0.15); border-color: rgba(220,80,80,0.4); color: #ff8080;">High Priority</span><span class="tag">Non-negotiable cho trust-building</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"><span>5</span></div>
+        <div class="phase-label">Important · Pre-launch prep</div>
+        <div class="phase-title">Không Có Phase 0 Pre-Launch</div>
+        <p style="font-size: 14px;">Strategy hiện tại bắt đầu từ Day 1 Launch, nhưng chưa có Phase 0 setup (2–4 tuần trước launch). Trong Phase 0 cần: setup tất cả accounts + warm up (tránh ban), chuẩn bị content buffer (30 days worth), build landing page, test airdrop flow, onboard 10–20 beta testers, setup analytics. Ra mắt "cold" sẽ choppy và dễ mắc lỗi trước mắt cộng đồng.</p>
+        <div class="tag-row"><span class="tag" style="background: rgba(220,150,0,0.15); border-color: rgba(220,150,0,0.4); color: #ffcc60;">Medium Priority</span><span class="tag">Plan: -4 tuần trước launch</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h4>✅ Quick Wins — Làm Ngay Tuần Này</h4>
+      <p>1. Thomas record 1 video ngắn (60 giây) giới thiệu bản thân + Mission Chain → đăng tất cả platforms · 2. Tạo Zalo OA với số VN · 3. Set up Brevo account (email marketing free) · 4. Create Buffer account, connect 3 social channels · 5. Draft 30 days content buffer (dùng Content Pillars framework)</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section style="border-bottom:none;">
+  <div class="container">
+    <div class="highlight-box" style="text-align:center; padding:40px;">
+      <div style="font-size:32px; margin-bottom:16px;">⛓ ✦ 🙏</div>
+      <h3 style="color:var(--white); font-size:24px; margin-bottom:12px;">The Window Is Open. For Now.</h3>
+      <p style="max-width:600px; margin:0 auto 20px; font-size:16px;">Mission Chain has a rare first-mover advantage: a values-aligned digital economy for the world's largest faith community, with no real competitor. The social media strategy outlined here is designed to build <em>genuine community</em> — not just user numbers. Communities built on shared purpose outlast those built on hype.</p>
+      <div class="tag-row" style="justify-content:center;">
+        <span class="tag">2.6B Christians</span>
+        <span class="tag">200M+ Creators</span>
+        <span class="tag">$1.5T Market</span>
+        <span class="tag">0 Direct Competitors</span>
+        <span class="tag-green">90-Day Launch Ready</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <div class="footer-logo">⛓ MISSION CHAIN</div>
+  <p>Social Media Strategy Report · Prepared by Claudia (Strategic AI) · March 2026</p>
+  <p style="margin-top:8px;">Inspired by Faith. Built for People. — missionchain.io · missionchain.world</p>
+  <div class="verse" style="margin-top:16px; color:var(--gold-pale); font-size:13px; opacity:0.7;">
+    "For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do." — Ephesians 2:10
+  </div>
+</div>
+
+</body>
+</html>

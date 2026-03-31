@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Appendix D — Financial Projections — MissionChain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#08050F;--bg2:#0E0918;--bg3:#160D23;
+  --panel:#1A1030;--panel2:#221540;
+  --border:#2E1F55;--border2:#3D2A6B;
+  --purple:#3B1F72;--violet:#5B2D9E;
+  --maroon:#6B1E3D;--crimson:#8B2252;
+  --gold:#C9A84C;--gold2:#E8C76A;--gold3:#F5DFA0;
+  --white:#F0EBF8;--muted:#8B7AAA;
+  --green:#22C55E;--red:#EF4444;--cyan:#06B6D4;
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-ui:'Montserrat',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--font-body);font-size:15px;font-weight:400;line-height:1.7;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(59,31,114,.18),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(107,30,61,.12),transparent 60%);pointer-events:none;z-index:0;}
+
+/* Layout */
+.doc-wrapper{max-width:860px;margin:0 auto;padding:0 32px 80px;position:relative;z-index:1;}
+
+/* Top nav */
+.doc-topnav{position:sticky;top:0;z-index:100;background:rgba(8,5,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;max-width:100%;}
+.doc-topnav-brand{display:flex;align-items:center;gap:12px;}
+.doc-topnav-logo{font-family:var(--font-display);font-size:13px;color:var(--gold);letter-spacing:3px;}
+.doc-topnav-sep{width:1px;height:20px;background:var(--border2);}
+.doc-topnav-title{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
+.doc-back{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.doc-back:hover{color:var(--gold);}
+
+/* Document header */
+.doc-header{padding:60px 0 40px;border-bottom:1px solid var(--border);}
+.doc-meta{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;}
+.doc-title{font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--white);line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.doc-subtitle{font-size:16px;color:var(--muted);max-width:600px;line-height:1.6;margin-bottom:24px;}
+.doc-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.doc-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;border:1px solid;}
+.badge-gold{color:var(--gold);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08);}
+.badge-purple{color:#A78BFA;border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);}
+.badge-cyan{color:var(--cyan);border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.08);}
+.badge-green{color:var(--green);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.08);}
+
+/* TOC */
+.doc-toc{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:36px 0;position:relative;overflow:hidden;}
+.doc-toc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.doc-toc-title{font-family:var(--font-display);font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;}
+.doc-toc ol{padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}
+.doc-toc a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s;}
+.doc-toc a:hover{color:var(--gold);}
+
+/* Sections */
+.doc-section{margin-top:48px;}
+.doc-section-num{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.doc-section h2{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.doc-section h3{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--gold2);margin:24px 0 12px;}
+.doc-section p{color:rgba(240,235,248,.85);margin-bottom:14px;font-size:15px;}
+.doc-section ul,.doc-section ol{padding-left:22px;margin-bottom:14px;}
+.doc-section li{color:rgba(240,235,248,.8);margin-bottom:6px;font-size:14px;}
+.doc-section li::marker{color:var(--gold);}
+
+/* Info boxes */
+.doc-box{border-radius:12px;padding:18px 22px;margin:20px 0;border-left:3px solid;}
+.doc-box-gold{background:rgba(201,168,76,.06);border-color:var(--gold);}
+.doc-box-purple{background:rgba(91,45,158,.1);border-color:var(--violet);}
+.doc-box-cyan{background:rgba(6,182,212,.06);border-color:var(--cyan);}
+.doc-box-red{background:rgba(239,68,68,.06);border-color:var(--red);}
+.doc-box p{margin-bottom:0;}
+
+/* Tables */
+.doc-table-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid var(--border);}
+.doc-table{width:100%;border-collapse:collapse;font-size:13px;}
+.doc-table th{background:var(--panel);color:var(--gold);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border2);}
+.doc-table td{padding:11px 16px;color:rgba(240,235,248,.85);border-bottom:1px solid rgba(46,31,85,.4);vertical-align:top;}
+.doc-table tr:last-child td{border-bottom:none;}
+.doc-table tr:hover td{background:rgba(255,255,255,.02);}
+.td-mono{font-family:var(--font-mono);font-size:12px;}
+.td-gold{color:var(--gold);font-family:var(--font-mono);font-size:12px;}
+.td-green{color:var(--green);font-family:var(--font-mono);font-size:12px;}
+.td-muted{color:var(--muted);font-size:12px;}
+
+/* Formula box */
+.formula{background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;font-family:var(--font-mono);font-size:13px;color:var(--gold2);margin:16px 0;text-align:center;letter-spacing:.5px;}
+.formula-label{font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:1.5px;font-family:var(--font-mono);}
+
+/* Stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.stat-val{font-family:var(--font-mono);font-size:20px;color:var(--gold);font-weight:700;margin-bottom:4px;}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+/* Footer */
+.doc-footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.doc-footer-brand{font-family:var(--font-display);font-size:12px;color:var(--gold);letter-spacing:2px;}
+.doc-footer-note{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+
+/* Progress bar */
+.read-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--violet));z-index:200;transition:width .1s;}
+
+/* Animate */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.doc-header{animation:fadeUp .6s ease}
+
+</style>
+</head>
+<body>
+<div class="read-progress" id="rp"></div>
+
+<!-- Top Nav -->
+<nav class="doc-topnav">
+  <div class="doc-topnav-brand">
+    <span class="doc-topnav-logo">MISSIONCHAIN</span>
+    <div class="doc-topnav-sep"></div>
+    <span class="doc-topnav-title">OFFICIAL DOCUMENTATION</span>
+  </div>
+  <a href="#" class="doc-back">&#8592; Back to DApp</a>
+</nav>
+
+<!-- Doc nav pills -->
+<div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 32px;overflow-x:auto;white-space:nowrap;">
+  <a href="whitepaper.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">White Paper</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-a.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix A</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-b.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix B</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-c.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix C</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-d.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;" style="color:var(--gold);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix D</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-e.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix E</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-f.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix F</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-g.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix G</a>
+</div>
+
+<div class="doc-wrapper">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-meta">APPENDIX D · FINANCIAL PROJECTIONS</div>
+    <h1 class="doc-title">Appendix D — Financial Projections</h1>
+    <p class="doc-subtitle">Conservative, base, and optimistic financial projections, revenue modeling, token price model, and treasury allocation.</p>
+    <div class="doc-badges"><span class="doc-badge badge-gold">FINANCIAL</span><span class="doc-badge badge-purple">PROJECTIONS</span><span class="doc-badge badge-cyan">3-YEAR MODEL</span></div>
+  </div>
+
+  <!-- TOC -->
+  <div class="doc-toc">
+    <div class="doc-toc-title">TABLE OF CONTENTS</div>
+    <ol class="doc-toc-list" style="padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;">
+      <li><a href="#assumptions">Assumptions</a></li><li><a href="#revenue">Revenue Projections</a></li><li><a href="#token-price">Token Price Model</a></li><li><a href="#treasury">Treasury Allocation</a></li>
+    </ol>
+  </div>
+
+  <!-- Body -->
+  
+<div class="doc-section" id="assumptions">
+  <div class="doc-section-num">D.1</div>
+  <h2>Modeling Assumptions</h2>
+  <p>Projections are based on conservative, base, and optimistic scenarios. All figures are forward-looking estimates and do not constitute guarantees of financial performance.</p>
+  <div class="doc-box doc-box-red">
+    <p><strong style="color:var(--red);">Disclaimer:</strong> These projections are for illustrative purposes only. Cryptocurrency markets are highly volatile. Past ecosystem performance does not predict future results.</p>
+  </div>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Assumption</th><th>Conservative</th><th>Base</th><th>Optimistic</th></tr></thead>
+      <tbody>
+        <tr><td>Year 1 MICE licenses sold</td><td class="td-mono">2,000</td><td class="td-mono">8,000</td><td class="td-mono">20,000</td></tr>
+        <tr><td>Active wallets (Yr 1)</td><td class="td-mono">5,000</td><td class="td-mono">25,000</td><td class="td-mono">100,000</td></tr>
+        <tr><td>Avg Hindex score</td><td class="td-mono">12</td><td class="td-mono">28</td><td class="td-mono">55</td></tr>
+        <tr><td>MIC price at Yr 1 end</td><td class="td-gold">$0.005</td><td class="td-gold">$0.015</td><td class="td-gold">$0.05</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="doc-section" id="revenue">
+  <div class="doc-section-num">D.2</div>
+  <h2>Protocol Revenue Projections</h2>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Revenue Source</th><th>Year 1 (Base)</th><th>Year 2 (Base)</th><th>Year 3 (Base)</th></tr></thead>
+      <tbody>
+        <tr><td>MICE License Sales</td><td class="td-gold">$4,000,000</td><td class="td-gold">$12,000,000</td><td class="td-gold">$28,000,000</td></tr>
+        <tr><td>SEED Round</td><td class="td-gold">$1,400,000</td><td class="td-mono">—</td><td class="td-mono">—</td></tr>
+        <tr><td>Pre-Sale</td><td class="td-gold">$2,660,000</td><td class="td-mono">—</td><td class="td-mono">—</td></tr>
+        <tr><td>Marketplace Fees (0.5%)</td><td class="td-mono">$45,000</td><td class="td-mono">$280,000</td><td class="td-mono">$1,200,000</td></tr>
+        <tr><td>Secondary MFP-NFT Sales</td><td class="td-mono">$180,000</td><td class="td-mono">$520,000</td><td class="td-mono">$1,800,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="doc-section" id="token-price">
+  <div class="doc-section-num">D.3</div>
+  <h2>Token Price Modeling</h2>
+  <p>MIC price is modeled using a modified Metcalfe's Law adjusted for emission decay and staking lock-up rates:</p>
+  <div class="formula-label">PRICE MODEL</div>
+  <div class="formula">P(t) = k × N²(t) × S(t) / C(t)</div>
+  <p>Where <strong style="color:var(--gold2);">N(t)</strong> = active network participants, <strong style="color:var(--gold2);">S(t)</strong> = staking ratio (circulating staked / total circulating), <strong style="color:var(--gold2);">C(t)</strong> = circulating supply at time t, <strong style="color:var(--gold2);">k</strong> = calibration constant.</p>
+</div>
+
+<div class="doc-section" id="treasury">
+  <div class="doc-section-num">D.4</div>
+  <h2>Treasury Allocation</h2>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Category</th><th>Allocation</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Development</td><td class="td-gold">35%</td><td>Protocol engineering, audits, infrastructure</td></tr>
+        <tr><td>Marketing & BD</td><td class="td-gold">25%</td><td>Growth, exchange relations, partnerships</td></tr>
+        <tr><td>Operations</td><td class="td-gold">20%</td><td>Team compensation, legal, compliance</td></tr>
+        <tr><td>Reserve</td><td class="td-gold">15%</td><td>Emergency fund, market stability</td></tr>
+        <tr><td>Community</td><td class="td-gold">5%</td><td>Grants, hackathons, ambassador program</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">MISSIONCHAIN · APPENDIX D · FINANCIAL PROJECTIONS</div>
+    <div class="doc-footer-note">© 2024 MissionChain Network. All rights reserved.</div>
+  </div>
+
+</div>
+
+<script>
+// Read progress bar
+window.addEventListener('scroll',()=>{
+  const doc=document.documentElement;
+  const pct=(doc.scrollTop/(doc.scrollHeight-doc.clientHeight))*100;
+  document.getElementById('rp').style.width=pct+'%';
+});
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Chain — Dev Team Organization & Process Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --bg:        #06040F;
+      --primary:   #5B2D9E;
+      --primary-light: #7C3FD4;
+      --gold:      #C9A84C;
+      --green:     #22C55E;
+      --cyan:      #06B6D4;
+      --red:       #EF4444;
+      --card-1:    #1A1030;
+      --card-2:    #221540;
+      --text:      #E2D9F3;
+      --muted:     #8B7FA8;
+      --border:    #2E1F5E;
+      --purple-team: #7C3FD4;
+      --cyan-team:   #06B6D4;
+      --green-team:  #22C55E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ─── TYPOGRAPHY ─── */
+    h1, h2, h3, h4, h5 { font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+    code, pre { font-family: 'Space Mono', monospace; }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: relative;
+      background: linear-gradient(135deg, #0D0820 0%, #1A0A3D 50%, #0D0820 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 20px 50px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .site-header::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(91,45,158,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(91,45,158,0.2);
+      border: 1px solid rgba(91,45,158,0.5);
+      color: var(--gold);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .site-header h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold) 0%, #F0D080 50%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .site-header .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      margin-bottom: 36px;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stat-chip {
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      text-align: center;
+      min-width: 130px;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .stat-chip:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .stat-chip .num {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-chip .label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    main { padding: 60px 0; }
+
+    /* ─── SECTION ─── */
+    .section {
+      margin-bottom: 70px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 30px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ─── ORG CHART ─── */
+    .org-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      padding: 20px 0;
+    }
+
+    .org-level { display: flex; justify-content: center; width: 100%; }
+
+    .org-root {
+      background: linear-gradient(135deg, #2A1060, #3D1880);
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 18px 36px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 40px rgba(201,168,76,0.15);
+    }
+    .org-root .role-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+    .org-root .role-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .org-root .role-title {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .org-connector-v {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(to bottom, var(--gold), var(--border));
+      margin: 0 auto;
+    }
+
+    .org-h-connector {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      position: relative;
+    }
+
+    .org-team-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 320px;
+    }
+
+    .org-h-line {
+      height: 2px;
+      background: var(--border);
+      width: 100%;
+      margin-top: 0;
+      align-self: flex-start;
+      margin-top: 0;
+    }
+
+    .org-teams-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .team-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+    }
+
+    .team-header-card {
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 0;
+      position: relative;
+    }
+
+    .team-header-card.builder { background: linear-gradient(135deg, #1E0A4A, #2E1070); border: 1.5px solid var(--purple-team); }
+    .team-header-card.auditor { background: linear-gradient(135deg, #041E2E, #062840); border: 1.5px solid var(--cyan-team); }
+    .team-header-card.qa      { background: linear-gradient(135deg, #041A0E, #062614); border: 1.5px solid var(--green-team); }
+
+    .team-header-card .team-emoji { font-size: 1.5rem; }
+    .team-header-card .team-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-top: 4px;
+    }
+    .builder .team-name { color: var(--purple-team); }
+    .auditor .team-name { color: var(--cyan-team); }
+    .qa      .team-name { color: var(--green-team); }
+
+    .team-connector-v {
+      width: 2px;
+      height: 20px;
+      margin: 0 auto;
+    }
+    .builder .team-connector-v { background: var(--purple-team); }
+    .auditor .team-connector-v { background: var(--cyan-team); }
+    .qa      .team-connector-v { background: var(--green-team); }
+
+    .agents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .agent-chip {
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .builder .agent-chip { background: rgba(91,45,158,0.15); border: 1px solid rgba(124,63,212,0.3); }
+    .auditor .agent-chip { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.3); }
+    .qa      .agent-chip { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.3); }
+
+    .agent-chip .agent-emoji { font-size: 1.1rem; }
+    .agent-chip .agent-info { flex: 1; }
+    .agent-chip .agent-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: block;
+      letter-spacing: 0.06em;
+    }
+    .builder .agent-name { color: var(--purple-team); }
+    .auditor .agent-name { color: var(--cyan-team); }
+    .qa      .agent-name { color: var(--green-team); }
+
+    .agent-chip .agent-model {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    /* ─── ACCORDION (Agent Responsibilities) ─── */
+    .accordion { display: flex; flex-direction: column; gap: 10px; }
+
+    .acc-item {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .acc-item:hover { border-color: rgba(91,45,158,0.5); }
+    .acc-item.builder-item { border-color: rgba(124,63,212,0.3); }
+    .acc-item.auditor-item { border-color: rgba(6,182,212,0.25); }
+    .acc-item.qa-item      { border-color: rgba(34,197,94,0.25); }
+    .acc-item.claudia-item { border-color: rgba(201,168,76,0.4); }
+
+    .acc-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      background: var(--card-1);
+      transition: background 0.2s;
+      list-style: none;
+    }
+    .acc-header::-webkit-details-marker { display: none; }
+    details[open] .acc-header { background: var(--card-2); }
+
+    .acc-header .acc-emoji { font-size: 1.4rem; }
+    .acc-header .acc-title-group { flex: 1; }
+    .acc-header .acc-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .claudia-item .acc-name { color: var(--gold); }
+    .builder-item .acc-name { color: var(--purple-team); }
+    .auditor-item .acc-name { color: var(--cyan-team); }
+    .qa-item      .acc-name { color: var(--green-team); }
+
+    .acc-header .acc-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .acc-team-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .claudia-badge { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+    .builder-badge { background: rgba(124,63,212,0.15); color: var(--purple-team); border: 1px solid rgba(124,63,212,0.3); }
+    .auditor-badge { background: rgba(6,182,212,0.1);   color: var(--cyan-team);   border: 1px solid rgba(6,182,212,0.3); }
+    .qa-badge      { background: rgba(34,197,94,0.1);   color: var(--green-team);  border: 1px solid rgba(34,197,94,0.3); }
+
+    .acc-chevron {
+      font-size: 0.75rem;
+      color: var(--muted);
+      transition: transform 0.3s;
+    }
+    details[open] .acc-chevron { transform: rotate(180deg); }
+
+    .acc-body {
+      background: var(--card-1);
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .model-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.2);
+      color: var(--cyan);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin: 14px 0 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .resp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .resp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .resp-list li::before {
+      content: '▸';
+      color: var(--gold);
+      font-size: 0.8rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ─── KICKOFF STEPS ─── */
+    .kickoff-rule {
+      background: linear-gradient(135deg, rgba(91,45,158,0.2), rgba(201,168,76,0.1));
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+    }
+
+    .kickoff-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kickoff-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content {
+      flex: 1;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .step-content h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .step-content ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .step-content ul li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+    }
+    .step-content ul li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 1.2rem;
+      line-height: 1.4;
+    }
+
+    .team-q {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .team-q-item {
+      background: var(--card-2);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      flex: 1;
+      min-width: 160px;
+    }
+    .team-q-item .tq-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .builder-q .tq-label { color: var(--purple-team); }
+    .auditor-q .tq-label { color: var(--cyan-team); }
+    .qa-q      .tq-label { color: var(--green-team); }
+
+    .team-q-item .tq-text { color: var(--text); font-style: italic; font-size: 0.85rem; }
+
+    /* ─── FLOWCHART ─── */
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-node {
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+    }
+
+    .flow-box {
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .flow-box.start  { background: rgba(201,168,76,0.15); border: 1.5px solid var(--gold); color: var(--gold); }
+    .flow-box.process { background: var(--card-1); border: 1px solid var(--border); color: var(--text); }
+    .flow-box.design  { background: rgba(91,45,158,0.2); border: 1px solid rgba(124,63,212,0.4); color: var(--purple-team); }
+    .flow-box.confirm { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.4); color: var(--gold); }
+    .flow-box.build   { background: rgba(91,45,158,0.15); border: 1px solid rgba(124,63,212,0.35); color: #B080FF; }
+    .flow-box.audit   { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.35); color: var(--cyan); }
+    .flow-box.test    { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.35); color: var(--green); }
+    .flow-box.report  { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); }
+    .flow-box.deploy  { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(6,182,212,0.1)); border: 2px solid var(--green); color: var(--green); font-family: 'Cinzel', serif; }
+
+    .flow-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .flow-arrow .arrow-line {
+      width: 2px;
+      height: 20px;
+      background: var(--border);
+    }
+
+    .flow-arrow .arrow-head {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--border);
+    }
+
+    .flow-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 12px;
+      margin: 4px auto;
+      max-width: 300px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── BUG REPORT ─── */
+    .bug-template {
+      background: #0A0618;
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .bug-template pre {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: var(--text);
+      white-space: pre;
+    }
+
+    .bug-template .kw  { color: var(--gold); }
+    .bug-template .val { color: var(--cyan); }
+    .bug-template .red { color: var(--red); }
+    .bug-template .grn { color: var(--green); }
+    .bug-template .sep { color: var(--muted); }
+
+    /* ─── ESCALATION TABLE ─── */
+    .table-wrap { overflow-x: auto; border-radius: 12px; }
+
+    .esc-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.9rem;
+    }
+
+    .esc-table thead th {
+      background: var(--card-2);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .esc-table thead th:first-child { border-radius: 12px 0 0 0; }
+    .esc-table thead th:last-child  { border-radius: 0 12px 0 0; }
+
+    .esc-table tbody tr { border-bottom: 1px solid var(--border); }
+    .esc-table tbody tr:last-child td { border-bottom: none; }
+    .esc-table tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+    .esc-table tbody tr:last-child td:last-child  { border-radius: 0 0 12px 0; }
+    .esc-table tbody tr:hover td { background: rgba(91,45,158,0.08); }
+
+    .esc-table tbody td {
+      background: var(--card-1);
+      padding: 13px 20px;
+      color: var(--text);
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .esc-table .pill {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+    }
+    .pill-proceed { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .pill-debate  { background: rgba(6,182,212,0.1);  color: var(--cyan);  border: 1px solid rgba(6,182,212,0.25); }
+    .pill-claudia { background: rgba(91,45,158,0.2);  color: var(--primary-light); border: 1px solid rgba(91,45,158,0.4); }
+    .pill-thomas  { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+    .pill-stop    { background: rgba(239,68,68,0.15); color: var(--red);  border: 1px solid rgba(239,68,68,0.3); }
+
+    .esc-note {
+      margin-top: 16px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-align: center;
+    }
+
+    /* ─── DEFINITION OF DONE ─── */
+    .dod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .dod-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .dod-item:hover { border-color: var(--green); transform: translateY(-2px); }
+
+    .dod-check {
+      width: 26px;
+      height: 26px;
+      background: rgba(34,197,94,0.15);
+      border: 1.5px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .dod-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    /* ─── SCOPE / PHASES ─── */
+    .phases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .phase-card {
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .phase-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .phase-0 .phase-header { background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05)); border-bottom: 1px solid rgba(239,68,68,0.3); }
+    .phase-1 .phase-header { background: linear-gradient(135deg, rgba(91,45,158,0.2), rgba(91,45,158,0.05)); border-bottom: 1px solid rgba(91,45,158,0.3); }
+    .phase-2 .phase-header { background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(6,182,212,0.03)); border-bottom: 1px solid rgba(6,182,212,0.25); }
+
+    .phase-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .phase-0 .phase-badge { background: rgba(239,68,68,0.2); color: var(--red);   border: 1px solid rgba(239,68,68,0.4); }
+    .phase-1 .phase-badge { background: rgba(91,45,158,0.2); color: #B080FF;       border: 1px solid rgba(124,63,212,0.4); }
+    .phase-2 .phase-badge { background: rgba(6,182,212,0.1); color: var(--cyan);   border: 1px solid rgba(6,182,212,0.3); }
+
+    .phase-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .phase-0 .phase-title { color: var(--red); }
+    .phase-1 .phase-title { color: #B080FF; }
+    .phase-2 .phase-title { color: var(--cyan); }
+
+    .phase-items {
+      padding: 16px 20px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .phase-items li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .phase-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      min-width: 22px;
+      padding-top: 2px;
+    }
+
+    .phase-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: auto;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .tag-erc20   { background: rgba(201,168,76,0.1);  color: var(--gold);  border: 1px solid rgba(201,168,76,0.25); }
+    .tag-erc721  { background: rgba(91,45,158,0.15);  color: #B080FF;       border: 1px solid rgba(124,63,212,0.3); }
+    .tag-erc1155 { background: rgba(6,182,212,0.1);   color: var(--cyan);   border: 1px solid rgba(6,182,212,0.25); }
+    .tag-dapp    { background: rgba(34,197,94,0.1);   color: var(--green);  border: 1px solid rgba(34,197,94,0.25); }
+    .tag-api     { background: rgba(239,68,68,0.1);   color: var(--red);    border: 1px solid rgba(239,68,68,0.25); }
+    .tag-ai      { background: rgba(201,168,76,0.15); color: var(--gold);   border: 1px solid rgba(201,168,76,0.3); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--card-1);
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold), #F0D080);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .footer-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 12px;
+    }
+    .footer-tagline span { color: var(--gold); }
+
+    /* ─── NAV (sticky mini) ─── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6,4,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .nav-link:hover {
+      color: var(--text);
+      border-color: var(--border);
+      background: var(--card-1);
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      .sticky-nav { display: none; }
+      body { background: #fff; color: #111; }
+      .site-header { background: #f5f5f5; }
+      .site-header h1 { -webkit-text-fill-color: #1a1a1a; color: #1a1a1a; }
+      .acc-body { display: block !important; }
+      details { open: true; }
+      .flow-box { border: 1px solid #ccc !important; color: #111 !important; background: #f9f9f9 !important; }
+      .esc-table tbody td, .esc-table thead th { background: #f9f9f9 !important; color: #111 !important; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .org-teams-row { flex-direction: column; align-items: center; }
+      .team-block { max-width: 100%; }
+      .phases-grid { grid-template-columns: 1fr; }
+      .dod-grid { grid-template-columns: 1fr; }
+      .stats-row { gap: 12px; }
+      .stat-chip { min-width: 100px; }
+      .flow-box { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="header-badge">Mission Chain — Internal Document</div>
+  <h1>Mission Chain — Dev Team Organization</h1>
+  <p class="subtitle">AI-Powered Development &amp; QA Process &nbsp;|&nbsp; Prepared by Claudia 🦋</p>
+  <div class="stats-row">
+    <div class="stat-chip">
+      <span class="num">3</span>
+      <span class="label">Teams</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num">6</span>
+      <span class="label">Agents</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num">1</span>
+      <span class="label">Orchestrator</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num" style="font-size:1.1rem; padding-top:4px;">✦</span>
+      <span class="label">Quality-First</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── STICKY NAV ─── -->
+<nav class="sticky-nav">
+  <a href="#org-chart"   class="nav-link">§1 Org Chart</a>
+  <a href="#agents"      class="nav-link">§2 Agents</a>
+  <a href="#kickoff"     class="nav-link">§3 Kickoff</a>
+  <a href="#dev-cycle"   class="nav-link">§4 Dev Cycle</a>
+  <a href="#bug-report"  class="nav-link">§5 Bug Format</a>
+  <a href="#escalation"  class="nav-link">§6 Escalation</a>
+  <a href="#dod"         class="nav-link">§7 Done</a>
+  <a href="#scope"       class="nav-link">§8 Scope</a>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<main>
+<div class="container">
+
+  <!-- ══ SECTION 1: ORG CHART ══ -->
+  <section class="section" id="org-chart">
+    <div class="section-header">
+      <span class="section-number">§ 01</span>
+      <h2>Organizational Chart</h2>
+    </div>
+
+    <div class="org-chart">
+      <!-- Root -->
+      <div class="org-level">
+        <div class="org-root">
+          <span class="role-emoji">🦋</span>
+          <span class="role-name">CLAUDIA</span>
+          <span class="role-title">Chief Orchestrator</span>
+        </div>
+      </div>
+
+      <!-- Connector down -->
+      <div class="org-connector-v"></div>
+
+      <!-- Three teams -->
+      <div class="org-teams-row">
+
+        <!-- Team Builder -->
+        <div class="team-block builder">
+          <div class="team-header-card builder">
+            <span class="team-emoji">🔨</span>
+            <span class="team-name">TEAM 1 — BUILDER</span>
+          </div>
+          <div class="team-connector-v builder"></div>
+          <div class="agents-list builder">
+            <div class="agent-chip builder">
+              <span class="agent-emoji">🏗️</span>
+              <div class="agent-info">
+                <span class="agent-name">ARCHITECT</span>
+                <span class="agent-model">Claude Sonnet</span>
+              </div>
+            </div>
+            <div class="agent-chip builder">
+              <span class="agent-emoji">💻</span>
+              <div class="agent-info">
+                <span class="agent-name">CODER</span>
+                <span class="agent-model">Claude Sonnet</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Auditor -->
+        <div class="team-block auditor">
+          <div class="team-header-card auditor">
+            <span class="team-emoji">🔍</span>
+            <span class="team-name">TEAM 2 — AUDITOR</span>
+          </div>
+          <div class="team-connector-v auditor"></div>
+          <div class="agents-list auditor">
+            <div class="agent-chip auditor">
+              <span class="agent-emoji">🔒</span>
+              <div class="agent-info">
+                <span class="agent-name">SECURITY REVIEWER</span>
+                <span class="agent-model">Claude Sonnet</span>
+              </div>
+            </div>
+            <div class="agent-chip auditor">
+              <span class="agent-emoji">📐</span>
+              <div class="agent-info">
+                <span class="agent-name">LOGIC REVIEWER</span>
+                <span class="agent-model">Claude Sonnet</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team QA -->
+        <div class="team-block qa">
+          <div class="team-header-card qa">
+            <span class="team-emoji">🧪</span>
+            <span class="team-name">TEAM 3 — QA</span>
+          </div>
+          <div class="team-connector-v qa"></div>
+          <div class="agents-list qa">
+            <div class="agent-chip qa">
+              <span class="agent-emoji">🎭</span>
+              <div class="agent-info">
+                <span class="agent-name">SCENARIO TESTER</span>
+                <span class="agent-model">GPT-4o-mini</span>
+              </div>
+            </div>
+            <div class="agent-chip qa">
+              <span class="agent-emoji">⚡</span>
+              <div class="agent-info">
+                <span class="agent-name">STRESS TESTER</span>
+                <span class="agent-model">GPT-4o-mini</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /org-teams-row -->
+    </div><!-- /org-chart -->
+  </section>
+
+
+  <!-- ══ SECTION 2: AGENT RESPONSIBILITIES ══ -->
+  <section class="section" id="agents">
+    <div class="section-header">
+      <span class="section-number">§ 02</span>
+      <h2>Agent Responsibilities</h2>
+    </div>
+
+    <div class="accordion">
+
+      <!-- Claudia -->
+      <details class="acc-item claudia-item" open>
+        <summary class="acc-header">
+          <span class="acc-emoji">🦋</span>
+          <div class="acc-title-group">
+            <span class="acc-name">CLAUDIA</span>
+            <span class="acc-subtitle">Chief Orchestrator</span>
+          </div>
+          <span class="acc-team-badge claudia-badge">Orchestrator</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <ul class="resp-list" style="margin-top:16px;">
+            <li>Receives brief from Thomas L. (Co-Founder)</li>
+            <li>Assigns tasks to teams with clear specs</li>
+            <li>Collects outputs, resolves conflicts between teams</li>
+            <li>Escalates unresolved issues to Thomas</li>
+            <li>Produces final delivery report after each feature</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Architect -->
+      <details class="acc-item builder-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">🏗️</span>
+          <div class="acc-title-group">
+            <span class="acc-name">ARCHITECT</span>
+            <span class="acc-subtitle">Team Builder</span>
+          </div>
+          <span class="acc-team-badge builder-badge">Builder</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: Claude Sonnet</div>
+          <ul class="resp-list">
+            <li>Read Fullstack Spec + White Paper before any code</li>
+            <li>Design database schema, API structure, contract interfaces</li>
+            <li>Ask clarifying questions before implementation begins</li>
+            <li>Write technical decision log (all design choices documented)</li>
+            <li>Align with Auditor team on design during Kickoff</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Coder -->
+      <details class="acc-item builder-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">💻</span>
+          <div class="acc-title-group">
+            <span class="acc-name">CODER</span>
+            <span class="acc-subtitle">Team Builder</span>
+          </div>
+          <span class="acc-team-badge builder-badge">Builder</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: Claude Sonnet</div>
+          <ul class="resp-list">
+            <li>Implement code strictly per confirmed spec</li>
+            <li>Smart contracts (Solidity) — MIC Token, MICE, MFP-NFT, Seed Sale</li>
+            <li>Backend API (Node.js/TypeScript + Prisma)</li>
+            <li>Frontend components (React/Next.js)</li>
+            <li>Write inline documentation for every function</li>
+            <li>Respond to Auditor feedback within each review cycle</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Security Reviewer -->
+      <details class="acc-item auditor-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">🔒</span>
+          <div class="acc-title-group">
+            <span class="acc-name">SECURITY REVIEWER</span>
+            <span class="acc-subtitle">Team Auditor</span>
+          </div>
+          <span class="acc-team-badge auditor-badge">Auditor</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: Claude Sonnet</div>
+          <ul class="resp-list">
+            <li>Review smart contracts per OpenZeppelin security standards</li>
+            <li>Check for: reentrancy, integer overflow, access control, front-running</li>
+            <li>Challenge Architect design decisions — no rubber-stamping</li>
+            <li>Debate directly with Builder if disagreement exists</li>
+            <li>Sign off only when zero CRITICAL + zero HIGH security issues</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Logic Reviewer -->
+      <details class="acc-item auditor-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">📐</span>
+          <div class="acc-title-group">
+            <span class="acc-name">LOGIC REVIEWER</span>
+            <span class="acc-subtitle">Team Auditor</span>
+          </div>
+          <span class="acc-team-badge auditor-badge">Auditor</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: Claude Sonnet</div>
+          <ul class="resp-list">
+            <li>Verify business logic matches White Paper v3.5 exactly</li>
+            <li>Check tokenomics implementation (Hindex, vesting, referral)</li>
+            <li>Validate Admin vs User permission boundaries</li>
+            <li>Identify edge cases in user flows</li>
+            <li>Ensure Admin DApp and User DApp are consistent</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Scenario Tester -->
+      <details class="acc-item qa-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">🎭</span>
+          <div class="acc-title-group">
+            <span class="acc-name">SCENARIO TESTER</span>
+            <span class="acc-subtitle">Team QA</span>
+          </div>
+          <span class="acc-team-badge qa-badge">QA</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: GPT-4o-mini</div>
+          <ul class="resp-list">
+            <li>Simulate 1,000+ user interactions per feature</li>
+            <li>Test all 4 roles: Super Admin / Admin / Normal User / Attacker</li>
+            <li>Generate automated test cases</li>
+            <li>Report bugs in standard format (Severity / Steps / Expected / Actual)</li>
+            <li>Re-test after each Coder fix</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Stress Tester -->
+      <details class="acc-item qa-item">
+        <summary class="acc-header">
+          <span class="acc-emoji">⚡</span>
+          <div class="acc-title-group">
+            <span class="acc-name">STRESS TESTER</span>
+            <span class="acc-subtitle">Team QA</span>
+          </div>
+          <span class="acc-team-badge qa-badge">QA</span>
+          <span class="acc-chevron">▼</span>
+        </summary>
+        <div class="acc-body">
+          <div class="model-tag">⚙ Model: GPT-4o-mini</div>
+          <ul class="resp-list">
+            <li>Load test: 100 / 500 / 1,000 concurrent users</li>
+            <li>Estimate gas costs for all contract functions</li>
+            <li>Test race conditions (simultaneous SEED purchases)</li>
+            <li>Simulate network failure, timeout, retry scenarios</li>
+            <li>Confirm system degrades gracefully under load</li>
+          </ul>
+        </div>
+      </details>
+
+    </div><!-- /accordion -->
+  </section>
+
+
+  <!-- ══ SECTION 3: KICKOFF ══ -->
+  <section class="section" id="kickoff">
+    <div class="section-header">
+      <span class="section-number">§ 03</span>
+      <h2>Phase 0 — Kickoff &amp; Alignment</h2>
+    </div>
+
+    <div class="kickoff-rule">⚠️ &nbsp; Rule: Align first. Code never. &nbsp; ⚠️</div>
+
+    <div class="kickoff-steps">
+
+      <div class="kickoff-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>All Agents Read Source Documents</h4>
+          <ul>
+            <li>Fullstack Architecture Spec</li>
+            <li>Web3 DApp — Admin + User flows</li>
+            <li>White Paper v3.5 (tokenomics, smart contracts)</li>
+            <li>API specification</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kickoff-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Each Team Submits Questions Independently</h4>
+          <div class="team-q">
+            <div class="team-q-item builder-q">
+              <span class="tq-label">BUILDER</span>
+              <span class="tq-text">"What exactly do I need to build?"</span>
+            </div>
+            <div class="team-q-item auditor-q">
+              <span class="tq-label">AUDITOR</span>
+              <span class="tq-text">"What could go wrong in this design?"</span>
+            </div>
+            <div class="team-q-item qa-q">
+              <span class="tq-label">QA</span>
+              <span class="tq-text">"What could fail under real usage?"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kickoff-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Open Debate Session</h4>
+          <ul>
+            <li>All questions collected; teams respond to each other</li>
+            <li>Claudia moderates the session</li>
+            <li>Thomas has final say on all decisions</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kickoff-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Decision Log Locked</h4>
+          <ul>
+            <li>All design decisions documented in writing</li>
+            <li>Every agent signs off: <em>"I understand the spec 100%"</em></li>
+            <li>Only then does coding begin — no exceptions</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══ SECTION 4: DEV CYCLE ══ -->
+  <section class="section" id="dev-cycle">
+    <div class="section-header">
+      <span class="section-number">§ 04</span>
+      <h2>Development Cycle — Per Feature</h2>
+    </div>
+
+    <div class="flowchart">
+
+      <div class="flow-node">
+        <div class="flow-box start">Thomas → Claudia &nbsp;(brief + priority)</div>
+      </div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box process">[ KICKOFF ] &nbsp; All teams read spec</div>
+      </div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box design">Architect designs → Security challenges → Logic validates</div>
+      </div>
+      <div class="flow-note">Debate: max 2 rounds</div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box confirm">✦ &nbsp; Claudia + Thomas confirm design</div>
+      </div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box build">💻 &nbsp; Coder implements</div>
+      </div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box audit">Security Reviewer + Logic Reviewer audit code</div>
+      </div>
+      <div class="flow-note">Feedback → Coder fixes → re-review · max 3 rounds</div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box test">🧪 &nbsp; Scenario Tester + Stress Tester — full test suite</div>
+      </div>
+      <div class="flow-note">Bugs → Coder fixes → re-test · max 3 rounds</div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box report">🦋 &nbsp; Claudia produces delivery report</div>
+      </div>
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="flow-node">
+        <div class="flow-box deploy">✅ &nbsp; Thomas approves &nbsp;→&nbsp; DEPLOY</div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══ SECTION 5: BUG REPORT FORMAT ══ -->
+  <section class="section" id="bug-report">
+    <div class="section-header">
+      <span class="section-number">§ 05</span>
+      <h2>Bug Report Format</h2>
+    </div>
+
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:20px;">
+      Standard format all QA agents must use for every reported issue.
+    </p>
+
+    <div class="bug-template">
+      <pre><span class="red">BUG #[ID]</span>
+<span class="sep">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="kw">Severity:    </span><span class="red">CRITICAL</span> / HIGH / MEDIUM / LOW
+<span class="kw">Component:   </span><span class="val">[Smart Contract / API / Frontend / Admin DApp / User DApp]</span>
+<span class="kw">Role:        </span><span class="val">Super Admin / Admin / User / Attacker</span>
+<span class="kw">Feature:     </span><span class="val">[feature name]</span>
+
+<span class="kw">Scenario:    </span><span class="val">[what was being tested]</span>
+<span class="kw">Steps:       </span>1. [step]
+             2. [step]
+             3. [step]
+<span class="kw">Expected:    </span><span class="grn">[what should happen]</span>
+<span class="kw">Actual:      </span><span class="red">[what actually happened]</span>
+<span class="kw">Impact:      </span><span class="val">[business / security impact]</span>
+
+<span class="kw">Status:      </span><span class="red">OPEN</span> → <span class="val">FIXED</span> → <span class="grn">VERIFIED</span> → CLOSED
+<span class="kw">Assigned to: </span><span class="val">CODER</span>
+<span class="sep">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></pre>
+    </div>
+  </section>
+
+
+  <!-- ══ SECTION 6: ESCALATION RULES ══ -->
+  <section class="section" id="escalation">
+    <div class="section-header">
+      <span class="section-number">§ 06</span>
+      <h2>Escalation Rules</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="esc-table">
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Builder + Auditor agree</td>
+            <td><span class="pill pill-proceed">Proceed</span></td>
+          </tr>
+          <tr>
+            <td>Builder + Auditor disagree</td>
+            <td><span class="pill pill-debate">+1 Debate Round</span></td>
+          </tr>
+          <tr>
+            <td>Unresolved after 3 rounds</td>
+            <td><span class="pill pill-claudia">Claudia decides</span></td>
+          </tr>
+          <tr>
+            <td>Claudia unsure</td>
+            <td><span class="pill pill-thomas">Escalate to Thomas</span></td>
+          </tr>
+          <tr>
+            <td>CRITICAL bug found</td>
+            <td><span class="pill pill-stop">Stop all work — fix first</span></td>
+          </tr>
+          <tr>
+            <td>CRITICAL bug unresolvable</td>
+            <td><span class="pill pill-thomas">Escalate to Thomas immediately</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="esc-note">
+      Max autonomous rounds before Thomas escalation: &nbsp;<strong>3 rounds</strong>
+    </div>
+  </section>
+
+
+  <!-- ══ SECTION 7: DEFINITION OF DONE ══ -->
+  <section class="section" id="dod">
+    <div class="section-header">
+      <span class="section-number">§ 07</span>
+      <h2>Definition of Done</h2>
+    </div>
+
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:20px;">
+      A feature is <strong style="color:var(--green);">DONE</strong> only when all of the following are satisfied:
+    </p>
+
+    <div class="dod-grid">
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Zero CRITICAL security issues</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Zero HIGH security issues</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">All business logic matches White Paper v3.5</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">All 4 test roles pass (Admin / User / Attacker scenarios)</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Load test: 1,000 concurrent users without failure</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Gas costs estimated and within acceptable range</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Code documented — inline + README</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Decision log updated with all choices</span>
+      </div>
+      <div class="dod-item">
+        <div class="dod-check">✓</div>
+        <span class="dod-text">Thomas approved — final sign-off</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══ SECTION 8: SCOPE ══ -->
+  <section class="section" id="scope">
+    <div class="section-header">
+      <span class="section-number">§ 08</span>
+      <h2>Scope — Mission Chain Components</h2>
+    </div>
+
+    <div class="phases-grid">
+
+      <!-- Phase 0 -->
+      <div class="phase-card phase-0">
+        <div class="phase-header">
+          <span class="phase-badge">Phase 0</span>
+          <span class="phase-title">Now — Foundation</span>
+        </div>
+        <ul class="phase-items">
+          <li>
+            <span class="phase-num">01.</span>
+            <span>MIC Token Contract</span>
+            <span class="phase-tag tag-erc20">ERC-20</span>
+          </li>
+          <li>
+            <span class="phase-num">02.</span>
+            <span>Seed Sale Contract</span>
+            <span class="phase-tag tag-erc20">Sale</span>
+          </li>
+          <li>
+            <span class="phase-num">03.</span>
+            <span>MFP-NFT Contract</span>
+            <span class="phase-tag tag-erc721">ERC-721</span>
+          </li>
+          <li>
+            <span class="phase-num">04.</span>
+            <span>MICE License Contract</span>
+            <span class="phase-tag tag-erc1155">ERC-1155</span>
+          </li>
+          <li>
+            <span class="phase-num">05.</span>
+            <span>Admin DApp — Seed round management</span>
+            <span class="phase-tag tag-dapp">DApp</span>
+          </li>
+          <li>
+            <span class="phase-num">06.</span>
+            <span>User DApp — Seed purchase flow</span>
+            <span class="phase-tag tag-dapp">DApp</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="phase-card phase-1">
+        <div class="phase-header">
+          <span class="phase-badge">Phase 1</span>
+          <span class="phase-title">Ecosystem Expansion</span>
+        </div>
+        <ul class="phase-items">
+          <li>
+            <span class="phase-num">07.</span>
+            <span>Referral Registry Contract</span>
+            <span class="phase-tag tag-erc20">Registry</span>
+          </li>
+          <li>
+            <span class="phase-num">08.</span>
+            <span>Community NFT Contract (4 tiers)</span>
+            <span class="phase-tag tag-erc1155">ERC-1155</span>
+          </li>
+          <li>
+            <span class="phase-num">09.</span>
+            <span>NFT Staking Contract</span>
+            <span class="phase-tag tag-erc721">Staking</span>
+          </li>
+          <li>
+            <span class="phase-num">10.</span>
+            <span>Backend API (Auth, KYC, Users)</span>
+            <span class="phase-tag tag-api">API</span>
+          </li>
+          <li>
+            <span class="phase-num">11.</span>
+            <span>Vesting Dashboard</span>
+            <span class="phase-tag tag-dapp">DApp</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Phase 2+ -->
+      <div class="phase-card phase-2">
+        <div class="phase-header">
+          <span class="phase-badge">Phase 2+</span>
+          <span class="phase-title">Full Platform</span>
+        </div>
+        <ul class="phase-items">
+          <li>
+            <span class="phase-num">12.</span>
+            <span>Mission Learn MVP</span>
+            <span class="phase-tag tag-dapp">Learn</span>
+          </li>
+          <li>
+            <span class="phase-num">13.</span>
+            <span>Mission Work marketplace</span>
+            <span class="phase-tag tag-dapp">Work</span>
+          </li>
+          <li>
+            <span class="phase-num">14.</span>
+            <span>SOPHIA AI integration</span>
+            <span class="phase-tag tag-ai">AI</span>
+          </li>
+          <li>
+            <span class="phase-num">15.</span>
+            <span>DAO Governance</span>
+            <span class="phase-tag tag-erc20">DAO</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /container -->
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Mission Chain</div>
+  <p class="footer-meta">Mission Chain Dev Process v1.0 &nbsp;|&nbsp; Claudia (Strategic AI) &nbsp;|&nbsp; March 2026</p>
+  <p class="footer-tagline"><span>Inspired by Faith. Built for People.</span> &nbsp;—&nbsp; missionchain.io</p>
+</footer>
+
+</body>
+</html>

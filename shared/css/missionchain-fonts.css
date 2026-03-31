@@ -1,0 +1,120 @@
+/**
+ * MissionChain Unified Font System v1.0
+ * =======================================
+ *
+ * Brand fonts loaded from Google Fonts. This file serves as a REFERENCE
+ * for the font system. Each HTML file includes its own Google Fonts import
+ * since they are self-contained single-file pages.
+ *
+ * When building component-based apps (Next.js, React), use this file
+ * as the shared stylesheet instead of per-file imports.
+ *
+ * Google Fonts URL (Standard - EN/ES/PT):
+ * https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap
+ *
+ * Vietnamese (+Be Vietnam Pro):
+ * https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap
+ *
+ * Korean (+Noto Sans KR):
+ * https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   CSS VARIABLES — Standard (EN/ES/PT)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Display: Headings, titles, logo text — classical serif */
+  --font-display: 'Cinzel', serif;
+
+  /* Body: Paragraphs, descriptions — modern geometric sans */
+  --font-body: 'Rajdhani', sans-serif;
+
+  /* UI: Navigation, buttons, labels, tags — clean sans */
+  --font-ui: 'Montserrat', sans-serif;
+
+  /* Mono: Code, wallet addresses, numbers, metadata */
+  --font-mono: 'Space Mono', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CJK OVERRIDES — Vietnamese
+   ═══════════════════════════════════════════════════════════ */
+
+:root[lang="vi"],
+html[lang="vi"] {
+  --font-display: 'Cinzel', 'Be Vietnam Pro', serif;
+  --font-body: 'Rajdhani', 'Be Vietnam Pro', sans-serif;
+  --font-ui: 'Montserrat', 'Be Vietnam Pro', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CJK OVERRIDES — Korean
+   ═══════════════════════════════════════════════════════════ */
+
+:root[lang="ko"],
+html[lang="ko"] {
+  --font-display: 'Cinzel', 'Noto Sans KR', serif;
+  --font-body: 'Rajdhani', 'Noto Sans KR', sans-serif;
+  --font-ui: 'Montserrat', 'Noto Sans KR', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+code, pre, kbd, samp,
+.mono, .address, .hash {
+  font-family: var(--font-mono);
+}
+
+button, input, select, textarea,
+.btn, .nav-link, .tag, .badge, .label {
+  font-family: var(--font-ui);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FONT USAGE GUIDE
+   ═══════════════════════════════════════════════════════════
+
+   --font-display (Cinzel):
+     • Page titles, section headings
+     • Logo text, brand name
+     • Hero text, call-to-action headlines
+     • Table of contents titles
+     Weights: 400 (regular), 600 (semibold), 700 (bold), 900 (black)
+
+   --font-body (Rajdhani):
+     • Body paragraphs, descriptions
+     • Form text, table cells
+     • Sidebar text, menu items
+     Weights: 300 (light), 400 (regular), 500 (medium), 600 (semibold), 700 (bold)
+
+   --font-ui (Montserrat):
+     • Navigation links, buttons
+     • Labels, tags, badges
+     • Form inputs, dropdowns
+     • Language selector, search bar
+     Weights: 300 (light), 400 (regular), 500 (medium), 600 (semibold), 700 (bold)
+
+   --font-mono (Space Mono):
+     • Wallet addresses (0x...)
+     • Code snippets, smart contract refs
+     • Data values, statistics
+     • Metadata labels (version numbers, dates)
+     Weights: 400 (regular), 700 (bold)
+
+   ═══════════════════════════════════════════════════════════ */

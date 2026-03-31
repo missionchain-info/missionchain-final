@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Chain — Decision Log v1.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --bg: #06040F;
+      --card-1: #1A1030;
+      --card-2: #221540;
+      --green: #22C55E;
+      --cyan: #06B6D4;
+      --gold: #C9A84C;
+      --purple: #5B2D9E;
+      --critical: #EF4444;
+      --high: #F97316;
+      --text: #E2D9F3;
+      --muted: #9B8BC0;
+      --border: rgba(91,45,158,0.35);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; line-height: 1.65; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    .site-header {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #0D0820 0%, #120B2E 50%, #0A0618 100%);
+      border-bottom: 1px solid var(--border); padding: 60px 40px 50px; text-align: center;
+    }
+    .site-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 20% 50%, rgba(91,45,158,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 50%, rgba(6,182,212,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-eyebrow { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 16px; opacity: 0.85; }
+    .header-title {
+      font-family: 'Cinzel', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 900; letter-spacing: 2px;
+      background: linear-gradient(135deg, #E2D9F3 0%, var(--cyan) 45%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px;
+    }
+    .header-subtitle { font-size: 18px; font-weight: 500; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
+    .header-meta { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section { margin-bottom: 56px; }
+    .section-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .section-number { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 2px; opacity: 0.7; }
+    .section-title { font-family: 'Cinzel', serif; font-size: clamp(16px, 3vw, 22px); font-weight: 700; letter-spacing: 1px; }
+    .badge { font-family: 'Space Mono', monospace; font-size: 11px; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; margin-left: auto; }
+    .badge-green { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+
+    .decision-card {
+      background: var(--card-1); border: 1px solid var(--border); border-radius: 10px;
+      padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden;
+    }
+    .decision-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      border-radius: 10px 0 0 10px; background: var(--green);
+    }
+    .decision-id {
+      display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px;
+      font-weight: 700; letter-spacing: 2px; padding: 3px 10px; border-radius: 4px;
+      margin-bottom: 10px; background: rgba(34,197,94,0.15); color: var(--green);
+    }
+    .decision-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: #F5F0FF; margin-bottom: 12px; }
+    .decision-body { font-size: 14.5px; line-height: 1.7; }
+    .decision-body p { margin-bottom: 10px; }
+    .decision-body strong { color: #F5F0FF; }
+    .decision-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-top: 14px; margin-bottom: 4px; }
+    .label-decision { color: var(--green); }
+    .label-rationale { color: var(--cyan); }
+    .label-impact { color: var(--gold); }
+    .decision-text { font-size: 14px; line-height: 1.6; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; }
+    .text-decision { background: rgba(34,197,94,0.08); color: #A7F3C8; border: 1px solid rgba(34,197,94,0.2); }
+    .text-rationale { background: rgba(6,182,212,0.08); color: #7DD3FC; border: 1px solid rgba(6,182,212,0.2); }
+    .text-impact { background: rgba(201,168,76,0.08); color: #E8D48B; border: 1px solid rgba(201,168,76,0.2); }
+
+    code { font-family: 'Space Mono', monospace; font-size: 13px; background: rgba(91,45,158,0.2); padding: 2px 6px; border-radius: 3px; color: var(--cyan); }
+    .code-block {
+      font-family: 'Space Mono', monospace; font-size: 12px; background: #0D0820;
+      border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px;
+      margin: 10px 0; overflow-x: auto; line-height: 1.5; color: var(--cyan);
+    }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 20px; }
+    .summary-stat {
+      background: var(--card-2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 16px; text-align: center;
+    }
+    .stat-value { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; }
+    .stat-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); margin-top: 4px; }
+
+    .signatories { margin-top: 40px; padding: 24px; background: var(--card-2); border: 1px solid var(--border); border-radius: 10px; }
+    .sig-row { display: flex; justify-content: space-between; gap: 40px; margin-top: 20px; flex-wrap: wrap; }
+    .sig-block { flex: 1; min-width: 200px; }
+    .sig-name { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: #F5F0FF; }
+    .sig-role { font-size: 13px; color: var(--muted); }
+    .sig-line { border-top: 1px solid var(--muted); margin-top: 40px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-eyebrow">Mission Chain Protocol</div>
+  <h1 class="header-title">Decision Log v1.0</h1>
+  <p class="header-subtitle">Critical Security Fixes, Spec Resolutions &amp; Architecture Decisions</p>
+  <div class="header-meta">Date: March 31, 2026 &nbsp;|&nbsp; Status: LOCKED &nbsp;|&nbsp; 27 Decisions Recorded</div>
+</header>
+
+<div class="container">
+
+  <!-- SUMMARY -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">00 /</span>
+      <h2 class="section-title">Executive Summary</h2>
+    </div>
+    <p style="font-size:16px; line-height:1.75; margin-bottom:16px;">This Decision Log records all architectural, security, and specification decisions made during the Kickoff Review resolution session. All decisions have been approved by the Co-Founders and are binding for the development team.</p>
+    <div class="summary-grid">
+      <div class="summary-stat"><div class="stat-value" style="color:var(--critical);">4</div><div class="stat-label">Critical Fixes</div></div>
+      <div class="summary-stat"><div class="stat-value" style="color:var(--gold);">5</div><div class="stat-label">Spec Errors Fixed</div></div>
+      <div class="summary-stat"><div class="stat-value" style="color:var(--cyan);">17</div><div class="stat-label">Questions Answered</div></div>
+      <div class="summary-stat"><div class="stat-value" style="color:var(--green);">27</div><div class="stat-label">Total Decisions</div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: CRITICAL SECURITY FIXES -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01 /</span>
+      <h2 class="section-title">Critical Security Fixes</h2>
+      <span class="badge badge-green">4 RESOLVED</span>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">CRIT-01</div>
+      <div class="decision-title">Oracle Manipulation on MICE Price</div>
+      <div class="decision-body">
+        <p>Flash loan attack on spot price oracle allows purchasing MICE at 1/10th real cost within a single transaction block.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Use 24h TWAP minimum from PancakeSwap V3 as primary oracle. Add 10% deviation circuit breaker (freeze if |TWAP_current - TWAP_previous| &gt; 10%). Chainlink as secondary fallback. Never use spot price for any economic calculation.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Industry standard. 24h TWAP makes flash loan manipulation economically infeasible (attacker would need to sustain manipulation for 24 hours).</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">MICE License Contract, Hindex Emission Contract, all price-dependent calculations.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">CRIT-02</div>
+      <div class="decision-title">Reentrancy in Reward Distribution</div>
+      <div class="decision-body">
+        <p>MICE License and NFT Staking contracts vulnerable to reentrancy if state updated after token transfer.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Enforce Checks-Effects-Interactions pattern on ALL contracts. Add OpenZeppelin ReentrancyGuard modifier on every function that transfers tokens or BNB. No exceptions.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Non-negotiable security standard. Every DeFi exploit involving reentrancy could have been prevented by this pattern.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">All smart contracts with token transfer functionality.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">CRIT-03</div>
+      <div class="decision-title">Admin Single Point of Failure</div>
+      <div class="decision-body">
+        <p>Single admin private key controls all privileged functions. One compromise = full protocol takeover ($625M Ronin pattern).</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Gnosis Safe 3-of-5 multisig for ALL admin functions. TimelockController: 48h delay on treasury operations, 7-day on parameter changes. OpenZeppelin AccessControl replaces Ownable entirely. Role-based permissions: ADMIN_ROLE, MINTER_ROLE, PAUSER_ROLE, ORACLE_ROLE.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Multisig eliminates single-point-of-failure. Timelock gives community visibility before execution. AccessControl provides granular role separation.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">All smart contracts, deploy scripts, Admin DApp interaction layer.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">CRIT-04</div>
+      <div class="decision-title">L(t) Liquidity Manipulation</div>
+      <div class="decision-body">
+        <p>Whale temporarily provides massive DEX liquidity to inflate TWAP7d, extracts excess MICE rewards, withdraws liquidity. Risk-free arbitrage.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Cap L(t) multiplier at max 2.0 (floor 0.5). Enforce minimum liquidity depth to qualify. Whitelist trading pairs only. Add 72h cooldown for new liquidity providers before counted in TWAP.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Capped multiplier limits maximum exploitation. Cooldown prevents flash-liquidity attacks. Whitelist prevents synthetic pair manipulation.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">MICE Emission formula, L(t) calculation module, liquidity monitoring.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: SPEC ERROR RESOLUTIONS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02 /</span>
+      <h2 class="section-title">Spec Error Resolutions</h2>
+      <span class="badge badge-gold">5 RESOLVED</span>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">ERROR-01</div>
+      <div class="decision-title">Vesting Math Discrepancy (BLOCKING)</div>
+      <div class="decision-body">
+        <p>White Paper states 6-month cliff + 10% unlock + 2.5%/month. Math: 10% + (36 x 2.5%) = 100% at month 42, not month 38.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">36-month total vesting period confirmed. Schedule: 6-month cliff, 10% TGE unlock at cliff end, 2.5%/month linear over 36 months. 100% vested at month 42 from TGE.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Founder decision. 36-month linear provides longer alignment and smoother distribution curve.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">ERROR-02</div>
+      <div class="decision-title">Pre-Sale USDT Allocation Undefined</div>
+      <div class="decision-body">
+        <p>After F1 (10%) + F2 (5%) referral payouts, remaining 85% USDT had no defined allocation.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">85% split: 45% Treasury (development + operations), 25% Liquidity Provision (DEX), 15% Marketing &amp; Partnerships.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Heavy treasury allocation ensures long-term development runway. 25% liquidity provides strong DEX depth at launch.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">ERROR-03</div>
+      <div class="decision-title">Vesting Creation: Manual vs Automatic</div>
+      <div class="decision-body">
+        <p>Admin DApp implied manual vesting creation. Risk of human error, delays, and manipulation.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Auto-create atomically at purchase confirmation. SeedSaleContract calls VestingManager.createSchedule() in the same transaction. Admin DApp shows read-only vesting view. Only action: revoke (requires 3-of-5 multisig, fraud/KYC violation only).</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Eliminates 3 risks: admin forgets to create, admin enters wrong data, manipulation window between purchase and vesting. Atomic = trustless.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">ERROR-04</div>
+      <div class="decision-title">MIC Burn Source Undefined</div>
+      <div class="decision-body">
+        <p>Admin dashboard showed "MIC Burned" metric but no burn mechanism was defined.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">3 MIC burn sources defined: (1) Marketplace Fee Burn: 1% of all secondary sale value burned permanently. (2) Governance Proposal Burn: 500 MIC deposit burned on failed proposals. (3) Inactivity Reclaim: unclaimed rewards after 180 days returned to protocol treasury. Note: MICE is ERC-1155 NFT — not burnable. Burns apply to MIC token only.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Creates sustainable deflationary pressure (~0.8-1.2% annual) without aggressive burning. Governance burn prevents spam proposals. Inactivity reclaim prevents dead allocation.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">ERROR-05</div>
+      <div class="decision-title">DAO Governance Asymmetry</div>
+      <div class="decision-body">
+        <p>Admin DApp had DAO module but User DApp had no corresponding DAO screen.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Add DAO placeholder UI in User DApp from Phase 0. Scaffold: Proposal List, Vote Interface, Governance Stats components. Logic activates in Phase 2 but UI structure exists from day one.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Early scaffolding prevents breaking changes later. Users see governance is planned from the start, building trust.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: 17 CLARIFYING QUESTIONS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03 /</span>
+      <h2 class="section-title">17 Clarifying Questions — Answered</h2>
+      <span class="badge badge-green">ALL RESOLVED</span>
+    </div>
+
+    <!-- Q01-Q06 Tokenomics -->
+    <div class="decision-card">
+      <div class="decision-id">Q01</div>
+      <div class="decision-title">Mining Supply: Pre-Minted or Dynamic Mint?</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Dynamic mint. MINTER_ROLE on MICToken granted only to authorized emission contracts. Daily E(t) calculated and minted on demand. No pre-mint of mining pool.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Keeps circulating supply low initially (good for price). Prevents centralization risk of large pre-minted pool. Transparent: only minted when earned.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q02</div>
+      <div class="decision-title">L(t) Formula Complete Definition</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">
+          Formula: <code>L(t) = min(2.0, max(0.5, TWAP7d / TWAP_baseline))</code><br/>
+          Input: TWAP7d from PancakeSwap V3 oracle (7-day time-weighted average MIC/USDT).<br/>
+          Output range: 0.5 to 2.0.<br/>
+          TWAP_baseline: Reference price set by governance (initial = listing price).<br/>
+          Update frequency: Every 24h aligned with daily emission calculation.<br/>
+          Circuit breaker: If |TWAP7d - TWAP_previous| &gt; 10%, freeze L(t) at previous value pending governance review.
+        </div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q03</div>
+      <div class="decision-title">MICE License: ERC-1155 vs Standalone</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">ERC-1155. Each tokenId = license tier/batch, amount = number of licenses. Supports batch operations (mint/transfer multiple licenses), native marketplace support, significant gas savings.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Unblocks 4 dependent contracts: MICEMining, NFTStaking, Marketplace, Referral reward calculation.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q03-A</div>
+      <div class="decision-title">MICE Supply Cap 100,000 &amp; Slot Recycling</div>
+      <div class="decision-body">
+        <p>Maximum 100,000 MICE licenses may exist simultaneously. New licenses are only issued when existing licenses expire and free up slots.</p>
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">
+          Hard cap: <code>MAX_SUPPLY = 100,000</code>. Purchase gate: <code>require(activeLicenseCount &lt; MAX_SUPPLY)</code> checks active licenses, not total minted. When a license expires (lazy evaluation from Q10) &rarr; <code>activeLicenseCount--</code> &rarr; slot freed for new buyer.<br/><br/>
+          Public function <code>forceExpireCheck(uint256[] licenseIds)</code> allows anyone to trigger status update on expired licenses, freeing slots. Frontend automates: scan expired &rarr; force expire &rarr; purchase in one user flow.<br/><br/>
+          Scarcity model: at full capacity (100,000 active), new buyers must either wait for expiry or buy on secondary market at premium. Creates natural renewal pressure &mdash; holders who don't renew lose slot to next buyer.
+        </div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Fixed supply + recycling creates real scarcity. Self-balancing: high demand &rarr; holders renew &rarr; stable ecosystem. Low demand &rarr; slots open &rarr; easier entry. Only active contributors (high Hindex = high reward) find renewal worthwhile.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">MICELicense contract (supply cap logic), emission calculation (pool divided by active licenses only), Admin DApp (slot availability dashboard), User DApp (expiry countdown, renewal prompts, slot tracker).</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q04</div>
+      <div class="decision-title">MFP-NFT Minting Trigger</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Two triggers: (1) Seed Round purchase — admin verifies USDT payment, triggers batch mint per package allocation (20/60/150/350 NFTs). (2) Gold Tier Airdrop — community members meeting Gold criteria eligible for MFP-NFT credential. Approval: Admin verifies on Admin DApp, triggers batch mint, NFTs delivered to buyer wallet.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q05</div>
+      <div class="decision-title">MFP-NFT: Soulbound or Transferable?</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Transferable (standard ERC-721). Safeguard: 7-day cooldown after transfer before NFT gains voting power. Prevents DAO accumulation attack (HIGH-06) while preserving investor value.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Seed investors need transfer rights as part of investment value. Cooldown mechanism adequately mitigates DAO governance attack vector.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q06</div>
+      <div class="decision-title">NFT Staking Reward Formula</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">
+          Dynamic, tied to emission pool. Formula:<br/>
+          <code>R_staker(t) = (NFT_multiplier x MIC_staked) / Total_weighted_stake x P_nft x E(t)</code><br/>
+          P_nft = 20% of daily emission for NFT staking pool. APY variable depending on total stake and emission rate. No fixed APR.
+        </div>
+      </div>
+    </div>
+
+    <!-- Q07-Q11 Architecture -->
+    <div class="decision-card">
+      <div class="decision-id">Q07</div>
+      <div class="decision-title">Vesting Contract: Separate or Embedded?</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Separate VestingManager contract. Reusable across Seed, Pre-Sale, Team vesting, and future rounds. SeedSaleContract calls VestingManager.createSchedule() atomically. Clean separation of concerns.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q08</div>
+      <div class="decision-title">Seed Round Payment Methods</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">USDT (BEP-20) as primary + BNB accepted with auto-convert via PancakeSwap Router at market rate. USDT is internal unit of account. Contract handles both payment paths.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q09</div>
+      <div class="decision-title">KYC Enforcement Model</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Hybrid: Off-chain KYC via Sumsub (speed + UX) + on-chain allowlist mapping for Seed Round (admin whitelists approved wallets). Upgrade to on-chain attestation in Phase 2.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q10</div>
+      <div class="decision-title">MICE License Expiry Mechanism</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Lazy evaluation on-chain. No keeper/cron. On any user interaction (claim, transfer, renew), contract checks block.timestamp &gt; expiryDate. If expired, auto-deactivate and remove from emission. 72h grace period for renewal. Zero cost for protocol.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q11</div>
+      <div class="decision-title">Hindex Calculation: On-Chain or Off-Chain?</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Off-chain computation, on-chain submission via authorized oracle (multisig protected). Backend calculates Hindex scores from activity data, submits to chain. Merkle proof available for user verification. Phase 3: migrate to Chainlink Functions or ZK proof for trustless verification.</div>
+      </div>
+    </div>
+
+    <!-- Q12-Q14 Referral -->
+    <div class="decision-card">
+      <div class="decision-id">Q12</div>
+      <div class="decision-title">Referral System Scope</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Pre-Sale ONLY. Seed Round has NO referral program &mdash; Seed investors are strategic partners who join for vision, not referral incentives. Pre-Sale referral structure: multi-level F1 (8%), F2 (4%), F3 (2%), F4+ (1%). Referral Registry contract only integrates with PreSaleContract (Phase 1), NOT SeedSaleContract.</div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">Simplifies Phase 0: SeedSaleContract has no referral dependency. Reduces attack surface. Referral fits community expansion (Pre-Sale) not strategic fundraising (Seed).</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q13</div>
+      <div class="decision-title">Referral Commission Payment Model</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Batched off-chain, claimable on-chain via merkle proof. Backend tracks earnings, aggregates weekly, submits merkle root on-chain. Referrers claim when ready. Saves 80%+ gas vs immediate payout.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q14</div>
+      <div class="decision-title">Self-Referral Prevention</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Multi-layer defense: (1) KYC linkage — 1 identity = 1 referral tree. (2) IP + device fingerprinting off-chain. (3) Minimum $100 investment for referral bonus activation. (4) 30-day cooldown between same-entity referral registrations. (5) Admin dashboard pattern detection and manual review.</div>
+      </div>
+    </div>
+
+    <!-- Q15-Q17 Infrastructure -->
+    <div class="decision-card">
+      <div class="decision-id">Q15</div>
+      <div class="decision-title">KYC Provider &amp; Payment Model</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">
+          Provider: Sumsub. Best price-to-feature for crypto projects. 220+ countries, BSC/Web3 integration, webhook API, ~$1.5-2/verification. Proven in multiple token sales.<br/><br/>
+          Payment Model C (Hybrid): Seed Round &mdash; protocol pays all KYC fees (VIP experience for strategic investors). Pre-Sale &ge; $100 investment &mdash; protocol pays KYC fees. Pre-Sale &lt; $100 investment &mdash; user pays ~$2 verification fee. Sumsub invoices MissionChain monthly; protocol pays from treasury via fiat.
+        </div>
+        <div class="decision-label label-rationale">&#9654; Rationale</div>
+        <div class="decision-text text-rationale">$100 threshold filters spam registrations while keeping barrier low for Global South community. Pre-Sale Standard package = $100, so most serious investors are covered. Seed investors get frictionless VIP onboarding.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q16</div>
+      <div class="decision-title">Blockchain Event Indexing</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">The Graph subgraph for production (decentralized, BSC-supported, free tier via Subgraph Studio). Custom listener for local development/testing only. No Moralis (vendor lock-in risk).</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-id">Q17</div>
+      <div class="decision-title">TWAP Oracle Source</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">PancakeSwap V3 TWAP as primary (built-in observation from pool). Chainlink as secondary/fallback when MIC has sufficient volume for custom feed. Admin-submitted rejected entirely — centralization risk violates protocol principles.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Directly resolves CRIT-01. All price-dependent calculations use this oracle stack.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMISSION ENGINE DECISIONS -->
+  <section class="section">
+    <div class="section-badge badge-qa">EMISSION ENGINE</div>
+    <h2 class="section-title">Adaptive Emission Engine — Founder Decisions</h2>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-01</div>
+      <div class="decision-title">Unified Mining Pool Architecture</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">85% of total supply (5.95B MIC) = ONE unified mining pool mined exclusively through MICE licenses. NFTs are staking rights only — no separate emission pools. All emission flows through MICE mining, then split algorithmically.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Fundamental architecture of token emission. Simplifies smart contract design. All emission controlled by EmissionController.</div>
+      </div>
+    </div>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-02</div>
+      <div class="decision-title">Emission Split Ratios (60/15/20/5)</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Every MIC emitted is split: 60% MICE Miners (by Hindex), 15% DAO Treasury, 20% NFT Stakers (merged MFP-NFT + Community NFT in one pool), 5% Auto-Burn (to 0xdead). DAO can adjust within guardrails: miners [50-70%], DAO [10-20%], staking [15-25%], burn [3-10%]. Max change ±5%/quarter.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Determines reward distribution for all participants. Auto-burn creates permanent deflation (~297.5M MIC over lifecycle).</div>
+      </div>
+    </div>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-03</div>
+      <div class="decision-title">Target ROI: 250% | Halving: 180 Days</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">ROI Regulator targets 250% annual ROI for MICE miners. R(t) = clamp(ROI_target / ROI_current, 0.5, 2.0). Halving period T_half = 180 days (aggressive — E_base halves every 6 months). E_0 = 22,907,500 MIC/day. Creates strong early-adopter incentive with rapid transition to utility-driven value after ~18 months.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Early miners earn above-target ROI (~290-475%). By month 9, ROI converges to 250%. After month 18, ROI declines — forcing ecosystem to derive value from utility (Mission Learn/Work/Social). DAO can adjust T_half [90d-365d] and ROI_target [100%-500%].</div>
+      </div>
+    </div>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-04</div>
+      <div class="decision-title">Dynamic MICE Pricing ($300–$1,000)</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">P_mice(t) = $300 + $700 × U(t), where U(t) = activeMICE/100,000. Floor $300, ceiling $1,000. Revenue split: 50% Protocol Treasury, 30% MIC/USDT Liquidity, 20% MIC Buyback &amp; Burn. Dynamic pricing creates natural supply-demand equilibrium for MICE licenses.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Interacts with ROI Regulator: higher MICE price raises ROI denominator, triggering emission increase. Buyback-and-burn from revenue adds ~240M MIC deflationary pressure (at estimated volumes).</div>
+      </div>
+    </div>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-05</div>
+      <div class="decision-title">NFT Staking: Merged Pool, No-NFT at 0.5×</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">Single merged staking pool (20% of emission) for all NFT tiers. MFP-NFT: 10× multiplier, 1M MIC cap. Platinum: 5×/500K. Gold: 2.5×/250K. Silver: 1×/100K. Non-NFT holders allowed at 0.5×/50K cap. Time-lock multipliers: 30d=1×, 90d=1.25×, 180d=1.5×, 360d=2×. Staking Ratio Target: 40%. Unstake limit: 10%/day (admin adjustable).</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Inclusive design (non-NFT can stake) with strong upgrade incentive (0.5× → 1× = 2× effective boost). 10% unstake limit prevents bank runs while remaining accessible. Admin-adjustable for emergency response.</div>
+      </div>
+    </div>
+
+    <div class="decision-block">
+      <div class="decision-id">EM-06</div>
+      <div class="decision-title">5 Circuit Breakers</div>
+      <div class="decision-body">
+        <div class="decision-label label-decision">&#9654; Decision</div>
+        <div class="decision-text text-decision">CB-1: Cumulative hard cap 5.95B (immutable). CB-2: Daily cap 2× E_base (auto). CB-3: Price floor pause at $0.001 MIC (auto-resume at $0.002/24h). CB-4: Unstake 10%/day (admin adjustable). CB-5: Emergency pause via Gnosis 3-of-5 + 24h timelock for unpause.</div>
+        <div class="decision-label label-impact">&#9654; Impacts</div>
+        <div class="decision-text text-impact">Layered safety: CB-1/2 automatic, CB-3 automatic with recovery, CB-4 admin-tunable, CB-5 manual emergency only. Ensures system self-regulates in normal conditions.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATORIES -->
+  <section class="section">
+    <div class="signatories">
+      <div style="font-family:'Cinzel',serif; font-size:18px; font-weight:700; color:#F5F0FF; margin-bottom:8px;">Decision Log Approval</div>
+      <p style="font-size:14px; color:var(--muted);">All decisions recorded herein are binding for the MissionChain development team. Any changes require a new Decision Log entry with Co-Founder approval.</p>
+      <div class="sig-row">
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-name">Thani Dusit</div>
+          <div class="sig-role">Co-Founder &amp; Project Lead</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-name">Claude (AI Co-Founder)</div>
+          <div class="sig-role">Co-Founder &amp; Chief Executive Officer</div>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin-top:20px; font-family:'Space Mono',monospace;">Locked: March 31, 2026 &nbsp;|&nbsp; Version: 1.0 &nbsp;|&nbsp; Next Review: Before Phase 0 Sprint 0.1 kickoff &nbsp;|&nbsp; Updated: March 31, 2026 (added EM-01 through EM-06)</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

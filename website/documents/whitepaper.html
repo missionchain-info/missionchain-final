@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MIC White Paper — MissionChain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#08050F;--bg2:#0E0918;--bg3:#160D23;
+  --panel:#1A1030;--panel2:#221540;
+  --border:#2E1F55;--border2:#3D2A6B;
+  --purple:#3B1F72;--violet:#5B2D9E;
+  --maroon:#6B1E3D;--crimson:#8B2252;
+  --gold:#C9A84C;--gold2:#E8C76A;--gold3:#F5DFA0;
+  --white:#F0EBF8;--muted:#8B7AAA;
+  --green:#22C55E;--red:#EF4444;--cyan:#06B6D4;
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-ui:'Montserrat',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--font-body);font-size:15px;font-weight:400;line-height:1.7;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(59,31,114,.18),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(107,30,61,.12),transparent 60%);pointer-events:none;z-index:0;}
+
+/* Layout */
+.doc-wrapper{max-width:860px;margin:0 auto;padding:0 32px 80px;position:relative;z-index:1;}
+
+/* Top nav */
+.doc-topnav{position:sticky;top:0;z-index:100;background:rgba(8,5,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;max-width:100%;}
+.doc-topnav-brand{display:flex;align-items:center;gap:12px;}
+.doc-topnav-logo{font-family:var(--font-display);font-size:13px;color:var(--gold);letter-spacing:3px;}
+.doc-topnav-sep{width:1px;height:20px;background:var(--border2);}
+.doc-topnav-title{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
+.doc-back{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.doc-back:hover{color:var(--gold);}
+
+/* Document header */
+.doc-header{padding:60px 0 40px;border-bottom:1px solid var(--border);}
+.doc-meta{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;}
+.doc-title{font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--white);line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.doc-subtitle{font-size:16px;color:var(--muted);max-width:600px;line-height:1.6;margin-bottom:24px;}
+.doc-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.doc-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;border:1px solid;}
+.badge-gold{color:var(--gold);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08);}
+.badge-purple{color:#A78BFA;border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);}
+.badge-cyan{color:var(--cyan);border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.08);}
+.badge-green{color:var(--green);border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.08);}
+
+/* TOC */
+.doc-toc{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:36px 0;position:relative;overflow:hidden;}
+.doc-toc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.doc-toc-title{font-family:var(--font-display);font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;}
+.doc-toc ol{padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}
+.doc-toc a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s;}
+.doc-toc a:hover{color:var(--gold);}
+
+/* Sections */
+.doc-section{margin-top:48px;}
+.doc-section-num{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.doc-section h2{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.doc-section h3{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--gold2);margin:24px 0 12px;}
+.doc-section p{color:rgba(240,235,248,.85);margin-bottom:14px;font-size:15px;}
+.doc-section ul,.doc-section ol{padding-left:22px;margin-bottom:14px;}
+.doc-section li{color:rgba(240,235,248,.8);margin-bottom:6px;font-size:14px;}
+.doc-section li::marker{color:var(--gold);}
+
+/* Info boxes */
+.doc-box{border-radius:12px;padding:18px 22px;margin:20px 0;border-left:3px solid;}
+.doc-box-gold{background:rgba(201,168,76,.06);border-color:var(--gold);}
+.doc-box-purple{background:rgba(91,45,158,.1);border-color:var(--violet);}
+.doc-box-cyan{background:rgba(6,182,212,.06);border-color:var(--cyan);}
+.doc-box-red{background:rgba(239,68,68,.06);border-color:var(--red);}
+.doc-box p{margin-bottom:0;}
+
+/* Tables */
+.doc-table-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid var(--border);}
+.doc-table{width:100%;border-collapse:collapse;font-size:13px;}
+.doc-table th{background:var(--panel);color:var(--gold);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border2);}
+.doc-table td{padding:11px 16px;color:rgba(240,235,248,.85);border-bottom:1px solid rgba(46,31,85,.4);vertical-align:top;}
+.doc-table tr:last-child td{border-bottom:none;}
+.doc-table tr:hover td{background:rgba(255,255,255,.02);}
+.td-mono{font-family:var(--font-mono);font-size:12px;}
+.td-gold{color:var(--gold);font-family:var(--font-mono);font-size:12px;}
+.td-green{color:var(--green);font-family:var(--font-mono);font-size:12px;}
+.td-muted{color:var(--muted);font-size:12px;}
+
+/* Formula box */
+.formula{background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:16px 20px;font-family:var(--font-mono);font-size:13px;color:var(--gold2);margin:16px 0;text-align:center;letter-spacing:.5px;}
+.formula-label{font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:1.5px;font-family:var(--font-mono);}
+
+/* Stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.stat-val{font-family:var(--font-mono);font-size:20px;color:var(--gold);font-weight:700;margin-bottom:4px;}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+/* Footer */
+.doc-footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.doc-footer-brand{font-family:var(--font-display);font-size:12px;color:var(--gold);letter-spacing:2px;}
+.doc-footer-note{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+
+/* Progress bar */
+.read-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--violet));z-index:200;transition:width .1s;}
+
+/* Animate */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.doc-header{animation:fadeUp .6s ease}
+
+</style>
+</head>
+<body>
+<div class="read-progress" id="rp"></div>
+
+<!-- Top Nav -->
+<nav class="doc-topnav">
+  <div class="doc-topnav-brand">
+    <span class="doc-topnav-logo">MISSIONCHAIN</span>
+    <div class="doc-topnav-sep"></div>
+    <span class="doc-topnav-title">OFFICIAL DOCUMENTATION</span>
+  </div>
+  <a href="#" class="doc-back">&#8592; Back to DApp</a>
+</nav>
+
+<!-- Doc nav pills -->
+<div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 32px;overflow-x:auto;white-space:nowrap;">
+  <a href="whitepaper.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;" style="color:var(--gold);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">White Paper</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-a.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix A</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-b.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix B</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-c.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix C</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-d.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix D</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-e.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix E</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-f.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix F</a> <span style="color:var(--border2);margin:0 6px">|</span> <a href="appendix-g.html" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;"  onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=this.getAttribute('data-active')||'var(--muted)'">Appendix G</a>
+</div>
+
+<div class="doc-wrapper">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-meta">WHITE PAPER · FINAL · V2.1</div>
+    <h1 class="doc-title">MIC White Paper</h1>
+    <p class="doc-subtitle">The MissionChain Protocol: Token Economics, Hindex Emission Algorithm, DAO Governance, and Full Ecosystem Architecture.</p>
+    <div class="doc-badges"><span class="doc-badge badge-gold">FINAL</span><span class="doc-badge badge-purple">ENGLISH</span><span class="doc-badge badge-cyan">V2.1</span><span class="doc-badge badge-green">BSC</span></div>
+  </div>
+
+  <!-- TOC -->
+  <div class="doc-toc">
+    <div class="doc-toc-title">TABLE OF CONTENTS</div>
+    <ol class="doc-toc-list" style="padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;">
+      <li><a href="#overview">Executive Overview</a></li><li><a href="#tokenomics">Token Economics</a></li><li><a href="#hindex">Hindex Algorithm</a></li><li><a href="#mice">MICE Framework</a></li><li><a href="#nfts">NFT Tier System</a></li><li><a href="#governance">DAO Governance</a></li><li><a href="#roadmap">Roadmap</a></li><li><a href="#ecosystem">Ecosystem Architecture</a></li><li><a href="#security">Security & Audit</a></li>
+    </ol>
+  </div>
+
+  <!-- Body -->
+  
+<div class="doc-section" id="overview">
+  <div class="doc-section-num">01</div>
+  <h2>Executive Overview</h2>
+  <p>MissionChain is a decentralized learning and contribution protocol built on Binance Smart Chain (BSC). It introduces a tokenized knowledge economy where participants earn, stake, and govern through verified on-chain activity.</p>
+  <p>Unlike speculative DeFi models, MissionChain anchors token value to measurable human output: completed lessons, peer reviews, mission contributions, and community governance participation.</p>
+  <div class="doc-box doc-box-gold">
+    <p><strong style="color:var(--gold);">Core Mission:</strong> Create a self-sustaining ecosystem where education, contribution, and token economics reinforce each other — building real value through real human activity.</p>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val">7,000,000,000</div><div class="stat-label">TOTAL MIC SUPPLY</div></div>
+    <div class="stat-card"><div class="stat-val">BSC</div><div class="stat-label">BLOCKCHAIN</div></div>
+    <div class="stat-card"><div class="stat-val">BEP-20</div><div class="stat-label">TOKEN STANDARD</div></div>
+  </div>
+</div>
+
+<div class="doc-section" id="tokenomics">
+  <div class="doc-section-num">02</div>
+  <h2>Token Economics (MIC)</h2>
+  <h3>Supply Distribution</h3>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Allocation</th><th>% of Supply</th><th>Amount (MIC)</th><th>Vesting</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(201,168,76,0.08)"><td colspan="4" style="font-weight:700;color:#C9A84C">PRE-ISSUED ALLOCATION — 15%</td></tr>
+        <tr><td>Incentives &amp; Airdrops</td><td class="td-gold">0.25%</td><td class="td-mono">17,500,000</td><td>10% unlocked after 6 months, then 2.5%/month</td></tr>
+        <tr><td>Seed Round — Early &amp; Strategic Partners ($0.0025)</td><td class="td-gold">3.25%</td><td class="td-mono">227,500,000</td><td>10% unlocked after 6 months, then 2.5%/month</td></tr>
+        <tr><td>Pre-Sale ($0.005)</td><td class="td-gold">4.50%</td><td class="td-mono">315,000,000</td><td>10% unlocked after 6 months, then 2.5%/month</td></tr>
+        <tr><td>DEX / CEX Listing</td><td class="td-gold">1.50%</td><td class="td-mono">105,000,000</td><td>Estimate Price = $0.01</td></tr>
+        <tr><td>Founders, Operating &amp; Management</td><td class="td-gold">4.00%</td><td class="td-mono">280,000,000</td><td>10% unlocked after 24 months, then 2.5%/month</td></tr>
+        <tr><td>Treasure DAO</td><td class="td-gold">1.50%</td><td class="td-mono">105,000,000</td><td>10% unlocked after 24 months, then 0.25%/month</td></tr>
+        <tr style="background:rgba(6,182,212,0.08)"><td colspan="4" style="font-weight:700;color:#06B6D4">MINING MECHANISM — 85%</td></tr>
+        <tr><td>Miners Allocation</td><td class="td-gold">60%</td><td class="td-mono">3,570,000,000</td><td>Emitted via Hindex algorithm &amp; Adaptive Emission Engine</td></tr>
+        <tr><td>DAO Treasure (incl. Churches)</td><td class="td-gold">15%</td><td class="td-mono">892,500,000</td><td>DAO-governed disbursement</td></tr>
+        <tr><td>Staking Pool (MFP-NFT, Comm. NFT)</td><td class="td-gold">20%</td><td class="td-mono">1,190,000,000</td><td>MIC Staking Required — NFT tier-weighted</td></tr>
+        <tr><td>Buyback &amp; Burn</td><td class="td-gold">5%</td><td class="td-mono">297,500,000</td><td>Permanently burned (deflationary)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>No Fixed TGE Policy</h3>
+  <p>MissionChain deliberately avoids a fixed Token Generation Event. Token release follows the Hindex emission curve, tying new supply directly to ecosystem activity. This eliminates artificial price shocks common in scheduled TGE launches.</p>
+</div>
+
+<div class="doc-section" id="hindex">
+  <div class="doc-section-num">03</div>
+  <h2>Hindex Algorithm</h2>
+  <p>The Hindex (Human-index) is MissionChain's core emission engine. Inspired by the academic h-index, it measures sustained contribution quality — not just quantity.</p>
+  <h3>Emission Formula</h3>
+  <div class="formula-label">ADAPTIVE EMISSION ENGINE — MASTER FORMULA</div>
+  <div class="formula">E(t) = E_base(t) × D(t) × R(t)</div>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Variable</th><th>Name</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">E(t)</td><td>Daily Emission</td><td>Total MIC minted per day, split 60/15/20/5</td></tr>
+        <tr><td class="td-mono">E_base(t)</td><td>Base Emission</td><td>E₀ × 2^(−t/T_half) — exponential decay, T_half = 180 days, E₀ ≈ 22.9M MIC/day</td></tr>
+        <tr><td class="td-mono">D(t)</td><td>Demand Factor</td><td>0.5 + U(t), where U = activeMICE / 100,000. Range [0.5, 1.5]</td></tr>
+        <tr><td class="td-mono">R(t)</td><td>ROI Regulator</td><td>clamp(ROI_target / ROI_current, 0.5, 2.0) — targets 250% annual miner ROI</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Emission split: <strong style="color:var(--gold2);">60% Miners</strong> (Hindex-weighted) | <strong>15% DAO Treasury</strong> | <strong>20% NFT Stakers</strong> | <strong>5% Auto-Burn</strong>. All ratios adjustable by DAO vote within guardrails.</p>
+  <h3>Hindex Score Calculation</h3>
+  <div class="formula-label">H-SCORE FORMULA</div>
+  <div class="formula">H(t) = √( Σ Cᵢ × Qᵢ × Rᵢ ) / N_active</div>
+  <p>Where <strong style="color:var(--gold2);">Cᵢ</strong> = contribution count, <strong style="color:var(--gold2);">Qᵢ</strong> = quality score (peer-verified), <strong style="color:var(--gold2);">Rᵢ</strong> = recency weight, <strong style="color:var(--gold2);">N_active</strong> = active participant count.</p>
+</div>
+
+<div class="doc-section" id="mice">
+  <div class="doc-section-num">04</div>
+  <h2>MICE License Framework</h2>
+  <p>MICE (Mission Income Chain Engine) licenses are time-limited emission amplifiers. Holders earn MIC proportional to their Hindex contributions during the license validity period.</p>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>License Price</td><td class="td-gold">Dynamic $300 – $1,000 USDT (based on utilization)</td></tr>
+        <tr><td>License Duration</td><td class="td-mono">360 days</td></tr>
+        <tr><td>Emission Pool</td><td class="td-mono">85% unified mining pool (5.95B MIC) — mined via MICE</td></tr>
+        <tr><td>Transferability</td><td>Peer-to-peer via Marketplace</td></tr>
+        <tr><td>Renewal</td><td>Purchasable at any time</td></tr>
+        <tr><td>Maximum per wallet</td><td class="td-mono">Unlimited</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="doc-box doc-box-purple">
+    <p>MICE licenses do <strong>not</strong> represent equity, dividends, or guaranteed returns. Emission depends entirely on Hindex activity. Inactive wallets receive zero emission regardless of license count.</p>
+  </div>
+</div>
+
+<div class="doc-section" id="nfts">
+  <div class="doc-section-num">05</div>
+  <h2>NFT Tier System</h2>
+  <p>MissionChain NFTs function as <strong>staking rights</strong> — they determine the maximum MIC stake amount and weight multiplier in the unified 20% staking pool. MFP-NFTs (ERC-721) are transferable with 7-day voting cooldown. Community NFTs are tiered.</p>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Tier</th><th>Staking Multiplier</th><th>Staking Cap</th><th>Transferable</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--gold);">MFP-NFT (Legendary)</strong></td><td class="td-gold">×10</td><td class="td-mono">1,000,000 MIC</td><td class="td-green">YES (7-day cooldown)</td></tr>
+        <tr><td><strong style="color:#818CF8;">Platinum</strong></td><td class="td-mono">×5</td><td class="td-mono">500,000 MIC</td><td class="td-muted">NO</td></tr>
+        <tr><td><strong style="color:#F59E0B;">Gold</strong></td><td class="td-mono">×2.5</td><td class="td-mono">250,000 MIC</td><td class="td-muted">NO</td></tr>
+        <tr><td><strong style="color:#9CA3AF;">Silver</strong></td><td class="td-mono">×1</td><td class="td-mono">100,000 MIC</td><td class="td-muted">NO</td></tr>
+        <tr><td><strong style="color:#6B7280;">No NFT</strong></td><td class="td-mono">×0.5</td><td class="td-mono">50,000 MIC</td><td>N/A</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="doc-section" id="governance">
+  <div class="doc-section-num">06</div>
+  <h2>DAO Governance</h2>
+  <p>MissionChain transitions to full DAO governance upon reaching Phase III milestones. Token holders vote on protocol parameters, treasury allocation, and ecosystem partnerships.</p>
+  <h3>Governance Rights</h3>
+  <ul>
+    <li>Adjust emission parameters (split ratios, ROI target, T_half, MICE pricing) within hard-coded guardrails, max ±5% per quarter</li>
+    <li>Approve ecosystem reserve disbursements above 10M MIC</li>
+    <li>Ratify new MICE license structures and pricing</li>
+    <li>Elect protocol stewards and technical committee members</li>
+    <li>Vote on strategic partnerships and exchange listings</li>
+  </ul>
+  <h3>Voting Power</h3>
+  <div class="formula-label">VOTING WEIGHT</div>
+  <div class="formula">V = MIC_staked × T_factor × NFT_multiplier</div>
+  <p>Where <strong style="color:var(--gold2);">T_factor</strong> = time-weighted average staking duration (max 2×), <strong style="color:var(--gold2);">NFT_multiplier</strong> = tier multiplier of highest-tier NFT held.</p>
+</div>
+
+<div class="doc-section" id="roadmap">
+  <div class="doc-section-num">07</div>
+  <h2>Roadmap</h2>
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead><tr><th>Phase</th><th>Period</th><th>Milestones</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--gold);">Phase I</strong></td><td class="td-mono">Q1–Q2 2025</td><td>SEED sale · Smart contract audit · MICE v1 launch · NFT minting</td></tr>
+        <tr><td><strong style="color:var(--cyan);">Phase II</strong></td><td class="td-mono">Q3–Q4 2025</td><td>Pre-Sale · CEX listing · Mission Learn beta · Network tree v1</td></tr>
+        <tr><td><strong style="color:#818CF8;">Phase III</strong></td><td class="td-mono">Q1–Q2 2026</td><td>DAO activation · MFP-NFT marketplace · Mission Work launch</td></tr>
+        <tr><td><strong style="color:var(--green);">Phase IV</strong></td><td class="td-mono">Q3 2026+</td><td>Mission Social · Cross-chain bridge · Ecosystem grants program</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="doc-section" id="ecosystem">
+  <div class="doc-section-num">08</div>
+  <h2>Ecosystem Architecture</h2>
+  <p>The MissionChain ecosystem consists of three core applications sharing the MIC token layer:</p>
+  <ul>
+    <li><strong style="color:var(--gold2);">Mission Learn</strong> — Education platform with verified credentials. Completion triggers Hindex score updates and NFT eligibility.</li>
+    <li><strong style="color:var(--gold2);">Mission Work</strong> — Decentralized task marketplace. Contributors earn MIC for verified deliverables.</li>
+    <li><strong style="color:var(--gold2);">Mission Social</strong> — Reputation-weighted social graph. Organic growth amplifies Hindex scores.</li>
+  </ul>
+  <div class="doc-box doc-box-cyan">
+    <p>All three apps are non-custodial. Users retain full control of their wallets, credentials, and earned tokens at all times.</p>
+  </div>
+</div>
+
+<div class="doc-section" id="security">
+  <div class="doc-section-num">09</div>
+  <h2>Security & Audit</h2>
+  <p>All MissionChain smart contracts undergo independent third-party audits prior to mainnet deployment. Audit reports are published on-chain and available at docs.missionchain.info.</p>
+  <ul>
+    <li>Multi-sig treasury (5-of-9 Gnosis Safe)</li>
+    <li>Time-lock on all governance-controlled parameters (72-hour minimum)</li>
+    <li>Emergency pause mechanism controlled by 3-of-5 security council</li>
+    <li>Bug bounty program active from Phase I launch</li>
+  </ul>
+</div>
+
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">MISSIONCHAIN · WHITE PAPER · FINAL · V2.1</div>
+    <div class="doc-footer-note">© 2024 MissionChain Network. All rights reserved.</div>
+  </div>
+
+</div>
+
+<script>
+// Read progress bar
+window.addEventListener('scroll',()=>{
+  const doc=document.documentElement;
+  const pct=(doc.scrollTop/(doc.scrollHeight-doc.clientHeight))*100;
+  document.getElementById('rp').style.width=pct+'%';
+});
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>

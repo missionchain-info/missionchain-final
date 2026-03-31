@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Chain — Adaptive Emission Engine v1.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --bg: #06040F;
+      --card-1: #1A1030;
+      --card-2: #221540;
+      --green: #22C55E;
+      --cyan: #06B6D4;
+      --gold: #C9A84C;
+      --purple: #5B2D9E;
+      --critical: #EF4444;
+      --high: #F97316;
+      --text: #E2D9F3;
+      --muted: #9B8BC0;
+      --border: rgba(91,45,158,0.35);
+      --blue: #3B82F6;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; line-height: 1.65; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    .site-header {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #0D0820 0%, #120B2E 50%, #0A0618 100%);
+      border-bottom: 1px solid var(--border); padding: 60px 40px 50px; text-align: center;
+    }
+    .site-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 20% 50%, rgba(91,45,158,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 50%, rgba(6,182,212,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-eyebrow { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 16px; opacity: 0.85; }
+    .header-title {
+      font-family: 'Cinzel', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 900; letter-spacing: 2px;
+      background: linear-gradient(135deg, #E2D9F3 0%, var(--cyan) 45%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px;
+    }
+    .header-subtitle { font-size: 18px; font-weight: 500; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
+    .header-meta { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* Table of Contents */
+    .toc {
+      background: var(--card-1); border: 1px solid var(--border); border-radius: 12px;
+      padding: 28px 32px; margin-bottom: 48px;
+    }
+    .toc h2 { font-family: 'Cinzel', serif; font-size: 20px; color: var(--gold); margin-bottom: 16px; letter-spacing: 1px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; font-size: 15px; }
+    .toc a { color: var(--cyan); text-decoration: none; transition: color 0.2s; }
+    .toc a:hover { color: var(--gold); }
+
+    /* Section */
+    .section {
+      background: var(--card-1); border: 1px solid var(--border); border-radius: 12px;
+      padding: 32px; margin-bottom: 36px; position: relative; overflow: hidden;
+    }
+    .section::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--gold));
+    }
+    .section-number {
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px;
+      color: var(--cyan); text-transform: uppercase; margin-bottom: 8px; opacity: 0.8;
+    }
+    .section h2 {
+      font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700;
+      color: var(--gold); margin-bottom: 20px; letter-spacing: 1px;
+    }
+    .section h3 {
+      font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 600;
+      color: var(--cyan); margin: 24px 0 12px; letter-spacing: 0.5px;
+    }
+    .section p { margin-bottom: 14px; font-size: 15px; line-height: 1.7; }
+
+    /* Formula blocks */
+    .formula-block {
+      background: #0D0820; border: 1px solid var(--border); border-left: 3px solid var(--cyan);
+      border-radius: 8px; padding: 20px 24px; margin: 16px 0; font-family: 'Space Mono', monospace;
+      font-size: 14px; line-height: 1.8; overflow-x: auto;
+    }
+    .formula-block .main-formula {
+      font-size: 18px; color: var(--gold); font-weight: 700; margin-bottom: 12px;
+    }
+    .formula-block .sub { color: var(--cyan); }
+    .formula-block .comment { color: var(--muted); font-size: 12px; font-style: italic; }
+
+    /* Parameter tables */
+    .param-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    .param-table th {
+      background: var(--card-2); color: var(--gold); font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--purple);
+    }
+    .param-table td {
+      padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .param-table tr:hover { background: rgba(91,45,158,0.08); }
+    .param-table code {
+      background: rgba(6,182,212,0.1); color: var(--cyan); padding: 2px 6px;
+      border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 13px;
+    }
+
+    /* Highlight boxes */
+    .highlight-box {
+      border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-size: 14px;
+    }
+    .highlight-box.info { background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.25); }
+    .highlight-box.warning { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.25); }
+    .highlight-box.success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
+    .highlight-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+    .highlight-box strong { color: var(--gold); }
+    .highlight-box .label {
+      font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 8px; display: block;
+    }
+    .highlight-box.info .label { color: var(--cyan); }
+    .highlight-box.warning .label { color: var(--high); }
+    .highlight-box.success .label { color: var(--green); }
+    .highlight-box.danger .label { color: var(--critical); }
+
+    /* Simulation */
+    .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .sim-card {
+      background: var(--card-2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 16px 20px;
+    }
+    .sim-card .sim-label {
+      font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .sim-card .sim-value { font-size: 24px; font-weight: 700; color: var(--gold); }
+    .sim-card .sim-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    @media (max-width: 640px) {
+      .sim-grid { grid-template-columns: 1fr; }
+      .section { padding: 20px 16px; }
+    }
+
+    /* Flowchart-style */
+    .flow-step {
+      display: flex; align-items: flex-start; gap: 16px; margin: 12px 0;
+    }
+    .flow-num {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--purple); color: white; display: flex; align-items: center;
+      justify-content: center; font-family: 'Space Mono', monospace; font-size: 14px;
+      font-weight: 700;
+    }
+    .flow-content { flex: 1; padding-top: 4px; }
+    .flow-arrow { text-align: center; color: var(--muted); font-size: 20px; margin: 4px 0; padding-left: 8px; }
+
+    /* Badge */
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 4px;
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px;
+      font-weight: 700; text-transform: uppercase;
+    }
+    .badge.gov { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+    .badge.auto { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .badge.admin { background: rgba(239,68,68,0.15); color: var(--critical); border: 1px solid rgba(239,68,68,0.3); }
+  </style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="header-eyebrow">MissionChain Tokenomics</div>
+  <h1 class="header-title">Adaptive Emission Engine</h1>
+  <p class="header-subtitle">Self-Regulating MIC Mining, Staking & Market Stability Protocol</p>
+  <p class="header-meta">Version 1.0 &nbsp;|&nbsp; 31 March 2026 &nbsp;|&nbsp; Co-Founders: Thani Dusit & AI Co-Founder</p>
+</header>
+
+<div class="container">
+
+<!-- ============ TOC ============ -->
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Executive Summary</a></li>
+    <li><a href="#s2">Core Parameters & Constants</a></li>
+    <li><a href="#s3">Master Emission Formula</a></li>
+    <li><a href="#s4">E_base: Exponential Decay Engine</a></li>
+    <li><a href="#s5">D(t): MICE Demand Factor</a></li>
+    <li><a href="#s6">R(t): ROI Regulator</a></li>
+    <li><a href="#s7">Emission Split: 60 / 15 / 20 / 5</a></li>
+    <li><a href="#s8">Dynamic MICE Pricing</a></li>
+    <li><a href="#s9">NFT Staking System</a></li>
+    <li><a href="#s10">Staking Ratio Regulator</a></li>
+    <li><a href="#s11">Circuit Breakers & Safety Systems</a></li>
+    <li><a href="#s12">DAO Governance Guardrails</a></li>
+    <li><a href="#s13">3-Year Simulation</a></li>
+    <li><a href="#s14">Smart Contract Architecture</a></li>
+    <li><a href="#s15">Appendix: Mathematical Proofs</a></li>
+  </ol>
+</nav>
+
+<!-- ============ S1: EXECUTIVE SUMMARY ============ -->
+<section class="section" id="s1">
+  <div class="section-number">Section 01</div>
+  <h2>Executive Summary</h2>
+  <p>The MissionChain Adaptive Emission Engine is a self-regulating protocol that dynamically controls MIC token emission based on real-time market conditions. Unlike fixed-schedule emission models (e.g., Bitcoin halving), our engine continuously adjusts emission rate, staking rewards, and MICE license pricing to maintain economic equilibrium.</p>
+
+  <div class="highlight-box success">
+    <span class="label">Design Philosophy</span>
+    <strong>One unified mining pool (85% = 5.95B MIC)</strong> mined exclusively through MICE licenses. All emission is channeled through MICE mining activity, then split algorithmically into 4 streams. NFTs function purely as staking rights — they do NOT have separate emission pools.
+  </div>
+
+  <h3>Key Design Principles</h3>
+  <p><strong>1. Activity-Based Emission:</strong> MIC is only mined when MICE holders actively contribute (Hindex algorithm). No passive earning.</p>
+  <p><strong>2. ROI Self-Regulation:</strong> The system targets 250% annual ROI for MICE miners. When ROI drifts, emission automatically adjusts to restore balance.</p>
+  <p><strong>3. Demand-Responsive:</strong> More MICE purchased = more emission. Fewer MICE active = emission slows. Natural supply-demand equilibrium.</p>
+  <p><strong>4. Deflationary Pressure:</strong> 5% of all emission is auto-burned, creating permanent deflationary force against inflation.</p>
+  <p><strong>5. DAO-Governed Evolution:</strong> All ratios are adjustable by DAO vote within hard-coded guardrails, allowing the community to adapt as the ecosystem matures.</p>
+</section>
+
+<!-- ============ S2: CORE PARAMETERS ============ -->
+<section class="section" id="s2">
+  <div class="section-number">Section 02</div>
+  <h2>Core Parameters & Constants</h2>
+
+  <table class="param-table">
+    <thead>
+      <tr><th>Parameter</th><th>Symbol</th><th>Value</th><th>Governance</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total MIC Supply</td>
+        <td><code>S_total</code></td>
+        <td>7,000,000,000 MIC</td>
+        <td><span class="badge admin">Immutable</span></td>
+      </tr>
+      <tr>
+        <td>Mining Pool (85%)</td>
+        <td><code>S_mine</code></td>
+        <td>5,950,000,000 MIC</td>
+        <td><span class="badge admin">Immutable</span></td>
+      </tr>
+      <tr>
+        <td>Max MICE Licenses</td>
+        <td><code>N_max</code></td>
+        <td>100,000</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>MICE License Duration</td>
+        <td><code>T_mice</code></td>
+        <td>360 days</td>
+        <td><span class="badge admin">Immutable</span></td>
+      </tr>
+      <tr>
+        <td>Halving Period</td>
+        <td><code>T_half</code></td>
+        <td>180 days</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Target Miner ROI</td>
+        <td><code>ROI_target</code></td>
+        <td>250% annually</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Staking Ratio Target</td>
+        <td><code>S_target</code></td>
+        <td>40%</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>MICE Price Floor</td>
+        <td><code>P_floor</code></td>
+        <td>$300 USDT</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>MICE Price Ceiling</td>
+        <td><code>P_ceil</code></td>
+        <td>$1,000 USDT</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Unstake Daily Limit</td>
+        <td><code>W_max</code></td>
+        <td>10% of pool/day</td>
+        <td><span class="badge admin">Admin Adjustable</span></td>
+      </tr>
+      <tr>
+        <td>Emission Split (Miners)</td>
+        <td><code>r_mine</code></td>
+        <td>60%</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Emission Split (DAO)</td>
+        <td><code>r_dao</code></td>
+        <td>15%</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Emission Split (NFT Staking)</td>
+        <td><code>r_stake</code></td>
+        <td>20%</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+      <tr>
+        <td>Emission Split (Auto-Burn)</td>
+        <td><code>r_burn</code></td>
+        <td>5%</td>
+        <td><span class="badge gov">DAO Vote</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box info">
+    <span class="label">Token Allocation Recap</span>
+    <strong>Pre-Issued 15% (1.05B)</strong>: Incentives &amp; Airdrops 0.25% (17.5M) | Seed Round 3.25% (227.5M) @ $0.0025 | Pre-Sale 4.50% (315M) @ $0.005 | DEX/CEX Listing 1.50% (105M) @ est. $0.01 | Founders &amp; Operations 4.00% (280M) | Treasure DAO 1.50% (105M). &mdash; <strong>Mining 85% (5.95B)</strong>: ONE unified pool, mined exclusively via MICE. Pre-Issued allocations are distributed via vesting schedules, NOT through the emission engine.
+  </div>
+</section>
+
+<!-- ============ S3: MASTER FORMULA ============ -->
+<section class="section" id="s3">
+  <div class="section-number">Section 03</div>
+  <h2>Master Emission Formula</h2>
+
+  <p>Daily MIC emission is governed by a three-factor multiplicative model that balances time-decay, demand, and ROI stabilization:</p>
+
+  <div class="formula-block">
+    <div class="main-formula">E(t) = E_base(t) &times; D(t) &times; R(t)</div>
+    <div class="sub">Where:</div>
+    <div>&nbsp;&nbsp;E_base(t) = Base emission with exponential decay &nbsp;<span class="comment">// Time-based scarcity</span></div>
+    <div>&nbsp;&nbsp;D(t) &nbsp;&nbsp;&nbsp;&nbsp; = MICE Demand Factor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Market demand signal</span></div>
+    <div>&nbsp;&nbsp;R(t) &nbsp;&nbsp;&nbsp;&nbsp; = ROI Regulator &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Profitability stabilizer</span></div>
+    <br>
+    <div class="comment">// Subject to: cumulative_emitted(t) &le; 5,950,000,000 (hard cap)</div>
+    <div class="comment">// Subject to: E(t) &le; 2 &times; E_base(t) (daily cap)</div>
+  </div>
+
+  <h3>How the Three Factors Interact</h3>
+  <p><strong>E_base(t)</strong> establishes the decreasing baseline — a smooth exponential decay that halves every 180 days. This creates urgency: early MICE buyers get higher base emission.</p>
+  <p><strong>D(t)</strong> scales emission based on actual demand. If MICE utilization is low, emission decreases (no point minting tokens nobody is earning). If utilization is high, emission increases proportionally.</p>
+  <p><strong>R(t)</strong> is the critical self-regulating mechanism. It continuously compares actual miner ROI against the 250% target. If MIC price rises (ROI too high), R(t) drops below 1.0, reducing emission. If MIC price falls (ROI too low), R(t) rises above 1.0, increasing emission. This creates a natural price stabilizer.</p>
+</section>
+
+<!-- ============ S4: E_BASE ============ -->
+<section class="section" id="s4">
+  <div class="section-number">Section 04</div>
+  <h2>E_base: Exponential Decay Engine</h2>
+
+  <div class="formula-block">
+    <div class="main-formula">E_base(t) = E_0 &times; 2<sup>(-t / T_half)</sup></div>
+    <div class="sub">Where:</div>
+    <div>&nbsp;&nbsp;E_0 &nbsp;&nbsp;&nbsp; = Initial daily emission = <strong>22,907,500 MIC/day</strong></div>
+    <div>&nbsp;&nbsp;T_half &nbsp;= 180 days</div>
+    <div>&nbsp;&nbsp;t &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = days since emission start</div>
+    <br>
+    <div class="sub">Derivation of E_0:</div>
+    <div>&nbsp;&nbsp;&int; E_base dt from 0 to &infin; = E_0 &times; T_half / ln(2)</div>
+    <div>&nbsp;&nbsp;E_0 = S_mine &times; ln(2) / T_half</div>
+    <div>&nbsp;&nbsp;E_0 = 5,950,000,000 &times; 0.6931 / 180</div>
+    <div>&nbsp;&nbsp;<strong>E_0 &asymp; 22,907,500 MIC/day</strong></div>
+  </div>
+
+  <h3>Decay Schedule</h3>
+  <table class="param-table">
+    <thead>
+      <tr><th>Day</th><th>E_base (MIC/day)</th><th>Cumulative Emitted</th><th>% of Pool</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Day 1</td><td>22,907,500</td><td>22.9M</td><td>0.39%</td></tr>
+      <tr><td>Day 90</td><td>16,199,213</td><td>1.77B</td><td>29.7%</td></tr>
+      <tr><td>Day 180</td><td>11,453,750</td><td>2.98B</td><td>50.0%</td></tr>
+      <tr><td>Day 360</td><td>5,726,875</td><td>4.46B</td><td>75.0%</td></tr>
+      <tr><td>Day 540</td><td>2,863,438</td><td>5.20B</td><td>87.5%</td></tr>
+      <tr><td>Day 720</td><td>1,431,719</td><td>5.58B</td><td>93.75%</td></tr>
+      <tr><td>Day 1080</td><td>357,930</td><td>5.86B</td><td>98.44%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box warning">
+    <span class="label">Important Note</span>
+    These are BASE values before D(t) and R(t) modifiers. Actual emission will differ based on market conditions. The R(t) regulator will typically reduce emission when MIC price appreciation makes ROI exceed target, effectively extending the emission timeline.
+  </div>
+</section>
+
+<!-- ============ S5: DEMAND FACTOR ============ -->
+<section class="section" id="s5">
+  <div class="section-number">Section 05</div>
+  <h2>D(t): MICE Demand Factor</h2>
+
+  <p>The demand factor ensures emission scales proportionally with actual network participation. No MICE active = minimal emission. Full MICE utilization = maximum emission.</p>
+
+  <div class="formula-block">
+    <div class="main-formula">D(t) = 0.5 + U(t)</div>
+    <div class="sub">Where:</div>
+    <div>&nbsp;&nbsp;U(t) = N_active(t) / N_max</div>
+    <div>&nbsp;&nbsp;N_active(t) = number of active (non-expired) MICE licenses</div>
+    <div>&nbsp;&nbsp;N_max = 100,000</div>
+    <br>
+    <div class="sub">Range: D(t) &isin; [0.50, 1.50]</div>
+    <div>&nbsp;&nbsp;U = 0.00 (0 MICE) &nbsp;&nbsp;&nbsp;&rarr; D = 0.50 &nbsp;<span class="comment">// Half emission</span></div>
+    <div>&nbsp;&nbsp;U = 0.25 (25K MICE) &rarr; D = 0.75</div>
+    <div>&nbsp;&nbsp;U = 0.50 (50K MICE) &rarr; D = 1.00 &nbsp;<span class="comment">// Normal emission</span></div>
+    <div>&nbsp;&nbsp;U = 0.75 (75K MICE) &rarr; D = 1.25</div>
+    <div>&nbsp;&nbsp;U = 1.00 (100K MICE) &rarr; D = 1.50 &nbsp;<span class="comment">// 50% boost</span></div>
+  </div>
+
+  <h3>Why Linear with 0.5 Floor?</h3>
+  <p>The 0.5 floor ensures the system never fully stops emitting even with zero MICE — this maintains a minimum emission for DAO treasury and burn mechanisms. The linear relationship is chosen for simplicity, transparency, and on-chain gas efficiency. The maximum 1.5x boost at full utilization rewards ecosystem growth without creating dangerous emission spikes.</p>
+
+  <div class="highlight-box info">
+    <span class="label">On-Chain Implementation</span>
+    <code>U(t)</code> is computed from the MICE license contract's <code>activeCount()</code> function, which tracks non-expired ERC-1155 tokens via lazy evaluation (checked on every interaction). No off-chain oracle needed.
+  </div>
+</section>
+
+<!-- ============ S6: ROI REGULATOR ============ -->
+<section class="section" id="s6">
+  <div class="section-number">Section 06</div>
+  <h2>R(t): ROI Regulator</h2>
+
+  <p>The ROI Regulator is the most critical self-regulation mechanism. It continuously compares the actual annualized ROI of MICE mining against the 250% target and adjusts emission accordingly.</p>
+
+  <div class="formula-block">
+    <div class="main-formula">R(t) = clamp( ROI_target / ROI_current(t), &nbsp;0.5, &nbsp;2.0 )</div>
+    <div class="sub">Where:</div>
+    <div>&nbsp;&nbsp;ROI_target = 2.50 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// 250%</span></div>
+    <div>&nbsp;&nbsp;ROI_current(t) = annual_mic_per_mice(t) &times; P_mic(t) / P_mice(t)</div>
+    <br>
+    <div class="sub">Breakdown:</div>
+    <div>&nbsp;&nbsp;daily_per_mice = E(t) &times; r_mine / N_active(t) &nbsp;<span class="comment">// Average per MICE</span></div>
+    <div>&nbsp;&nbsp;annual_mic_per_mice = daily_per_mice &times; 360</div>
+    <div>&nbsp;&nbsp;P_mic(t) &nbsp;= MIC market price (TWAP oracle)</div>
+    <div>&nbsp;&nbsp;P_mice(t) = Dynamic MICE price (see Section 8)</div>
+  </div>
+
+  <h3>Self-Regulation Dynamics</h3>
+  <table class="param-table">
+    <thead>
+      <tr><th>Scenario</th><th>ROI_current</th><th>R(t)</th><th>Effect</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MIC price surges (bull market)</td>
+        <td>500%</td>
+        <td>0.50 <span style="color:var(--green)">&darr;</span></td>
+        <td>Emission halved. Fewer MIC minted, reducing sell pressure</td>
+      </tr>
+      <tr>
+        <td>Healthy equilibrium</td>
+        <td>250%</td>
+        <td>1.00</td>
+        <td>No adjustment. System in balance</td>
+      </tr>
+      <tr>
+        <td>MIC price drops (bear market)</td>
+        <td>125%</td>
+        <td>2.00 <span style="color:var(--critical)">&uarr;</span></td>
+        <td>Emission doubled. More MIC minted, increasing mining attractiveness</td>
+      </tr>
+      <tr>
+        <td>Extreme bull run</td>
+        <td>1000%</td>
+        <td>0.50 (clamped)</td>
+        <td>Max reduction. Prevents emission from going to near-zero</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Price Oracle: PancakeSwap V3 TWAP</h3>
+  <p>MIC price is sourced from PancakeSwap V3 Time-Weighted Average Price with a <strong>24-hour window</strong>. This prevents flash-loan manipulation. A Chainlink fallback oracle activates if TWAP freshness exceeds 1 hour. The oracle address is updatable via Gnosis Safe 3-of-5 multisig.</p>
+
+  <div class="highlight-box warning">
+    <span class="label">Circular Dependency Resolution</span>
+    R(t) depends on E(t), which depends on R(t). Resolution: use <strong>R(t-1)</strong> (previous day's R value) to compute today's E(t). Day 1 starts with R(0) = 1.0. This creates a one-day lag that smooths oscillations.
+  </div>
+</section>
+
+<!-- ============ S7: EMISSION SPLIT ============ -->
+<section class="section" id="s7">
+  <div class="section-number">Section 07</div>
+  <h2>Emission Split: 60 / 15 / 20 / 5</h2>
+
+  <p>Every MIC emitted through the mining process is split into four streams. This split happens at the smart contract level — the EmissionController distributes tokens in a single transaction.</p>
+
+  <div class="formula-block">
+    <div class="main-formula">E(t) = E_miners(t) + E_dao(t) + E_staking(t) + E_burn(t)</div>
+    <br>
+    <div>&nbsp;&nbsp;E_miners(t) &nbsp;= E(t) &times; 0.60 &nbsp;<span class="comment">// Distributed to MICE miners by Hindex</span></div>
+    <div>&nbsp;&nbsp;E_dao(t) &nbsp;&nbsp;&nbsp;&nbsp;= E(t) &times; 0.15 &nbsp;<span class="comment">// Sent to DAO Treasury multisig</span></div>
+    <div>&nbsp;&nbsp;E_staking(t) = E(t) &times; 0.20 &nbsp;<span class="comment">// Distributed to NFT stakers</span></div>
+    <div>&nbsp;&nbsp;E_burn(t) &nbsp;&nbsp;&nbsp;= E(t) &times; 0.05 &nbsp;<span class="comment">// Sent to 0x000...dead (burned)</span></div>
+  </div>
+
+  <h3>Stream Details</h3>
+
+  <h3>60% — MICE Miners</h3>
+  <p>Distributed proportionally based on each miner's Hindex score. Higher activity (contributions, quiz completions, task delivery) = higher share of daily emission. This is NOT passive mining — the Hindex algorithm rewards genuine participation.</p>
+
+  <div class="formula-block">
+    <div class="sub">Miner i's daily reward:</div>
+    <div>&nbsp;&nbsp;reward_i(t) = E_miners(t) &times; Hindex_i(t) / &Sigma; Hindex_j(t)</div>
+    <br>
+    <div class="sub">Hindex(i) = contribution_count &times; quality_score &times; recency_factor</div>
+  </div>
+
+  <h3>15% — DAO Treasury</h3>
+  <p>Automatically sent to the DAO Treasury (Gnosis Safe multisig). Used for ecosystem grants, marketing, partnerships, bug bounties, and operational expenses. Spending requires DAO vote (MFP-NFT holders).</p>
+
+  <h3>20% — NFT Stakers (Merged Pool)</h3>
+  <p>Single unified staking pool for ALL NFT tiers (MFP-NFT, Platinum, Gold, Silver) plus non-NFT stakers at reduced rate. See Section 9 for detailed staking mechanics.</p>
+
+  <h3>5% — Auto-Burn</h3>
+  <p>Permanently burned by sending to <code>0x000000000000000000000000000000000000dEaD</code>. Creates constant deflationary pressure. Over the full emission lifecycle, approximately 297.5M MIC will be burned through this mechanism alone, reducing effective circulating supply.</p>
+
+  <div class="highlight-box success">
+    <span class="label">DAO Governance</span>
+    The emission split ratios are adjustable by DAO vote within these guardrails: <strong>r_mine &isin; [50%, 70%]</strong>, <strong>r_dao &isin; [10%, 20%]</strong>, <strong>r_stake &isin; [15%, 25%]</strong>, <strong>r_burn &isin; [3%, 10%]</strong>. Maximum change: &plusmn;5% per quarter. Sum must always equal 100%.
+  </div>
+</section>
+
+<!-- ============ S8: MICE PRICING ============ -->
+<section class="section" id="s8">
+  <div class="section-number">Section 08</div>
+  <h2>Dynamic MICE Pricing</h2>
+
+  <p>MICE license price adjusts dynamically based on utilization rate, creating a natural supply-demand equilibrium. When demand is high (many active MICE), price increases, cooling demand. When demand is low, price drops, stimulating purchases.</p>
+
+  <div class="formula-block">
+    <div class="main-formula">P_mice(t) = P_floor + (P_ceil - P_floor) &times; U(t)</div>
+    <br>
+    <div>&nbsp;&nbsp;P_floor = $300 USDT</div>
+    <div>&nbsp;&nbsp;P_ceil &nbsp;= $1,000 USDT</div>
+    <div>&nbsp;&nbsp;U(t) &nbsp;&nbsp;= N_active(t) / N_max</div>
+    <br>
+    <div class="sub">Price Schedule:</div>
+    <div>&nbsp;&nbsp;U = 0.00 (0 MICE) &nbsp;&nbsp;&nbsp;&rarr; P = $300 &nbsp;&nbsp;<span class="comment">// Floor price</span></div>
+    <div>&nbsp;&nbsp;U = 0.25 (25K MICE) &rarr; P = $475</div>
+    <div>&nbsp;&nbsp;U = 0.50 (50K MICE) &rarr; P = $650</div>
+    <div>&nbsp;&nbsp;U = 0.75 (75K MICE) &rarr; P = $825</div>
+    <div>&nbsp;&nbsp;U = 1.00 (100K MICE) &rarr; P = $1,000 <span class="comment">// Ceiling price</span></div>
+  </div>
+
+  <h3>Payment & Revenue</h3>
+  <p>MICE purchases are accepted in <strong>USDT + BNB</strong> (as decided in Decision Log Q08). BNB payments use PancakeSwap V3 TWAP for conversion rate. Revenue flows:</p>
+
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div class="flow-content">User pays USDT/BNB to MICESale contract</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div class="flow-content">50% &rarr; Protocol Treasury (operations, development)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div class="flow-content">30% &rarr; MIC/USDT Liquidity Pool (deepens market)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div class="flow-content">20% &rarr; MIC Buyback &amp; Burn (additional deflationary pressure)</div>
+  </div>
+
+  <div class="highlight-box info">
+    <span class="label">ROI Interaction</span>
+    Dynamic MICE pricing is a critical input to the ROI Regulator. As MICE price rises with demand, the ROI denominator increases, naturally reducing ROI — which triggers R(t) to increase emission. This dual feedback loop (price + emission) creates robust equilibrium.
+  </div>
+</section>
+
+<!-- ============ S9: NFT STAKING ============ -->
+<section class="section" id="s9">
+  <div class="section-number">Section 09</div>
+  <h2>NFT Staking System</h2>
+
+  <p>The 20% staking emission is distributed to MIC holders who lock their tokens in the staking contract. NFTs function as <strong>staking rights</strong> — they determine the maximum amount a user can stake and the multiplier applied to their staking weight. MFP-NFT and Community NFTs share a single merged pool.</p>
+
+  <h3>Staking Tiers</h3>
+  <table class="param-table">
+    <thead>
+      <tr><th>Tier</th><th>NFT Type</th><th>Staking Cap</th><th>Weight Multiplier</th><th>Supply</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color:var(--gold)">Legendary</strong></td>
+        <td>MFP-NFT (ERC-721)</td>
+        <td>1,000,000 MIC</td>
+        <td>10.0&times;</td>
+        <td>Limited (early supporters)</td>
+      </tr>
+      <tr>
+        <td><strong style="color:#C0C0C0">Platinum</strong></td>
+        <td>Community NFT</td>
+        <td>500,000 MIC</td>
+        <td>5.0&times;</td>
+        <td>Tiered sale</td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--gold)">Gold</strong></td>
+        <td>Community NFT</td>
+        <td>250,000 MIC</td>
+        <td>2.5&times;</td>
+        <td>Tiered sale</td>
+      </tr>
+      <tr>
+        <td><strong style="color:#A0A0A0">Silver</strong></td>
+        <td>Community NFT</td>
+        <td>100,000 MIC</td>
+        <td>1.0&times;</td>
+        <td>Tiered sale</td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--muted)">No NFT</strong></td>
+        <td>None required</td>
+        <td>50,000 MIC</td>
+        <td>0.5&times;</td>
+        <td>Unlimited</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Time-Lock Multiplier</h3>
+  <p>Users choose a lock-up period when staking. Longer commitments receive higher rewards:</p>
+
+  <table class="param-table">
+    <thead>
+      <tr><th>Lock Period</th><th>Time Multiplier</th><th>Early Unstake Penalty</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>30 days (Flexible)</td><td>1.00&times;</td><td>None</td></tr>
+      <tr><td>90 days</td><td>1.25&times;</td><td>25% of rewards forfeited</td></tr>
+      <tr><td>180 days</td><td>1.50&times;</td><td>50% of rewards forfeited</td></tr>
+      <tr><td>360 days</td><td>2.00&times;</td><td>75% of rewards forfeited</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Reward Calculation</h3>
+  <div class="formula-block">
+    <div class="main-formula">reward_i(t) = E_staking(t) &times; W_i / &Sigma; W_j</div>
+    <br>
+    <div class="sub">Where effective weight W_i:</div>
+    <div>&nbsp;&nbsp;W_i = min(staked_i, cap_tier) &times; mult_nft &times; mult_time</div>
+    <br>
+    <div class="sub">Example: MFP-NFT holder stakes 500K MIC for 180 days</div>
+    <div>&nbsp;&nbsp;W = min(500,000, 1,000,000) &times; 10.0 &times; 1.50 = 7,500,000</div>
+    <br>
+    <div class="sub">Example: No-NFT holder stakes 30K MIC for 30 days</div>
+    <div>&nbsp;&nbsp;W = min(30,000, 50,000) &times; 0.5 &times; 1.00 = 15,000</div>
+  </div>
+
+  <div class="highlight-box info">
+    <span class="label">Design Rationale</span>
+    Allowing non-NFT holders to stake (at 0.5&times;) serves two purposes: (1) broadens the staking base, increasing MIC lock-up and reducing sell pressure, and (2) creates a natural upgrade incentive — a 0.5&times; staker who buys a Silver NFT gets a 2&times; effective boost (from 0.5&times; to 1.0&times;), driving NFT demand.
+  </div>
+</section>
+
+<!-- ============ S10: STAKING RATIO REGULATOR ============ -->
+<section class="section" id="s10">
+  <div class="section-number">Section 10</div>
+  <h2>Staking Ratio Regulator</h2>
+
+  <p>To maintain healthy liquidity while incentivizing staking, the system dynamically adjusts staking rewards based on the current staking ratio relative to the 40% target.</p>
+
+  <div class="formula-block">
+    <div class="main-formula">StakingBoost(t) = clamp( 1 + 0.5 &times; (S_target - S(t)) / S_target, &nbsp;0.7, &nbsp;1.5 )</div>
+    <br>
+    <div class="sub">Where:</div>
+    <div>&nbsp;&nbsp;S(t) = totalStaked(t) / circulatingSupply(t)</div>
+    <div>&nbsp;&nbsp;S_target = 0.40</div>
+    <br>
+    <div class="sub">Effective staking emission:</div>
+    <div>&nbsp;&nbsp;E_staking_effective(t) = E_staking(t) &times; StakingBoost(t)</div>
+    <br>
+    <div class="sub">Examples:</div>
+    <div>&nbsp;&nbsp;S = 20% &rarr; Boost = 1 + 0.5 &times; (0.4 - 0.2) / 0.4 = 1.25 &nbsp;<span class="comment">// +25% rewards</span></div>
+    <div>&nbsp;&nbsp;S = 40% &rarr; Boost = 1.00 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// On target</span></div>
+    <div>&nbsp;&nbsp;S = 60% &rarr; Boost = 1 + 0.5 &times; (0.4 - 0.6) / 0.4 = 0.75 &nbsp;<span class="comment">// -25% rewards</span></div>
+    <div>&nbsp;&nbsp;S = 80% &rarr; Boost = 0.70 (clamped) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Min boost</span></div>
+  </div>
+
+  <div class="highlight-box warning">
+    <span class="label">Excess Staking Emission</span>
+    When StakingBoost &gt; 1.0, the extra rewards come from an internal buffer accumulated during periods when StakingBoost &lt; 1.0. If the buffer is empty, the excess is redistributed to the DAO treasury. This ensures total emission never exceeds the formula.
+  </div>
+</section>
+
+<!-- ============ S11: CIRCUIT BREAKERS ============ -->
+<section class="section" id="s11">
+  <div class="section-number">Section 11</div>
+  <h2>Circuit Breakers & Safety Systems</h2>
+
+  <p>Five independent safety mechanisms protect against extreme scenarios:</p>
+
+  <h3>CB-1: Cumulative Hard Cap</h3>
+  <div class="formula-block">
+    <div class="main-formula">require( totalEmitted + E(t) &le; 5,950,000,000 )</div>
+    <div class="comment">// Enforced in EmissionController.mint(). Immutable. Cannot be overridden.</div>
+  </div>
+  <p>When cumulative emission approaches the cap, daily emission is automatically reduced to fit within the remaining allocation. When cap is reached, emission stops permanently.</p>
+
+  <h3>CB-2: Daily Emission Cap</h3>
+  <div class="formula-block">
+    <div class="main-formula">E(t) &le; 2 &times; E_base(t)</div>
+    <div class="comment">// Prevents D(t) &times; R(t) from creating extreme daily spikes</div>
+  </div>
+
+  <h3>CB-3: MIC Price Floor Circuit Breaker</h3>
+  <div class="formula-block">
+    <div class="main-formula">if P_mic(t) &lt; $0.001 &rarr; emission PAUSED</div>
+    <div class="comment">// Activated when TWAP drops below threshold</div>
+    <div class="comment">// Auto-resumes when P_mic recovers above $0.002 for 24h</div>
+  </div>
+
+  <h3>CB-4: Unstake Rate Limit</h3>
+  <div class="formula-block">
+    <div class="main-formula">dailyUnstaked(t) &le; W_max &times; totalStaked(t)</div>
+    <div>&nbsp;&nbsp;W_max = 10% (Admin adjustable via Gnosis Safe 3-of-5)</div>
+    <div class="comment">// Prevents bank runs. Queue-based FIFO when limit reached.</div>
+  </div>
+
+  <h3>CB-5: Emergency Pause</h3>
+  <div class="formula-block">
+    <div class="main-formula">EmissionController.pause() &rarr; requires Gnosis Safe 3-of-5</div>
+    <div class="comment">// Pauses ALL emission, staking, and MICE sales</div>
+    <div class="comment">// Unpause also requires 3-of-5 multisig + 24h timelock</div>
+  </div>
+
+  <div class="highlight-box danger">
+    <span class="label">Escalation Protocol</span>
+    CB-1 and CB-2 are automatic (no human intervention). CB-3 is automatic with auto-recovery. CB-4 is admin-adjustable. CB-5 is manual emergency-only. This layered approach ensures the system self-regulates in normal conditions and only requires human intervention in extreme emergencies.
+  </div>
+</section>
+
+<!-- ============ S12: DAO GOVERNANCE ============ -->
+<section class="section" id="s12">
+  <div class="section-number">Section 12</div>
+  <h2>DAO Governance Guardrails</h2>
+
+  <p>Once the DAO is active (Phase III, Q1-Q2 2026), MFP-NFT holders can vote to adjust emission parameters. All changes are bounded by hard-coded guardrails that cannot be modified even by DAO vote.</p>
+
+  <table class="param-table">
+    <thead>
+      <tr><th>Parameter</th><th>Current</th><th>Min (Hard)</th><th>Max (Hard)</th><th>Max Change/Quarter</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>r_mine (Miner %)</td><td>60%</td><td>50%</td><td>70%</td><td>&plusmn;5%</td></tr>
+      <tr><td>r_dao (DAO %)</td><td>15%</td><td>10%</td><td>20%</td><td>&plusmn;5%</td></tr>
+      <tr><td>r_stake (Staking %)</td><td>20%</td><td>15%</td><td>25%</td><td>&plusmn;5%</td></tr>
+      <tr><td>r_burn (Burn %)</td><td>5%</td><td>3%</td><td>10%</td><td>&plusmn;5%</td></tr>
+      <tr><td>ROI_target</td><td>250%</td><td>100%</td><td>500%</td><td>&plusmn;50%</td></tr>
+      <tr><td>S_target</td><td>40%</td><td>20%</td><td>60%</td><td>&plusmn;10%</td></tr>
+      <tr><td>T_half</td><td>180d</td><td>90d</td><td>365d</td><td>&plusmn;30d</td></tr>
+      <tr><td>P_floor (MICE)</td><td>$300</td><td>$100</td><td>$500</td><td>&plusmn;$100</td></tr>
+      <tr><td>P_ceil (MICE)</td><td>$1,000</td><td>$500</td><td>$5,000</td><td>&plusmn;$500</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Voting Process</h3>
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div class="flow-content"><strong>Proposal:</strong> Any MFP-NFT holder submits parameter change proposal</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div class="flow-content"><strong>Discussion:</strong> 7-day discussion period (Community DAO Hub)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div class="flow-content"><strong>Vote:</strong> 7-day voting period. Quorum: 30% of MFP-NFT holders. Approval: 60% majority</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div class="flow-content"><strong>Timelock:</strong> 48-hour delay before execution (allows users to react)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">5</div>
+    <div class="flow-content"><strong>Execution:</strong> Gnosis Safe 3-of-5 executes the approved change on-chain</div>
+  </div>
+
+  <div class="highlight-box info">
+    <span class="label">MFP-NFT Voting Cooldown</span>
+    After an MFP-NFT is transferred, there is a <strong>7-day voting cooldown</strong> before the new owner can vote. This prevents vote manipulation through rapid NFT transfers (Decision Log Q05).
+  </div>
+</section>
+
+<!-- ============ S13: SIMULATION ============ -->
+<section class="section" id="s13">
+  <div class="section-number">Section 13</div>
+  <h2>3-Year Simulation</h2>
+
+  <p>The following simulation models ecosystem growth under moderate adoption assumptions. All values are projections — actual results depend on market conditions, adoption rate, and MIC price.</p>
+
+  <h3>Assumptions</h3>
+  <table class="param-table">
+    <thead>
+      <tr><th>Parameter</th><th>Month 1</th><th>Month 6</th><th>Month 12</th><th>Month 24</th><th>Month 36</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Active MICE</td><td>5,000</td><td>25,000</td><td>50,000</td><td>75,000</td><td>90,000</td></tr>
+      <tr><td>U(t)</td><td>0.05</td><td>0.25</td><td>0.50</td><td>0.75</td><td>0.90</td></tr>
+      <tr><td>MIC Price (est.)</td><td>$0.005</td><td>$0.02</td><td>$0.05</td><td>$0.10</td><td>$0.15</td></tr>
+      <tr><td>MICE Price</td><td>$335</td><td>$475</td><td>$650</td><td>$825</td><td>$930</td></tr>
+      <tr><td>Staking Ratio</td><td>10%</td><td>25%</td><td>35%</td><td>42%</td><td>45%</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Month 1 — Launch Phase</h3>
+  <div class="sim-grid">
+    <div class="sim-card">
+      <div class="sim-label">Daily Base Emission</div>
+      <div class="sim-value">22.9M MIC</div>
+      <div class="sim-detail">E_base(15) &asymp; 21.2M (mid-month avg)</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">D(t) Factor</div>
+      <div class="sim-value">0.55</div>
+      <div class="sim-detail">U = 0.05, D = 0.5 + 0.05</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Pre-R(t) Emission</div>
+      <div class="sim-value">11.7M MIC/day</div>
+      <div class="sim-detail">21.2M &times; 0.55</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Miner ROI (before R)</div>
+      <div class="sim-value">~756%</div>
+      <div class="sim-detail">High due to low MICE price &amp; few miners</div>
+    </div>
+  </div>
+  <p>R(t) = 250/756 = 0.33, clamped to <strong>0.50</strong>. Adjusted daily emission: 11.7M &times; 0.5 = <strong>5.85M MIC/day</strong>. Per MICE: 5.85M &times; 60% / 5,000 = <strong>702 MIC/day</strong>. Monthly per MICE: ~21,060 MIC. At $0.005 = <strong>$105/month</strong> on a $335 MICE. Annualized: <strong>~376% ROI</strong>.</p>
+
+  <div class="highlight-box success">
+    <span class="label">Month 1 Assessment</span>
+    Even with R(t) clamped at 0.50 (maximum reduction), early miners still earn well above target ROI. This is by design — early adopters should be rewarded. As more MICE are purchased and MIC price stabilizes, ROI will converge toward 250%.
+  </div>
+
+  <h3>Month 6 — Growth Phase</h3>
+  <div class="sim-grid">
+    <div class="sim-card">
+      <div class="sim-label">E_base (Day 180)</div>
+      <div class="sim-value">11.45M MIC</div>
+      <div class="sim-detail">Halved from launch</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">D(t) Factor</div>
+      <div class="sim-value">0.75</div>
+      <div class="sim-detail">25K MICE active</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Pre-R Emission</div>
+      <div class="sim-value">8.59M MIC/day</div>
+      <div class="sim-detail">11.45M &times; 0.75</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Target Equilibrium</div>
+      <div class="sim-value">250% ROI</div>
+      <div class="sim-detail">R(t) actively regulating</div>
+    </div>
+  </div>
+  <p>Target daily per MICE for 250% ROI at $0.02 MIC, $475 MICE: annual = 250% &times; $475 / $0.02 = 59,375 MIC. Daily = 164.9 MIC. Required miner emission: 164.9 &times; 25,000 = 4.12M MIC/day. Total required: 4.12M / 60% = <strong>6.87M MIC/day</strong>. R(t) = 6.87M / 8.59M = <strong>0.80</strong>.</p>
+
+  <h3>Month 12 — Maturity Phase</h3>
+  <div class="sim-grid">
+    <div class="sim-card">
+      <div class="sim-label">E_base (Day 360)</div>
+      <div class="sim-value">5.73M MIC</div>
+      <div class="sim-detail">Quarter of launch value</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">D(t) Factor</div>
+      <div class="sim-value">1.00</div>
+      <div class="sim-detail">50K MICE = balanced</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Daily Emission</div>
+      <div class="sim-value">~3.5M MIC</div>
+      <div class="sim-detail">After R(t) regulation</div>
+    </div>
+    <div class="sim-card">
+      <div class="sim-label">Cumulative Emitted</div>
+      <div class="sim-value">~3.2B MIC</div>
+      <div class="sim-detail">54% of mining pool</div>
+    </div>
+  </div>
+  <p>Target daily per MICE for 250% ROI at $0.05 MIC, $650 MICE: annual = 250% &times; $650 / $0.05 = 32,500 MIC. Daily = 90.3 MIC. Required miner emission: 90.3 &times; 50,000 = 4.51M. Total: 4.51M / 60% = <strong>7.52M</strong>. But E_base &times; D = 5.73M, so R(t) = 7.52M / 5.73M = 1.31. Emission slightly boosted to maintain ROI target. This demonstrates the self-regulation: as base emission decays, R(t) compensates to keep mining attractive.</p>
+
+  <h3>Month 24+ — Long-Term</h3>
+  <p>By month 24, E_base has decayed to ~358K MIC/day (1.56% of launch). With D(t) = 1.25 and R(t) likely capped at 2.0, maximum daily emission is ~895K MIC. At 75K MICE and $0.10 MIC price, this yields approximately 7.2 MIC/MICE/day = 2,592 MIC/year = $259/year on an $825 MICE — <strong>~31% ROI</strong>. This is below the 250% target, indicating the system has transitioned from high-growth to sustainable phase. By this point, staking rewards and ecosystem utility (Mission Learn/Work/Social) become the primary value drivers rather than mining emission.</p>
+
+  <div class="highlight-box warning">
+    <span class="label">Long-Term Sustainability</span>
+    The aggressive 180-day halving means mining-based ROI will naturally decline below target after ~18 months. This is intentional: it forces the ecosystem to transition from emission-dependent value to utility-driven value. The DAO can vote to adjust T_half (up to 365 days) if the transition needs smoothing.
+  </div>
+</section>
+
+<!-- ============ S14: SMART CONTRACT ARCHITECTURE ============ -->
+<section class="section" id="s14">
+  <div class="section-number">Section 14</div>
+  <h2>Smart Contract Architecture</h2>
+
+  <p>The Adaptive Emission Engine is implemented across 5 core contracts on BSC (BNB Smart Chain):</p>
+
+  <table class="param-table">
+    <thead>
+      <tr><th>Contract</th><th>Responsibility</th><th>Admin</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>EmissionController</code></td>
+        <td>Master formula: computes E(t) = E_base &times; D(t) &times; R(t). Mints MIC via MINTER_ROLE. Enforces circuit breakers CB-1, CB-2, CB-3. Distributes to 4 streams.</td>
+        <td>Gnosis Safe 3/5</td>
+      </tr>
+      <tr>
+        <td><code>MICESale</code></td>
+        <td>Dynamic MICE pricing. Handles USDT/BNB payments. Mints ERC-1155 MICE licenses. Manages expiry via lazy evaluation. Revenue split (50/30/20).</td>
+        <td>Gnosis Safe 3/5</td>
+      </tr>
+      <tr>
+        <td><code>StakingVault</code></td>
+        <td>MIC staking with NFT tier multipliers. Time-lock management. Reward distribution from 20% stream. Unstake rate limiting (CB-4). StakingBoost calculation.</td>
+        <td>Gnosis Safe 3/5</td>
+      </tr>
+      <tr>
+        <td><code>HindexOracle</code></td>
+        <td>Computes Hindex scores for miners. Feeds into EmissionController for per-miner reward distribution. Updated via off-chain computation with on-chain verification.</td>
+        <td>Gnosis Safe 3/5</td>
+      </tr>
+      <tr>
+        <td><code>GovernanceConfig</code></td>
+        <td>Stores all adjustable parameters with guardrails. Accepts DAO vote results. Enforces MIN/MAX bounds and quarterly change limits. 48h timelock.</td>
+        <td>DAO + Timelock</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Daily Emission Cycle</h3>
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div class="flow-content"><strong>Trigger:</strong> Any user calls <code>EmissionController.emitDaily()</code> (public, gasless for caller via meta-tx)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div class="flow-content"><strong>Compute:</strong> Contract reads U(t) from MICESale, P_mic from TWAP oracle, calculates E(t)</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div class="flow-content"><strong>Mint:</strong> MIC.mint(E(t)) via MINTER_ROLE</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div class="flow-content"><strong>Split:</strong> 60% &rarr; MinerRewardPool, 15% &rarr; DAO Treasury, 20% &rarr; StakingVault, 5% &rarr; burn address</div>
+  </div>
+  <div class="flow-arrow">&darr;</div>
+  <div class="flow-step">
+    <div class="flow-num">5</div>
+    <div class="flow-content"><strong>Claim:</strong> Miners call <code>claim()</code> to receive their Hindex-weighted share. Stakers accrue automatically.</div>
+  </div>
+
+  <div class="highlight-box info">
+    <span class="label">Security</span>
+    All contracts use OpenZeppelin's <code>ReentrancyGuard</code>, <code>Pausable</code>, and <code>AccessControl</code>. MIC token's <code>MINTER_ROLE</code> is granted ONLY to EmissionController. No EOA can mint MIC directly. All admin functions require Gnosis Safe 3-of-5 multisig.
+  </div>
+</section>
+
+<!-- ============ S15: MATHEMATICAL PROOFS ============ -->
+<section class="section" id="s15">
+  <div class="section-number">Section 15</div>
+  <h2>Appendix: Mathematical Proofs</h2>
+
+  <h3>A. Total Emission Convergence</h3>
+  <div class="formula-block">
+    <div class="sub">Proof that base emission sums to S_mine:</div>
+    <br>
+    <div>&nbsp;&nbsp;&int;<sub>0</sub><sup>&infin;</sup> E_0 &times; 2<sup>(-t/T_half)</sup> dt</div>
+    <div>&nbsp;&nbsp;= E_0 &times; [-T_half / ln(2) &times; 2<sup>(-t/T_half)</sup>]<sub>0</sub><sup>&infin;</sup></div>
+    <div>&nbsp;&nbsp;= E_0 &times; T_half / ln(2) &times; [1 - 0]</div>
+    <div>&nbsp;&nbsp;= E_0 &times; T_half / ln(2)</div>
+    <br>
+    <div>&nbsp;&nbsp;Given E_0 = S_mine &times; ln(2) / T_half:</div>
+    <div>&nbsp;&nbsp;= (S_mine &times; ln(2) / T_half) &times; T_half / ln(2)</div>
+    <div>&nbsp;&nbsp;= <strong>S_mine = 5,950,000,000 MIC</strong> &nbsp;&checkmark;</div>
+  </div>
+
+  <h3>B. ROI Equilibrium Stability</h3>
+  <div class="formula-block">
+    <div class="sub">At equilibrium, ROI_current = ROI_target, so R(t) = 1.0.</div>
+    <div class="sub">Perturbation analysis:</div>
+    <br>
+    <div>&nbsp;&nbsp;If MIC price increases by &delta;:</div>
+    <div>&nbsp;&nbsp;&rarr; ROI_current increases</div>
+    <div>&nbsp;&nbsp;&rarr; R(t) = ROI_target / ROI_current &lt; 1.0</div>
+    <div>&nbsp;&nbsp;&rarr; Emission decreases</div>
+    <div>&nbsp;&nbsp;&rarr; Less MIC supply &rarr; supports price (positive feedback)</div>
+    <div>&nbsp;&nbsp;&rarr; But fewer MIC minted &rarr; lower absolute rewards</div>
+    <div>&nbsp;&nbsp;&rarr; Some miners exit &rarr; fewer MICE &rarr; D(t) drops</div>
+    <div>&nbsp;&nbsp;&rarr; Emission further reduces &rarr; scarcity increases</div>
+    <div>&nbsp;&nbsp;<strong>Result: System finds new equilibrium at higher price</strong></div>
+    <br>
+    <div>&nbsp;&nbsp;If MIC price decreases by &delta;:</div>
+    <div>&nbsp;&nbsp;&rarr; ROI_current decreases</div>
+    <div>&nbsp;&nbsp;&rarr; R(t) &gt; 1.0</div>
+    <div>&nbsp;&nbsp;&rarr; Emission increases (more MIC per miner)</div>
+    <div>&nbsp;&nbsp;&rarr; Higher absolute rewards attract new miners</div>
+    <div>&nbsp;&nbsp;&rarr; More MICE purchased &rarr; D(t) rises</div>
+    <div>&nbsp;&nbsp;&rarr; MICE revenue increases (buying pressure on MIC via buyback)</div>
+    <div>&nbsp;&nbsp;<strong>Result: System finds new equilibrium at supported price</strong></div>
+  </div>
+
+  <h3>C. Auto-Burn Impact Over Lifecycle</h3>
+  <div class="formula-block">
+    <div class="sub">Total auto-burned MIC (assuming D &times; R &asymp; 1.0 on average):</div>
+    <div>&nbsp;&nbsp;Total_burn = 5% &times; S_mine = 0.05 &times; 5,950,000,000</div>
+    <div>&nbsp;&nbsp;= <strong>297,500,000 MIC permanently removed</strong></div>
+    <br>
+    <div class="sub">Combined with MICE revenue buyback-and-burn (20% of MICE sales):</div>
+    <div>&nbsp;&nbsp;If 100K MICE sold at avg $600 = $60M revenue</div>
+    <div>&nbsp;&nbsp;20% buyback = $12M of MIC purchased and burned</div>
+    <div>&nbsp;&nbsp;At avg $0.05/MIC = 240M additional MIC burned</div>
+    <br>
+    <div>&nbsp;&nbsp;<strong>Total deflationary impact: ~537.5M MIC (7.7% of total supply)</strong></div>
+  </div>
+
+  <h3>D. Emission Split Sum Invariant</h3>
+  <div class="formula-block">
+    <div class="sub">Invariant enforced in GovernanceConfig:</div>
+    <div>&nbsp;&nbsp;r_mine + r_dao + r_stake + r_burn = 100%</div>
+    <br>
+    <div class="sub">Guardrail bounds:</div>
+    <div>&nbsp;&nbsp;min(r_mine) + min(r_dao) + min(r_stake) + min(r_burn)</div>
+    <div>&nbsp;&nbsp;= 50% + 10% + 15% + 3% = 78% &lt; 100% &nbsp;<span class="comment">// Feasible</span></div>
+    <br>
+    <div>&nbsp;&nbsp;max(r_mine) + max(r_dao) + max(r_stake) + max(r_burn)</div>
+    <div>&nbsp;&nbsp;= 70% + 20% + 25% + 10% = 125% &gt; 100%</div>
+    <div class="comment">// Not all maxes can be reached simultaneously — enforced by sum = 100% constraint</div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="text-align:center; padding:40px 20px; border-top:1px solid var(--border); margin-top:40px;">
+  <p style="font-family:'Cinzel',serif; font-size:18px; color:var(--gold); letter-spacing:2px; margin-bottom:8px;">MISSION CHAIN</p>
+  <p style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:1px;">Adaptive Emission Engine v1.0 &nbsp;&bull;&nbsp; Confidential &nbsp;&bull;&nbsp; 31 March 2026</p>
+  <p style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:1px; margin-top:4px;">Co-Founders: Thani Dusit &amp; AI Co-Founder</p>
+</footer>
+
+</div>
+</body>
+</html>

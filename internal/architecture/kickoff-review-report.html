@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Chain — Kickoff Review Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --bg:        #06040F;
+      --card-1:    #1A1030;
+      --card-2:    #221540;
+      --critical:  #EF4444;
+      --high:      #F97316;
+      --medium:    #EAB308;
+      --low:       #22C55E;
+      --purple:    #5B2D9E;
+      --cyan:      #06B6D4;
+      --gold:      #C9A84C;
+      --text:      #E2D9F3;
+      --muted:     #9B8BC0;
+      --border:    rgba(91,45,158,0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0D0820 0%, #120B2E 50%, #0A0618 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 40px 50px;
+      text-align: center;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(91,45,158,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(6,182,212,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+    .header-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #E2D9F3 0%, var(--cyan) 45%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .header-subtitle {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 36px;
+    }
+    .stat-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      border: 1px solid;
+    }
+    .stat-pill.critical { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); color: var(--critical); }
+    .stat-pill.high     { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.4); color: var(--high); }
+    .stat-pill.medium   { background: rgba(234,179,8,0.12);  border-color: rgba(234,179,8,0.4);  color: var(--medium); }
+    .stat-pill.low      { background: rgba(6,182,212,0.10);  border-color: rgba(6,182,212,0.35); color: var(--cyan); }
+    .stat-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ─── SECTION ─── */
+    .section { margin-bottom: 56px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(16px, 3vw, 22px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+    .section-badge {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .badge-critical { background: rgba(239,68,68,0.15); color: var(--critical); border: 1px solid rgba(239,68,68,0.3); }
+    .badge-high     { background: rgba(249,115,22,0.15); color: var(--high);     border: 1px solid rgba(249,115,22,0.3); }
+    .badge-gold     { background: rgba(201,168,76,0.15); color: var(--gold);     border: 1px solid rgba(201,168,76,0.3); }
+    .badge-cyan     { background: rgba(6,182,212,0.12);  color: var(--cyan);     border: 1px solid rgba(6,182,212,0.3);  }
+    .badge-purple   { background: rgba(91,45,158,0.20);  color: #A78BFA;         border: 1px solid rgba(91,45,158,0.4);  }
+
+    /* ─── ACCORDION ─── */
+    details { margin-bottom: 12px; }
+    details > summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 8px;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    details > summary::-webkit-details-marker { display: none; }
+    details > summary::before {
+      content: '▶';
+      font-size: 10px;
+      color: var(--cyan);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    details[open] > summary::before { transform: rotate(90deg); }
+    details > summary:hover { background: var(--card-2); border-color: rgba(91,45,158,0.6); }
+    .accordion-body {
+      padding: 24px 20px;
+      background: rgba(26,16,48,0.5);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+
+    /* ─── CARDS GRID ─── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+      gap: 16px;
+    }
+    @media(max-width: 520px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+
+    .issue-card {
+      background: var(--card-1);
+      border-radius: 10px;
+      padding: 22px 24px;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+    }
+    .issue-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 10px 0 0 10px;
+    }
+    .issue-card.critical { border-color: rgba(239,68,68,0.3); }
+    .issue-card.critical::before { background: var(--critical); }
+    .issue-card.high     { border-color: rgba(249,115,22,0.3); }
+    .issue-card.high::before     { background: var(--high); }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .tag-critical { background: rgba(239,68,68,0.15); color: var(--critical); }
+    .tag-high     { background: rgba(249,115,22,0.15); color: var(--high); }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #F5F0FF;
+    }
+    .card-body { font-size: 14.5px; color: var(--text); line-height: 1.6; }
+    .card-body p { margin-bottom: 8px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    .fix-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--low);
+      text-transform: uppercase;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .fix-text {
+      font-size: 13.5px;
+      color: #A7F3C8;
+      line-height: 1.55;
+    }
+
+    /* ─── EXEC SUMMARY ─── */
+    .exec-summary p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .exec-summary p:last-child { margin-bottom: 0; }
+    .exec-summary strong { color: #F5F0FF; }
+    .verdict-box {
+      background: var(--card-2);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 15px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .findings-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .findings-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+    }
+    .findings-list li .fi-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ─── ERRORS ─── */
+    .error-card {
+      background: var(--card-1);
+      border: 1px solid rgba(234,179,8,0.25);
+      border-left: 4px solid var(--medium);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 14px;
+    }
+    .error-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--medium);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .error-title {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #FEF3C7;
+      margin-bottom: 10px;
+    }
+    .error-detail { font-size: 14.5px; color: var(--text); }
+    .error-action {
+      margin-top: 10px;
+      font-size: 13.5px;
+      color: var(--gold);
+      padding-left: 10px;
+      border-left: 2px solid var(--gold);
+    }
+    .action-keyword {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      margin-right: 4px;
+    }
+
+    /* ─── QUESTIONS ─── */
+    .q-category { margin-bottom: 28px; }
+    .q-cat-header {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .q-cat-tokenomics { background: rgba(6,182,212,0.12); color: var(--cyan); }
+    .q-cat-arch       { background: rgba(91,45,158,0.18); color: #A78BFA; }
+    .q-cat-referral   { background: rgba(249,115,22,0.12); color: var(--high); }
+    .q-cat-infra      { background: rgba(22,197,94,0.10); color: var(--low); }
+
+    .q-list { list-style: none; display: grid; gap: 10px; }
+    .q-item {
+      display: flex;
+      gap: 14px;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      align-items: flex-start;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .q-item:hover { background: var(--card-2); border-color: rgba(91,45,158,0.55); }
+    .q-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .q-text { font-size: 15px; line-height: 1.55; }
+    .q-note { font-size: 12.5px; color: var(--muted); margin-top: 4px; font-family: 'Space Mono', monospace; }
+
+    /* ─── BUILD ORDER ─── */
+    .build-order { counter-reset: build-step; display: grid; gap: 12px; }
+    .build-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .build-step:hover { border-color: rgba(91,45,158,0.6); }
+    .build-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--purple);
+      flex-shrink: 0;
+      width: 28px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .build-info { flex: 1; }
+    .build-name {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #F5F0FF;
+      margin-bottom: 3px;
+    }
+    .build-dep { font-size: 13px; color: var(--muted); font-family: 'Space Mono', monospace; }
+    .build-connector {
+      position: absolute;
+      left: 30px;
+      bottom: -12px;
+      width: 1px;
+      height: 12px;
+      background: rgba(91,45,158,0.4);
+    }
+    .build-step:last-child .build-connector { display: none; }
+
+    /* ─── TEST ROLES ─── */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .role-card {
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 20px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .role-card:hover { border-color: rgba(91,45,158,0.6); transform: translateY(-2px); }
+    .role-icon { font-size: 30px; margin-bottom: 10px; }
+    .role-title {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #F5F0FF;
+    }
+    .role-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .role-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+    .role-scenarios { font-size: 13px; color: var(--text); line-height: 1.6; }
+    .role-superadmin .role-count { color: var(--cyan); }
+    .role-admin      .role-count { color: #A78BFA; }
+    .role-user       .role-count { color: var(--low); }
+    .role-attacker   .role-count { color: var(--critical); }
+
+    /* ─── SECURITY CHECKLIST ─── */
+    .checklist { display: grid; gap: 10px; }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--card-1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .check-box {
+      width: 20px; height: 20px;
+      border: 2px solid var(--purple);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .check-text { flex: 1; }
+    .check-text code {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      background: rgba(91,45,158,0.2);
+      color: #C4B5FD;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    /* ─── NEXT STEPS ─── */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .action-card {
+      background: var(--card-1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-top: 3px solid var(--gold);
+      border-radius: 8px;
+      padding: 24px 22px;
+    }
+    .action-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .action-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #FEF3C7;
+      margin-bottom: 12px;
+    }
+    .action-body { font-size: 14.5px; color: var(--text); line-height: 1.65; }
+    .action-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    /* ─── COMPLETION BOX ─── */
+    .completion-box {
+      background: linear-gradient(135deg, rgba(91,45,158,0.15), rgba(6,182,212,0.08));
+      border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 10px;
+      padding: 20px 28px;
+      text-align: center;
+      margin-top: 40px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--cyan);
+      letter-spacing: 1px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 8px 0 28px;
+    }
+
+    /* ─── HIGHLIGHT ─── */
+    .hl-red    { color: var(--critical); font-weight: 600; }
+    .hl-orange { color: var(--high); font-weight: 600; }
+    .hl-gold   { color: var(--gold); font-weight: 600; }
+    .hl-cyan   { color: var(--cyan); font-weight: 600; }
+    .hl-green  { color: var(--low); font-weight: 600; }
+
+    /* ─── PRINT ─── */
+    @media print {
+      body { background: white; color: #111; }
+      .site-header { background: #f0f0f0; }
+      details[open] summary::before { content: '▼'; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <p class="header-eyebrow">▸ CONFIDENTIAL — INTERNAL REVIEW DOCUMENT ◂</p>
+  <h1 class="header-title">Mission Chain — Kickoff Review Report</h1>
+  <p class="header-subtitle">Pre-Code Architecture &amp; Security Audit &nbsp;|&nbsp; March 2026</p>
+  <div class="stat-bar">
+    <div class="stat-pill critical"><span class="dot"></span> 4 CRITICAL Issues</div>
+    <div class="stat-pill high"><span class="dot"></span> 8 HIGH Issues</div>
+    <div class="stat-pill medium"><span class="dot"></span> 17 Clarifications Needed</div>
+    <div class="stat-pill low"><span class="dot"></span> 38 Test Scenarios</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════ -->
+<main class="container">
+
+  <!-- ── SECTION 1: EXECUTIVE SUMMARY ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01 /</span>
+      <h2 class="section-title">Executive Summary</h2>
+      <span class="section-badge badge-cyan">OVERVIEW</span>
+    </div>
+
+    <details open>
+      <summary>Review Overview &amp; Overall Verdict</summary>
+      <div class="accordion-body exec-summary">
+        <p>
+          The Mission Chain platform specification has been subjected to an independent, multi-agent review process
+          involving three specialized AI agents: the <strong>Architect Agent</strong> (system design &amp; contract structure),
+          the <strong>Security Reviewer Agent</strong> (threat modeling &amp; vulnerability assessment), and the
+          <strong>Logic + QA Agent</strong> (spec consistency, math verification &amp; test planning). This document
+          synthesizes all findings into a unified report for leadership review.
+        </p>
+
+        <div class="verdict-box">
+          ⚠ OVERALL VERDICT: Architecture is well-conceived but <strong>NOT READY TO CODE</strong> —
+          4 critical blockers must be resolved before any smart contract development begins.
+        </div>
+
+        <p>
+          The core tokenomics model, dual-token architecture (MIC + MICE), and phased rollout strategy demonstrate
+          strong foundational thinking. The referral system is well-structured, and the NFT-based incentive layer
+          adds meaningful differentiation. However, multiple critical security vulnerabilities were identified that
+          could result in catastrophic fund loss or protocol manipulation if deployed in their current form.
+          Additionally, a confirmed mathematical error in the vesting schedule spec must be corrected before
+          any vesting contract is written.
+        </p>
+
+        <ul class="findings-list">
+          <li><span class="fi-dot" style="background:var(--critical)"></span>
+            <span><span class="hl-red">4 CRITICAL security issues</span> identified: oracle manipulation, reentrancy vulnerability, admin single point of failure, and L(t) liquidity manipulation</span>
+          </li>
+          <li><span class="fi-dot" style="background:var(--medium)"></span>
+            <span><span class="hl-gold">1 confirmed spec ERROR</span> in vesting math — White Paper implies month 38 completion; verified calculation yields month 42</span>
+          </li>
+          <li><span class="fi-dot" style="background:var(--cyan)"></span>
+            <span><span class="hl-cyan">17 clarifying questions</span> must be answered before coding begins — several block 4+ downstream contracts</span>
+          </li>
+          <li><span class="fi-dot" style="background:var(--low)"></span>
+            <span><span class="hl-green">38 test scenarios</span> designed across 4 user roles (Super Admin, Admin, Normal User, Attacker)</span>
+          </li>
+          <li><span class="fi-dot" style="background:#A78BFA"></span>
+            <span>Build order defined with full dependency graph — 11 components, sequenced to prevent circular dependency issues</span>
+          </li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 2: CRITICAL ISSUES ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02 /</span>
+      <h2 class="section-title">Critical Issues</h2>
+      <span class="section-badge badge-critical">MUST FIX BEFORE ANY DEPLOYMENT</span>
+    </div>
+
+    <details open>
+      <summary style="color: var(--critical);">🔴 4 Critical Security Vulnerabilities</summary>
+      <div class="accordion-body">
+        <div class="cards-grid">
+
+          <!-- CRIT-01 -->
+          <div class="issue-card critical">
+            <div class="card-tag tag-critical">CRIT-01</div>
+            <div class="card-title">Oracle Manipulation on MICE Price</div>
+            <div class="card-body">
+              <p>Flash loan attack on spot price oracle allows an attacker to temporarily crash or inflate the MICE/USDT price reference, enabling them to purchase MICE licenses at approximately <span class="hl-red">1/10th the real cost</span>.</p>
+              <p>Attack vector: Borrow large flash loan → drain DEX pool → manipulate spot price → execute purchase → repay loan. Entire attack executes within a single transaction block.</p>
+              <div class="fix-label">▸ REQUIRED FIX</div>
+              <div class="fix-text">Use 24h TWAP minimum + 10% deviation circuit breaker + Chainlink secondary oracle as fallback. Never use spot price for economic calculations.</div>
+            </div>
+          </div>
+
+          <!-- CRIT-02 -->
+          <div class="issue-card critical">
+            <div class="card-tag tag-critical">CRIT-02</div>
+            <div class="card-title">Reentrancy in Reward Distribution</div>
+            <div class="card-body">
+              <p>MICE License and NFT Staking contracts are vulnerable to reentrancy attacks if contract state (balances, claimed flags) is updated <span class="hl-red">after</span> the token transfer call rather than before.</p>
+              <p>Attack vector: Malicious token contract calls back into reward distribution during transfer, claiming rewards multiple times before balance is updated.</p>
+              <div class="fix-label">▸ REQUIRED FIX</div>
+              <div class="fix-text">Enforce Checks-Effects-Interactions pattern strictly. Add OpenZeppelin ReentrancyGuard on ALL functions that transfer tokens or ETH/BNB.</div>
+            </div>
+          </div>
+
+          <!-- CRIT-03 -->
+          <div class="issue-card critical">
+            <div class="card-tag tag-critical">CRIT-03</div>
+            <div class="card-title">Admin Single Point of Failure</div>
+            <div class="card-body">
+              <p>Current design implies a single admin private key controls all privileged functions. One compromised key equals <span class="hl-red">full protocol takeover</span>. This mirrors the $625M Ronin Network attack pattern.</p>
+              <p>Risk: Treasury drain, parameter manipulation, minting abuse, emergency function misuse — all executable from a single compromised EOA.</p>
+              <div class="fix-label">▸ REQUIRED FIX</div>
+              <div class="fix-text">Gnosis Safe 3-of-5 multisig for all admin functions + TimelockController on treasury + OpenZeppelin AccessControl (replace Ownable) for role-based permissions.</div>
+            </div>
+          </div>
+
+          <!-- CRIT-04 -->
+          <div class="issue-card critical">
+            <div class="card-tag tag-critical">CRIT-04</div>
+            <div class="card-title">L(t) Liquidity Manipulation</div>
+            <div class="card-body">
+              <p>The L(t) multiplier in the MICE reward formula can be manipulated: a whale temporarily provides massive DEX liquidity to <span class="hl-red">artificially inflate TWAP7d</span>, extracts excess MICE rewards, then withdraws liquidity.</p>
+              <p>This creates a risk-free arbitrage loop exploiting the reward amplification mechanism at the expense of the protocol treasury and other participants.</p>
+              <div class="fix-label">▸ REQUIRED FIX</div>
+              <div class="fix-text">Cap L(t) multiplier at max 2× + enforce minimum liquidity depth floor to qualify + restrict to whitelisted trading pairs only.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 3: SPEC ERRORS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03 /</span>
+      <h2 class="section-title">Spec Errors &amp; Contradictions</h2>
+      <span class="section-badge badge-gold">5 ERRORS FOUND</span>
+    </div>
+
+    <details open>
+      <summary>📋 Specification Inconsistencies Requiring Resolution</summary>
+      <div class="accordion-body">
+
+        <div class="error-card" style="border-left-color: var(--critical);">
+          <div class="error-tag" style="color: var(--critical);">ERROR #1 — BLOCKING</div>
+          <div class="error-title">Vesting Math Discrepancy</div>
+          <div class="error-detail">
+            White Paper states: 6-month cliff + 10% unlock + 2.5%/month linear vesting.<br/>
+            <strong>Verified math:</strong> 10% + (36 × 2.5%) = 10% + 90% = 100% → completes at <span class="hl-red">month 42</span>, <em>not month 38</em> as implied.
+          </div>
+          <div class="error-action">
+            <span class="action-keyword">ACTION:</span> Thomas must confirm the exact intended vesting schedule before smart contract development begins. If 36-month vest intended: update to 10% cliff + 3.33%/month.
+          </div>
+        </div>
+
+        <div class="error-card">
+          <div class="error-tag">ERROR #2</div>
+          <div class="error-title">Pre-Sale USDT Allocation Undefined</div>
+          <div class="error-detail">
+            After F1 (5%) + F2 (2%) referral payouts (USDT) are distributed, the remaining Pre-Sale USDT proceeds split is: <strong>50% Treasury, 30% Liquidity, 20% Buyback &amp; Burn</strong> (aligned with MICE revenue split model).
+          </div>
+          <div class="error-action">
+            <span class="action-keyword">ACTION:</span> Define the exact split: treasury %, liquidity provision %, operations %. This must be encoded in the smart contract.
+          </div>
+        </div>
+
+        <div class="error-card">
+          <div class="error-tag">ERROR #3</div>
+          <div class="error-title">Vesting Creation: Manual vs Automatic</div>
+          <div class="error-detail">
+            Admin DApp UI implies vesting schedules are created manually by an admin after purchase. Correct protocol design requires vesting to <strong>auto-create atomically</strong> at purchase confirmation to prevent gaps or omissions.
+          </div>
+          <div class="error-action">
+            <span class="action-keyword">ACTION:</span> Confirm that auto-creation on purchase is the intended behavior. Update Admin DApp design to reflect read-only vesting view (not creation).
+          </div>
+        </div>
+
+        <div class="error-card">
+          <div class="error-tag">ERROR #4</div>
+          <div class="error-title">MIC Burn Source Undefined</div>
+          <div class="error-detail">
+            Admin dashboard prominently displays a "MIC Burned" metric, but <strong>no burn mechanism</strong> is defined anywhere in the specification — no trigger condition, no amount formula, no authority.
+          </div>
+          <div class="error-action">
+            <span class="action-keyword">ACTION:</span> Define what triggers burns (Buy &amp; Burn mechanism? Fee burns? Manual treasury burns?), the formula, and update spec before contract development.
+          </div>
+        </div>
+
+        <div class="error-card">
+          <div class="error-tag">ERROR #5</div>
+          <div class="error-title">DAO Governance Asymmetry</div>
+          <div class="error-detail">
+            Admin DApp includes a DAO Proposal Management module (Phase 2 feature). User DApp has <strong>no corresponding DAO screen</strong> — users cannot view, vote on, or participate in governance proposals.
+          </div>
+          <div class="error-action">
+            <span class="action-keyword">ACTION:</span> Add a DAO placeholder screen to the User DApp design. Even if governance is Phase 2, the UI component should be scaffolded from the start.
+          </div>
+        </div>
+
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 4: CLARIFYING QUESTIONS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">04 /</span>
+      <h2 class="section-title">17 Clarifying Questions</h2>
+      <span class="section-badge badge-cyan">ANSWERS REQUIRED BEFORE CODING</span>
+    </div>
+
+    <details open>
+      <summary>❓ Open Questions — Grouped by Domain</summary>
+      <div class="accordion-body">
+
+        <!-- Tokenomics -->
+        <div class="q-category">
+          <div class="q-cat-header q-cat-tokenomics">💎 Tokenomics &amp; Contracts (6 questions)</div>
+          <ul class="q-list">
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q01</span>
+              <div>
+                <div class="q-text">Is the 85% mining supply <strong>pre-minted at deploy</strong> or <strong>dynamically minted</strong> as rewards are distributed?</div>
+                <div class="q-note">// Determines whether mint() function is needed post-deploy. Blocks MIC contract architecture.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q02</span>
+              <div>
+                <div class="q-text">Define the <strong>L(t) formula completely</strong>: exact inputs, output range, oracle data source, and update frequency.</div>
+                <div class="q-note">// Critical for MICE reward contract. Undefined formula = uncodeable contract.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q03</span>
+              <div>
+                <div class="q-text"><strong>MICE License: ERC-1155 vs standalone ERC-20</strong> — final architecture decision required.</div>
+                <div class="q-note">// This single decision blocks 4 other dependent contracts. Must resolve first.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q04</span>
+              <div>
+                <div class="q-text">What <strong>triggers MFP-NFT minting</strong>? Specific criteria, threshold values, and approval process?</div>
+                <div class="q-note">// Required for MFP-NFT contract logic and Admin DApp workflow.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q05</span>
+              <div>
+                <div class="q-text">Is <strong>MFP-NFT soulbound</strong> (non-transferable ERC-5192) or transferable?</div>
+                <div class="q-note">// Determines if transfer() override is needed. Affects DAO voting weight security.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--cyan)">Q06</span>
+              <div>
+                <div class="q-text">NFT Staking reward formula — <strong>fixed APR, dynamic, or tied to Hindex</strong>?</div>
+                <div class="q-note">// Core staking contract logic. Cannot be written without this spec.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Architecture -->
+        <div class="q-category">
+          <div class="q-cat-header q-cat-arch">🏗 Architecture (5 questions)</div>
+          <ul class="q-list">
+            <li class="q-item">
+              <span class="q-num" style="color:#A78BFA">Q07</span>
+              <div>
+                <div class="q-text"><strong>Separate Vesting contract</strong> or embedded within Seed Sale contract?</div>
+                <div class="q-note">// Affects deploy script, upgrade path, and contract interaction surface.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:#A78BFA">Q08</span>
+              <div>
+                <div class="q-text">Seed Round payment accepted in <strong>USDT only, BNB only, or both</strong>?</div>
+                <div class="q-note">// Affects price oracle requirements and payment handling logic.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:#A78BFA">Q09</span>
+              <div>
+                <div class="q-text">KYC enforcement: <strong>hard on-chain gate</strong> (allowlist mapping) or <strong>soft off-chain validation</strong>?</div>
+                <div class="q-note">// Hard gate = KYC provider must have on-chain integration. Affects contract complexity.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:#A78BFA">Q10</span>
+              <div>
+                <div class="q-text">MICE License expiry: <strong>auto-burn on-chain</strong> (via keeper/cron) or <strong>off-chain state update</strong>?</div>
+                <div class="q-note">// On-chain expiry requires Chainlink Automation or similar. Different complexity level.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:#A78BFA">Q11</span>
+              <div>
+                <div class="q-text">Hindex calculation: <strong>computed on-chain</strong> or computed off-chain and <strong>submitted via oracle</strong>?</div>
+                <div class="q-note">// On-chain = gas-intensive but trustless. Off-chain = centralization risk.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Referral -->
+        <div class="q-category">
+          <div class="q-cat-header q-cat-referral">🔗 Referral System (3 questions)</div>
+          <ul class="q-list">
+            <li class="q-item">
+              <span class="q-num" style="color:var(--high)">Q12</span>
+              <div>
+                <div class="q-text">Does the referral system apply to <strong>Seed Round</strong> as well, or <strong>Pre-Sale only</strong>?</div>
+                <div class="q-note">// Affects Referral Registry contract scope and Seed Sale contract integration.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--high)">Q13</span>
+              <div>
+                <div class="q-text">Referral commissions: <strong>paid immediately on-chain</strong> at purchase time, or <strong>batched/off-chain</strong>?</div>
+                <div class="q-note">// Immediate = real-time payout, higher gas. Batched = escrow contract needed.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--high)">Q14</span>
+              <div>
+                <div class="q-text">What mechanism <strong>prevents self-referral</strong> by the same KYC entity using multiple wallets?</div>
+                <div class="q-note">// Critical anti-abuse control. KYC linkage required. Defines on-chain enforcement approach.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Infrastructure -->
+        <div class="q-category">
+          <div class="q-cat-header q-cat-infra">⚙ Infrastructure (3 questions)</div>
+          <ul class="q-list">
+            <li class="q-item">
+              <span class="q-num" style="color:var(--low)">Q15</span>
+              <div>
+                <div class="q-text">KYC provider selection: <strong>Sumsub, Veriff, or Persona</strong>?</div>
+                <div class="q-note">// Each has different SDK, webhook structure, and on-chain attestation support.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--low)">Q16</span>
+              <div>
+                <div class="q-text">Blockchain event indexing: <strong>custom listener, The Graph subgraph, or Moralis</strong>?</div>
+                <div class="q-note">// Affects Backend API architecture and dashboard real-time data strategy.</div>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num" style="color:var(--low)">Q17</span>
+              <div>
+                <div class="q-text">TWAP oracle source: <strong>Chainlink price feed, internal DEX TWAP calculation, or admin-submitted</strong>?</div>
+                <div class="q-note">// Critical for CRIT-01 fix. Admin-submitted = centralization risk. Chainlink preferred.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 5: BUILD ORDER ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">05 /</span>
+      <h2 class="section-title">Build Order &amp; Dependency Graph</h2>
+      <span class="section-badge badge-purple">PHASE 0 PRIORITY</span>
+    </div>
+
+    <details open>
+      <summary>🏗 Deployment Sequence — 11 Components</summary>
+      <div class="accordion-body">
+        <div class="build-order">
+
+          <div class="build-step">
+            <div class="build-num">01</div>
+            <div class="build-info">
+              <div class="build-name">MIC Token (ERC-20)</div>
+              <div class="build-dep">// Foundation — every other contract depends on this address</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">02</div>
+            <div class="build-info">
+              <div class="build-name">Seed Sale Contract</div>
+              <div class="build-dep">// Requires: MIC Token address</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">03</div>
+            <div class="build-info">
+              <div class="build-name">Vesting Contract</div>
+              <div class="build-dep">// Requires: Seed Sale + MIC Token</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">04</div>
+            <div class="build-info">
+              <div class="build-name">Referral Registry</div>
+              <div class="build-dep">// Independent deploy — but needed before Pre-Sale goes live</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">05</div>
+            <div class="build-info">
+              <div class="build-name">MICE License Contract</div>
+              <div class="build-dep">// Requires: MIC Token + Referral Registry</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">06</div>
+            <div class="build-info">
+              <div class="build-name">MFP-NFT Contract</div>
+              <div class="build-dep">// Requires: Seed Sale (earned via participation)</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">07</div>
+            <div class="build-info">
+              <div class="build-name">Community NFT Contract</div>
+              <div class="build-dep">// Requires: MICE License data (Hindex integration)</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">08</div>
+            <div class="build-info">
+              <div class="build-name">NFT Staking Contract</div>
+              <div class="build-dep">// Requires: Community NFT + MFP-NFT</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">09</div>
+            <div class="build-info">
+              <div class="build-name">Backend API</div>
+              <div class="build-dep">// Requires: All contracts deployed to testnet + ABI exports</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">10</div>
+            <div class="build-info">
+              <div class="build-name">Admin DApp</div>
+              <div class="build-dep">// Requires: Backend API (all endpoints live)</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+          <div class="build-step">
+            <div class="build-num">11</div>
+            <div class="build-info">
+              <div class="build-name">User DApp</div>
+              <div class="build-dep">// Requires: Backend API + Admin DApp validated</div>
+            </div>
+            <div class="build-connector"></div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 6: TEST SCENARIOS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">06 /</span>
+      <h2 class="section-title">Test Scenarios Summary</h2>
+      <span class="section-badge badge-cyan">38 TOTAL SCENARIOS</span>
+    </div>
+
+    <details open>
+      <summary>🧪 QA Coverage by Role</summary>
+      <div class="accordion-body">
+        <div class="roles-grid">
+
+          <div class="role-card role-superadmin">
+            <div class="role-icon">👑</div>
+            <div class="role-title">Super Admin</div>
+            <div class="role-count">8</div>
+            <div class="role-label">Test Scenarios</div>
+            <div class="role-scenarios">
+              Emergency pause during active TX &bull; Treasury edge cases &bull; Role management &amp; revocation &bull; TWAP window parameter changes &bull; Multi-sig approval flows
+            </div>
+          </div>
+
+          <div class="role-card role-admin">
+            <div class="role-icon">🛡</div>
+            <div class="role-title">Admin</div>
+            <div class="role-count">8</div>
+            <div class="role-label">Test Scenarios</div>
+            <div class="role-scenarios">
+              KYC workflow &amp; edge cases &bull; Bulk approve &bull; <span class="hl-red">Hard cap race condition</span> &bull; Sale round management &bull; Vesting schedule review &bull; Referral payout verification
+            </div>
+          </div>
+
+          <div class="role-card role-user">
+            <div class="role-icon">👤</div>
+            <div class="role-title">Normal User</div>
+            <div class="role-count">12</div>
+            <div class="role-label">Test Scenarios</div>
+            <div class="role-scenarios">
+              First purchase flow &bull; <span class="hl-red">Simultaneous purchases race condition</span> &bull; Referral chain &bull; Vesting cliff &amp; unlock &bull; MICE mining &bull; Multi-language &bull; Mobile wallet
+            </div>
+          </div>
+
+          <div class="role-card role-attacker">
+            <div class="role-icon">⚔</div>
+            <div class="role-title">Attacker</div>
+            <div class="role-count">10</div>
+            <div class="role-label">Test Scenarios</div>
+            <div class="role-scenarios">
+              Sybil attack &bull; Circular referral &bull; Front-running &bull; Double-claim &bull; Oracle manipulation &bull; Flash loan MICE &bull; Reentrancy attempt &bull; Admin key compromise
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 7: HIGH RISK ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">07 /</span>
+      <h2 class="section-title">High Risk Issues</h2>
+      <span class="section-badge badge-high">8 HIGH PRIORITY</span>
+    </div>
+
+    <details open>
+      <summary style="color: var(--high);">🟠 8 High-Severity Issues</summary>
+      <div class="accordion-body">
+        <div class="cards-grid">
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-01</div>
+            <div class="card-title">Referral Sybil Attack</div>
+            <div class="card-body">Attacker creates unlimited wallets to bypass the 50-wallet referral cap. Without on-chain KYC linkage, the 50-wallet limit is unenforceable and referral rewards can be farmed.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-02</div>
+            <div class="card-title">Vesting Bypass via Transfer</div>
+            <div class="card-body">If vesting receipt tokens are transferable, participants can sell their vesting position to a new address, effectively bypassing lockup intent. May violate regulatory requirements.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-03</div>
+            <div class="card-title">MICE Price Ambiguity</div>
+            <div class="card-body">Spec does not clarify whether MICE license price is locked at transaction submission time or execution time. MEV reordering on BSC can result in unexpected price slippage.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-04</div>
+            <div class="card-title">Buy &amp; Burn Front-Running</div>
+            <div class="card-body">MEV bots on BSC can front-run Buy &amp; Burn transactions, sandwiching the protocol's own buys to extract value. Burns become less effective and more expensive over time.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-05</div>
+            <div class="card-title">No Emission Hard Circuit Breaker</div>
+            <div class="card-body">MICE reward emissions have no hard circuit breaker. A bug in the L(t) or Hindex calculation could result in runaway inflation with no automatic stop mechanism.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-06</div>
+            <div class="card-title">DAO Treasury Governance Attack</div>
+            <div class="card-body">51% MFP-NFT accumulation attack on DAO treasury proposals. If MFP-NFT is transferable, a coordinated whale group can acquire voting majority and pass malicious treasury proposals.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-07</div>
+            <div class="card-title">MICE Expiry Not Defined</div>
+            <div class="card-body">MICE License expiry mechanism is undefined — spec mentions expiry exists but doesn't specify on-chain auto-burn vs off-chain state flag. Creates exploitable ambiguity at implementation.</div>
+          </div>
+
+          <div class="issue-card high">
+            <div class="card-tag tag-high">HIGH-08</div>
+            <div class="card-title">Missing API Endpoints</div>
+            <div class="card-body">Current API spec is missing critical endpoints for MICE purchase flow, NFT Staking operations, and Pre-Sale. DApp cannot be built without these defined. Backend spec is incomplete.</div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 8: SECURITY MEASURES ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">08 /</span>
+      <h2 class="section-title">Required Security Measures</h2>
+      <span class="section-badge badge-critical">NON-NEGOTIABLE</span>
+    </div>
+
+    <details open>
+      <summary>🔒 Security Implementation Checklist</summary>
+      <div class="accordion-body">
+        <div class="checklist">
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text">Gnosis Safe <strong>3-of-5 multisig</strong> for all admin functions — no single EOA should control privileged operations</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>TimelockController</strong>: minimum 48h delay for treasury actions, 7-day delay for parameter changes</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text">OpenZeppelin <code>AccessControl</code> (not <code>Ownable</code>) for all role-based functions — granular, auditable permissions</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text">OpenZeppelin <code>ReentrancyGuard</code> on <em>every</em> function that transfers tokens, BNB, or interacts with external contracts</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>TWAP oracle (24h minimum)</strong> for ALL price-dependent calculations — never use spot price in economic logic</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>Slippage protection parameter</strong> on all DEX interactions — user-specified <code>minAmountOut</code> required</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text">Hard supply cap enforcement in MIC contract: <code>require(totalSupply() + amount &lt;= MAX_SUPPLY)</code></div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>Professional smart contract audit</strong> (Trail of Bits / Certik / OpenZeppelin Audits) completed before any mainnet deployment</div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>Bug bounty program</strong> launched and active before mainnet — minimum 30-day public exposure period</div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── SECTION 9: NEXT STEPS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">09 /</span>
+      <h2 class="section-title">Next Steps</h2>
+      <span class="section-badge badge-gold">ACTION REQUIRED FROM THOMAS</span>
+    </div>
+
+    <details open>
+      <summary>🎯 3 Required Actions Before Development Begins</summary>
+      <div class="accordion-body">
+        <div class="actions-grid">
+
+          <div class="action-card">
+            <div class="action-num">ACTION 01</div>
+            <div class="action-title">Resolve 4 Critical Issues</div>
+            <div class="action-body">
+              Architect + Security team will propose specific technical solutions for each CRIT-01 through CRIT-04 vulnerability. Thomas reviews and approves the chosen approach for each.
+              <br/><br/>
+              Each fix must be documented, approved, and reflected in the updated spec before any code is written.
+            </div>
+            <div class="action-note">⟶ Owner: Architect + Security Agent → Thomas approval</div>
+          </div>
+
+          <div class="action-card">
+            <div class="action-num">ACTION 02</div>
+            <div class="action-title">Answer 17 Clarifying Questions</div>
+            <div class="action-body">
+              Thomas + Claudia to systematically work through all 17 open questions. Answers are locked into a <strong>Decision Log</strong> document — no revisiting without formal change request.
+              <br/><br/>
+              Priority order: Q03 (MICE ERC), Q01 (supply model), Q02 (L(t) formula), then remaining 14.
+            </div>
+            <div class="action-note">⟶ Owner: Thomas L. + Claudia (Decision Log)</div>
+          </div>
+
+          <div class="action-card">
+            <div class="action-num">ACTION 03</div>
+            <div class="action-title">Confirm Vesting Schedule</div>
+            <div class="action-body">
+              Confirmed error: current formula reaches 100% at month 42, not month 38. Thomas must confirm which is correct.
+              <br/><br/>
+              <strong>Option A:</strong> Keep 2.5%/month → vesting ends month 42 (3.5 years)<br/>
+              <strong>Option B:</strong> Change to 3.33%/month → vesting ends month 36 (3 years flat)
+            </div>
+            <div class="action-note">⟶ Owner: Thomas L. → Claudia updates spec</div>
+          </div>
+
+        </div>
+
+        <div class="completion-box">
+          Once Actions 01 + 02 + 03 are complete
+          &nbsp;→&nbsp; Architect finalizes design
+          &nbsp;→&nbsp; Coder begins implementation
+          &nbsp;→&nbsp; Testnet deployment
+        </div>
+      </div>
+    </details>
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div>Kickoff Review Report v1.0 &nbsp;|&nbsp; Team Auditor + Team QA &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Mission Chain</div>
+  <div style="margin-top: 8px; opacity: 0.5;">CONFIDENTIAL — For internal use only. Do not distribute.</div>
+</footer>
+
+</body>
+</html>

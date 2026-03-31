@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Chain — Full Stack Architecture Spec v1.0</title>
+  <style>
+    :root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+      --navy: #0a1628;
+      --navy-mid: #112240;
+      --navy-light: #1a3358;
+      --gold: #c9a84c;
+      --gold-light: #e8c87a;
+      --gold-dim: #8a6e2f;
+      --white: #f8f9fa;
+      --gray: #a8b2c4;
+      --gray-light: #d1d9e6;
+      --success: #27ae60;
+      --warning: #e67e22;
+      --danger: #e74c3c;
+      --code-bg: #0d1f35;
+      --border: rgba(201,168,76,0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Rajdhani', system-ui, -apple-system, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 60px 40px 40px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    header h1 span { color: var(--gold); }
+    header .subtitle {
+      color: var(--gray);
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    header .meta {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    header .meta-item {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    header .meta-item strong { color: var(--gold-light); }
+    /* ── TOC ── */
+    nav.toc {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 30px 40px;
+    }
+    nav.toc h2 {
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    nav.toc ol {
+      columns: 2;
+      column-gap: 40px;
+      list-style: none;
+      counter-reset: toc;
+    }
+    nav.toc li { counter-increment: toc; padding: 4px 0; }
+    nav.toc li::before {
+      content: counter(toc, decimal-leading-zero) ". ";
+      color: var(--gold-dim);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    nav.toc a {
+      color: var(--gray-light);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    nav.toc a:hover { color: var(--gold-light); }
+    /* ── Main Layout ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 40px 80px; }
+    /* ── Sections ── */
+    section {
+      margin-bottom: 60px;
+      scroll-margin-top: 20px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-number {
+      background: var(--gold);
+      color: var(--navy);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    h3 {
+      color: var(--gold-light);
+      font-size: 18px;
+      margin: 30px 0 14px;
+      font-weight: 600;
+    }
+    h4 {
+      color: var(--gray-light);
+      font-size: 15px;
+      margin: 20px 0 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    /* ── Code Blocks ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 16px 0;
+      color: #c9d1d9;
+    }
+    pre .comment { color: #6a9955; }
+    pre .key { color: var(--gold-light); }
+    pre .val { color: #9ecbff; }
+    pre .str { color: #a8ff78; }
+    code {
+      background: rgba(201,168,76,0.12);
+      color: var(--gold-light);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    thead th {
+      background: var(--navy-light);
+      color: var(--gold-light);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border);
+    }
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--gray-light);
+      vertical-align: top;
+    }
+    tbody tr:hover { background: rgba(201,168,76,0.04); }
+    tbody td:first-child { color: var(--white); font-weight: 500; }
+    .badge-method {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
+    .GET { background: rgba(39,174,96,0.2); color: #2ecc71; }
+    .POST { background: rgba(52,152,219,0.2); color: #3498db; }
+    .PUT { background: rgba(243,156,18,0.2); color: #f39c12; }
+    .DELETE { background: rgba(231,76,60,0.2); color: #e74c3c; }
+    .PATCH { background: rgba(155,89,182,0.2); color: #9b59b6; }
+    /* ── Cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .card h4 { margin-top: 0; color: var(--gold-light); font-size: 14px; }
+    .card p { color: var(--gray); font-size: 13px; margin: 6px 0; }
+    .card code { font-size: 12px; }
+    /* ── Phase badges ── */
+    .phase-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+    .p0 { background: rgba(231,76,60,0.25); color: #ff6b6b; }
+    .p1 { background: rgba(243,156,18,0.25); color: #ffd93d; }
+    .p2 { background: rgba(39,174,96,0.25); color: #6bcb77; }
+    /* ── Callouts ── */
+    .callout {
+      border-left: 4px solid var(--gold);
+      background: rgba(201,168,76,0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: var(--gray-light);
+    }
+    .callout.warn {
+      border-left-color: var(--warning);
+      background: rgba(230,126,34,0.07);
+    }
+    .callout.info {
+      border-left-color: #3498db;
+      background: rgba(52,152,219,0.07);
+    }
+    .callout strong { color: var(--white); }
+    /* ── Phase timeline ── */
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--danger), var(--warning), var(--success));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: var(--navy);
+    }
+    .timeline-item h3 { margin-top: 0; }
+    ul.tasks {
+      list-style: none;
+      margin: 10px 0;
+    }
+    ul.tasks li {
+      padding: 5px 0 5px 24px;
+      position: relative;
+      color: var(--gray);
+      font-size: 14px;
+    }
+    ul.tasks li::before {
+      content: '◆';
+      color: var(--gold-dim);
+      position: absolute;
+      left: 4px;
+      font-size: 8px;
+      top: 9px;
+    }
+    /* ── Stack pill ── */
+    .pill {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid var(--border);
+      color: var(--gold-light);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin: 3px 2px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--gray);
+      font-size: 13px;
+    }
+    footer .logo { color: var(--gold); font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header>
+  <div class="badge">Technical Specification · v1.0 · March 2026</div>
+  <h1>Mission Chain — <span>Full Stack Architecture</span></h1>
+  <p class="subtitle">Complete implementation spec for Claude Code · Prepared by Claudia (Strategic AI)</p>
+  <div class="meta">
+    <div class="meta-item">🏗 <strong>Monorepo</strong> · Turborepo</div>
+    <div class="meta-item">⚙️ <strong>Runtime</strong> · Node.js 20 LTS</div>
+    <div class="meta-item">⛓ <strong>Chain</strong> · BSC Mainnet + Testnet</div>
+    <div class="meta-item">🐳 <strong>Deploy</strong> · Docker + Cloudflare</div>
+    <div class="meta-item">📅 <strong>Phase 0 Target</strong> · Seed Sale Live</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     TABLE OF CONTENTS
+══════════════════════════════════════════ -->
+<nav class="toc">
+  <h2>📋 Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Project Overview & Stack</a></li>
+    <li><a href="#s2">Monorepo Structure</a></li>
+    <li><a href="#s3">Database Schema</a></li>
+    <li><a href="#s4">API Endpoints</a></li>
+    <li><a href="#s5">Smart Contract Specs</a></li>
+    <li><a href="#s6">Frontend Pages & Components</a></li>
+    <li><a href="#s7">Docker Compose (Production)</a></li>
+    <li><a href="#s8">Cloudflare Setup</a></li>
+    <li><a href="#s9">Environment Variables</a></li>
+    <li><a href="#s10">Development Roadmap</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 — PROJECT OVERVIEW
+══════════════════════════════════════════ -->
+<section id="s1">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>Project Overview & Technology Stack</h2>
+  </div>
+
+  <div class="callout">
+    <strong>Project:</strong> Mission Chain — Web3 Creator Economy platform built on Christian faith values.<br>
+    <strong>Domains:</strong> <code>missionchain.io</code> (infrastructure/landing) + <code>missionchain.world</code> (community platform)<br>
+    <strong>Team:</strong> Thomas L. (Co-Founder) + Claude Code (implementation AI)<br>
+    <strong>Priority:</strong> Get Seed Sale operational → then build full platform
+  </div>
+
+  <h3>Technology Stack</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>🖥 Frontend</h4>
+      <p><span class="pill">Next.js 14 App Router</span></p>
+      <p><span class="pill">TypeScript 5</span></p>
+      <p><span class="pill">Tailwind CSS v3</span></p>
+      <p><span class="pill">Wagmi v2</span> <span class="pill">RainbowKit</span></p>
+      <p><span class="pill">Framer Motion</span></p>
+      <p><span class="pill">React Query v5</span></p>
+    </div>
+    <div class="card">
+      <h4>⚙️ Backend</h4>
+      <p><span class="pill">Node.js 20 LTS</span></p>
+      <p><span class="pill">Fastify v4</span></p>
+      <p><span class="pill">TypeScript 5</span></p>
+      <p><span class="pill">Prisma ORM v5</span></p>
+      <p><span class="pill">JWT (jose)</span></p>
+      <p><span class="pill">Socket.io v4</span></p>
+    </div>
+    <div class="card">
+      <h4>🗄 Database</h4>
+      <p><span class="pill">PostgreSQL 16</span></p>
+      <p><span class="pill">Redis 7</span></p>
+      <p><span class="pill">IPFS / Pinata</span></p>
+    </div>
+    <div class="card">
+      <h4>⛓ Blockchain</h4>
+      <p><span class="pill">BNB Smart Chain</span></p>
+      <p><span class="pill">Ethers.js v6</span></p>
+      <p><span class="pill">Hardhat v2</span></p>
+      <p><span class="pill">OpenZeppelin v5</span></p>
+    </div>
+    <div class="card">
+      <h4>🏗 Infrastructure</h4>
+      <p><span class="pill">Docker + Compose</span></p>
+      <p><span class="pill">Nginx</span></p>
+      <p><span class="pill">Cloudflare</span></p>
+      <p><span class="pill">GitHub Actions</span></p>
+      <p><span class="pill">Turborepo</span></p>
+    </div>
+    <div class="card">
+      <h4>📦 Package Manager</h4>
+      <p><span class="pill">pnpm v9</span></p>
+      <p>Workspaces via Turborepo for monorepo management. Fast installs, shared deps.</p>
+    </div>
+  </div>
+
+  <h3>Architecture Diagram</h3>
+  <pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                         CLOUDFLARE EDGE                              │
+│   DNS · CDN · WAF · DDoS · SSL/TLS · Page Rules                    │
+└──────────────┬──────────────────────────────┬───────────────────────┘
+               │                              │
+    ┌──────────▼──────────┐      ┌────────────▼────────────┐
+    │   missionchain.io   │      │   missionchain.world     │
+    │   Next.js 14 App    │      │   Next.js 14 App         │
+    │   Port: 3000        │      │   Port: 3001             │
+    └──────────┬──────────┘      └────────────┬────────────┘
+               │                              │
+               └──────────────┬───────────────┘
+                              │
+              ┌───────────────▼───────────────┐
+              │       NGINX Reverse Proxy      │
+              │       Port: 80/443             │
+              └───────────────┬───────────────┘
+                              │
+              ┌───────────────▼───────────────┐
+              │    Fastify API Server          │
+              │    Port: 4000 (REST + WS)      │
+              └───┬───────────┬───────────┬───┘
+                  │           │           │
+        ┌─────────▼─┐  ┌──────▼──┐  ┌────▼─────────┐
+        │ PostgreSQL │  │  Redis  │  │  BSC Node    │
+        │ Port: 5432 │  │  6379   │  │  (Ethers.js) │
+        └────────────┘  └─────────┘  └──────────────┘
+                                           │
+                              ┌────────────▼────────────┐
+                              │   Smart Contracts (BSC)  │
+                              │  MIC · MICE · MFP-NFT    │
+                              │  SeedSale                │
+                              └─────────────────────────┘
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 — MONOREPO STRUCTURE
+══════════════════════════════════════════ -->
+<section id="s2">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>Monorepo Structure</h2>
+  </div>
+
+  <div class="callout info">
+    <strong>Strategy:</strong> Single Git repo (monorepo) managed by Turborepo + pnpm workspaces. Shared packages for types, UI components, and blockchain utilities.
+  </div>
+
+  <pre>
+mission-chain/                        <span class="comment"># Root monorepo</span>
+├── package.json                      <span class="comment"># Root workspace config</span>
+├── pnpm-workspace.yaml
+├── turbo.json                        <span class="comment"># Turborepo pipeline config</span>
+├── .env.example                      <span class="comment"># Global env template</span>
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                    <span class="comment"># PR checks</span>
+│       ├── deploy-io.yml             <span class="comment"># Deploy missionchain.io</span>
+│       └── deploy-world.yml          <span class="comment"># Deploy missionchain.world</span>
+│
+├── apps/
+│   ├── web-io/                       <span class="comment"># missionchain.io frontend</span>
+│   │   ├── src/
+│   │   │   ├── app/                  <span class="comment"># Next.js App Router</span>
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── page.tsx          <span class="comment"># Landing page</span>
+│   │   │   │   ├── seed-round/
+│   │   │   │   │   └── page.tsx      <span class="comment"># Seed Round page</span>
+│   │   │   │   ├── whitepaper/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── admin/            <span class="comment"># Protected admin routes</span>
+│   │   │   │   │   ├── layout.tsx
+│   │   │   │   │   ├── page.tsx      <span class="comment"># Admin dashboard</span>
+│   │   │   │   │   ├── seed/page.tsx
+│   │   │   │   │   ├── users/page.tsx
+│   │   │   │   │   └── settings/page.tsx
+│   │   │   │   └── api/             <span class="comment"># Next.js API routes (proxy only)</span>
+│   │   │   ├── components/
+│   │   │   │   ├── layout/
+│   │   │   │   ├── seed/            <span class="comment"># Seed Round components</span>
+│   │   │   │   ├── wallet/          <span class="comment"># Wallet connect</span>
+│   │   │   │   └── admin/
+│   │   │   └── lib/
+│   │   ├── public/
+│   │   ├── next.config.ts
+│   │   ├── tailwind.config.ts
+│   │   └── package.json
+│   │
+│   ├── web-world/                    <span class="comment"># missionchain.world frontend</span>
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── page.tsx          <span class="comment"># World landing</span>
+│   │   │   │   ├── learn/page.tsx    <span class="comment"># Mission Learn</span>
+│   │   │   │   ├── work/page.tsx     <span class="comment"># Mission Work marketplace</span>
+│   │   │   │   ├── social/page.tsx   <span class="comment"># Mission Social</span>
+│   │   │   │   ├── challenges/       <span class="comment"># Challenges module</span>
+│   │   │   │   ├── profile/          <span class="comment"># Creator profiles</span>
+│   │   │   │   ├── sophia/           <span class="comment"># SOPHIA bot interface</span>
+│   │   │   │   └── word/             <span class="comment"># SOPHIA WORD devotionals</span>
+│   │   │   ├── components/
+│   │   │   └── lib/
+│   │   └── package.json
+│   │
+│   └── api/                          <span class="comment"># Fastify API server</span>
+│       ├── src/
+│       │   ├── index.ts              <span class="comment"># Server entry point</span>
+│       │   ├── config.ts
+│       │   ├── plugins/
+│       │   │   ├── auth.ts           <span class="comment"># JWT plugin</span>
+│       │   │   ├── cors.ts
+│       │   │   ├── redis.ts
+│       │   │   └── websocket.ts
+│       │   ├── routes/
+│       │   │   ├── auth/
+│       │   │   ├── users/
+│       │   │   ├── seed/             <span class="comment"># Seed Sale endpoints</span>
+│       │   │   ├── blockchain/       <span class="comment"># On-chain verification</span>
+│       │   │   ├── content/
+│       │   │   ├── challenges/
+│       │   │   ├── jobs/
+│       │   │   ├── nft/
+│       │   │   └── admin/
+│       │   ├── services/
+│       │   │   ├── blockchain.service.ts
+│       │   │   ├── email.service.ts
+│       │   │   ├── ipfs.service.ts
+│       │   │   └── bscscan.service.ts
+│       │   └── middleware/
+│       ├── prisma/
+│       │   ├── schema.prisma         <span class="comment"># Complete DB schema</span>
+│       │   └── migrations/
+│       └── package.json
+│
+├── packages/
+│   ├── types/                        <span class="comment"># Shared TypeScript types</span>
+│   │   ├── src/
+│   │   │   ├── api.ts
+│   │   │   ├── blockchain.ts
+│   │   │   └── domain.ts
+│   │   └── package.json
+│   │
+│   ├── ui/                           <span class="comment"># Shared UI component library</span>
+│   │   ├── src/
+│   │   │   ├── Button/
+│   │   │   ├── Card/
+│   │   │   ├── Modal/
+│   │   │   ├── Badge/
+│   │   │   ├── Table/
+│   │   │   └── theme/
+│   │   │       ├── colors.ts         <span class="comment"># Navy/Gold design tokens</span>
+│   │   │       └── typography.ts
+│   │   └── package.json
+│   │
+│   ├── blockchain/                   <span class="comment"># Shared blockchain utilities</span>
+│   │   ├── src/
+│   │   │   ├── contracts/            <span class="comment"># Contract ABIs</span>
+│   │   │   ├── hooks/                <span class="comment"># Wagmi hooks</span>
+│   │   │   └── utils/
+│   │   └── package.json
+│   │
+│   └── config/                       <span class="comment"># Shared configs (ESLint, TS, Tailwind)</span>
+│       ├── eslint-preset.js
+│       ├── tsconfig.base.json
+│       └── tailwind.preset.ts
+│
+├── contracts/                        <span class="comment"># Hardhat smart contracts</span>
+│   ├── contracts/
+│   │   ├── MICToken.sol
+│   │   ├── MICELicense.sol
+│   │   ├── MFPNft.sol
+│   │   └── SeedSale.sol
+│   ├── scripts/
+│   │   ├── deploy.ts
+│   │   └── verify.ts
+│   ├── test/
+│   ├── hardhat.config.ts
+│   └── package.json
+│
+├── docker/
+│   ├── docker-compose.yml            <span class="comment"># Production</span>
+│   ├── docker-compose.dev.yml        <span class="comment"># Development</span>
+│   ├── nginx/
+│   │   ├── nginx.conf
+│   │   └── conf.d/
+│   │       ├── missionchain-io.conf
+│   │       └── missionchain-world.conf
+│   └── scripts/
+│       ├── init-db.sh
+│       └── backup.sh
+│
+└── docs/
+    ├── architecture.md
+    └── deployment.md
+  </pre>
+
+  <h3>turbo.json Configuration</h3>
+  <pre>
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "DATABASE_URL", "REDIS_URL"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "db:migrate": {
+      "cache": false
+    }
+  }
+}
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3 — DATABASE SCHEMA
+══════════════════════════════════════════ -->
+<section id="s3">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>Database Schema (Prisma)</h2>
+  </div>
+
+  <div class="callout">
+    File: <code>apps/api/prisma/schema.prisma</code> — Complete schema for all Mission Chain entities.
+  </div>
+
+  <pre>
+<span class="comment">// ── Generator & Datasource ──────────────────────────────────────</span>
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+<span class="comment">// ── ENUMS ───────────────────────────────────────────────────────</span>
+enum UserRole {
+  USER
+  CREATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum CreatorTier {
+  BUILDER    <span class="comment">// Entry level</span>
+  MAKER      <span class="comment">// Intermediate</span>
+  LUMINARY   <span class="comment">// Top tier</span>
+}
+
+enum SeedPackage {
+  EARLY_BIRD       <span class="comment">// $1,000 — 400,000 MIC + 20 MFP-NFT</span>
+  FOUNDING_I       <span class="comment">// $2,500 — 1,000,000 MIC + 60 MFP-NFT</span>
+  FOUNDING_II      <span class="comment">// $5,000 — 2,000,000 MIC + 150 MFP-NFT</span>
+  FOUNDING_III     <span class="comment">// $10,000 — 4,000,000 MIC + 350 MFP-NFT</span>
+}
+
+enum SeedStatus {
+  PENDING          <span class="comment">// Awaiting on-chain verification</span>
+  VERIFYING        <span class="comment">// Being checked</span>
+  VERIFIED         <span class="comment">// TXID confirmed on BSCScan</span>
+  FULFILLED        <span class="comment">// MIC + NFT delivered</span>
+  REJECTED         <span class="comment">// Invalid TXID or wrong amount</span>
+}
+
+enum MICEStatus {
+  ACTIVE
+  EXPIRED
+  RECYCLED
+}
+
+enum ContentType {
+  PODCAST
+  ARTICLE
+  VIDEO_SHORT
+  DEVOTIONAL    <span class="comment">// SOPHIA WORD</span>
+}
+
+enum ContentLang {
+  EN
+  ES
+  PT
+  KO
+  VI
+}
+
+enum ChallengeCategory {
+  WORSHIP_MUSIC
+  BIBLE_ART
+  TESTIMONY_FILM
+  AI_CONTENT
+  DESIGN
+  WRITING
+}
+
+enum ChallengeStatus {
+  DRAFT
+  OPEN
+  VOTING
+  JUDGING
+  COMPLETED
+  CANCELLED
+}
+
+enum JobStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum NFTCredentialType {
+  BUILDER
+  MAKER
+  LUMINARY
+  MFP            <span class="comment">// Mission Founding Partner (governance)</span>
+  COMMUNITY      <span class="comment">// Community NFT</span>
+}
+
+enum NotificationType {
+  SEED_VERIFIED
+  SEED_FULFILLED
+  CHALLENGE_RESULT
+  JOB_MATCHED
+  CREDENTIAL_EARNED
+  SYSTEM
+}
+
+<span class="comment">// ── USERS ───────────────────────────────────────────────────────</span>
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  emailVerified Boolean    @default(false)
+  username      String?    @unique
+  displayName   String?
+  bio           String?
+  avatarUrl     String?
+  coverUrl      String?
+  role          UserRole   @default(USER)
+  tier          CreatorTier?
+  country       String?    <span class="comment">// ISO 3166-1 alpha-2</span>
+  language      String?    @default("en")
+  
+  <span class="comment">// Gamification</span>
+  points        Int        @default(0)
+  jobsCompleted Int        @default(0)
+  rating        Decimal?   @db.Decimal(3,2)
+  ratingCount   Int        @default(0)
+  
+  <span class="comment">// Social links</span>
+  websiteUrl    String?
+  twitterHandle String?
+  telegramHandle String?
+  
+  <span class="comment">// Auth</span>
+  passwordHash  String?    <span class="comment">// null if wallet-only login</span>
+  lastLoginAt   DateTime?
+  
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  <span class="comment">// Relations</span>
+  wallets           Wallet[]
+  seedParticipations SeedParticipant[]
+  miceHoldings      MICELicense[]
+  nftCredentials    NFTCredential[]
+  creatorProfile    CreatorProfile?
+  contentItems      Content[]
+  challengeEntries  ChallengeEntry[]
+  jobPostings       Job[]         @relation("JobPoster")
+  jobApplications   JobApplication[]
+  notifications     Notification[]
+  sessions          UserSession[]
+  
+  @@map("users")
+}
+
+<span class="comment">// ── USER SESSIONS ───────────────────────────────────────────────</span>
+model UserSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token       String   @unique
+  refreshToken String? @unique
+  userAgent   String?
+  ipAddress   String?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  
+  @@map("user_sessions")
+}
+
+<span class="comment">// ── WALLETS ─────────────────────────────────────────────────────</span>
+model Wallet {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address     String   @unique   <span class="comment">// BEP20 address (checksummed)</span>
+  isPrimary   Boolean  @default(false)
+  label       String?
+  verifiedAt  DateTime?          <span class="comment">// Signature verification timestamp</span>
+  createdAt   DateTime @default(now())
+  
+  seedParticipations SeedParticipant[] @relation("RecipientWallet")
+  
+  @@map("wallets")
+}
+
+<span class="comment">// ── SEED ROUND ──────────────────────────────────────────────────</span>
+model SeedParticipant {
+  id              String       @id @default(cuid())
+  userId          String?      <span class="comment">// null if submitted before account creation</span>
+  user            User?        @relation(fields: [userId], references: [id])
+  
+  <span class="comment">// Contact</span>
+  email           String
+  
+  <span class="comment">// Package</span>
+  package         SeedPackage
+  amountUSDT      Decimal      @db.Decimal(12,2)
+  micAllocation   BigInt       <span class="comment">// in MIC wei (18 decimals)</span>
+  mfpNftCount     Int
+  
+  <span class="comment">// Blockchain</span>
+  txid            String       @unique
+  senderAddress   String?      <span class="comment">// detected from BSCScan</span>
+  recipientWalletId String?
+  recipientWallet   Wallet?    @relation("RecipientWallet", fields: [recipientWalletId], references: [id])
+  recipientAddress  String     <span class="comment">// BEP20 address for delivery</span>
+  
+  <span class="comment">// Status</span>
+  status          SeedStatus   @default(PENDING)
+  verifiedAt      DateTime?
+  fulfilledAt     DateTime?
+  rejectionReason String?
+  
+  <span class="comment">// Admin notes</span>
+  adminNotes      String?
+  verifiedBy      String?      <span class="comment">// Admin user ID</span>
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  @@index([email])
+  @@index([status])
+  @@index([txid])
+  @@map("seed_participants")
+}
+
+<span class="comment">// ── MICE LICENSES ───────────────────────────────────────────────</span>
+model MICELicense {
+  id              String     @id @default(cuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id])
+  
+  licenseNumber   Int        @unique  <span class="comment">// Sequential 1-100000</span>
+  walletAddress   String
+  
+  <span class="comment">// Pricing at activation</span>
+  priceUSDT       Decimal    @db.Decimal(8,2)
+  priceMIC        BigInt     <span class="comment">// 50% MIC component</span>
+  liquidityBand   String     <span class="comment">// "< $200K", "$200K-$1M", etc.</span>
+  
+  status          MICEStatus @default(ACTIVE)
+  activatedAt     DateTime   @default(now())
+  expiresAt       DateTime   <span class="comment">// activatedAt + 360 days</span>
+  recycledAt      DateTime?
+  
+  <span class="comment">// Mining stats (updated by cron)</span>
+  totalMined      BigInt     @default(0)
+  lastMineAt      DateTime?
+  
+  purchaseTxid    String?
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@map("mice_licenses")
+}
+
+<span class="comment">// ── NFT CREDENTIALS ─────────────────────────────────────────────</span>
+model NFTCredential {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  
+  type            NFTCredentialType
+  tokenId         BigInt?           <span class="comment">// On-chain token ID (null until minted)</span>
+  contractAddress String?
+  walletAddress   String
+  
+  <span class="comment">// Metadata</span>
+  name            String            <span class="comment">// e.g. "Builder — Sofia Mensah"</span>
+  imageUri        String?           <span class="comment">// IPFS URI</span>
+  metadataUri     String?           <span class="comment">// IPFS metadata JSON URI</span>
+  
+  <span class="comment">// Earn condition</span>
+  earnedReason    String?
+  issuedAt        DateTime?
+  expiresAt       DateTime?         <span class="comment">// annual re-verification</span>
+  
+  mintedAt        DateTime?
+  mintTxid        String?
+  
+  createdAt       DateTime          @default(now())
+  
+  @@index([userId])
+  @@index([type])
+  @@map("nft_credentials")
+}
+
+<span class="comment">// ── CREATOR PROFILE ─────────────────────────────────────────────</span>
+model CreatorProfile {
+  id              String        @id @default(cuid())
+  userId          String        @unique
+  user            User          @relation(fields: [userId], references: [id])
+  
+  skills          String[]      <span class="comment">// ["Music Production", "Visual Art"]</span>
+  categories      String[]      <span class="comment">// ["Worship", "Film", "Design"]</span>
+  portfolioItems  Json[]        <span class="comment">// Array of {title, url, type, description}</span>
+  
+  <span class="comment">// Mission Learn</span>
+  learnTracks     String[]      <span class="comment">// Completed track IDs</span>
+  learnGraduated  Boolean       @default(false)
+  
+  <span class="comment">// Work marketplace</span>
+  hourlyRateMIC   Decimal?      @db.Decimal(12,2)
+  availability    String?       <span class="comment">// "full-time", "part-time", "project"</span>
+  isHireable      Boolean       @default(false)
+  
+  <span class="comment">// Governance</span>
+  daoVotingPower  Int           @default(0)
+  mfpNftCount     Int           @default(0)
+  
+  challengeWins   Int           @default(0)
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@map("creator_profiles")
+}
+
+<span class="comment">// ── CONTENT ─────────────────────────────────────────────────────</span>
+model Content {
+  id          String      @id @default(cuid())
+  authorId    String
+  author      User        @relation(fields: [authorId], references: [id])
+  
+  type        ContentType
+  lang        ContentLang @default(EN)
+  
+  title       String
+  slug        String      @unique
+  excerpt     String?
+  body        String?     <span class="comment">// Markdown / HTML</span>
+  mediaUrl    String?     <span class="comment">// Podcast/video URL</span>
+  thumbnailUrl String?
+  
+  <span class="comment">// SOPHIA WORD specific</span>
+  verse       String?     <span class="comment">// e.g. "Ephesians 2:10"</span>
+  theme       String?     <span class="comment">// e.g. "Scripture & AI"</span>
+  audioUrl    String?     <span class="comment">// TTS devotional audio</span>
+  
+  tags        String[]
+  publishedAt DateTime?
+  isPublished Boolean     @default(false)
+  viewCount   Int         @default(0)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@index([type, isPublished])
+  @@index([slug])
+  @@map("content")
+}
+
+<span class="comment">// ── CHALLENGES ──────────────────────────────────────────────────</span>
+model Challenge {
+  id              String            @id @default(cuid())
+  title           String
+  description     String
+  category        ChallengeCategory
+  status          ChallengeStatus   @default(DRAFT)
+  
+  <span class="comment">// Rewards</span>
+  rewardNftType   NFTCredentialType?
+  rewardMIC       BigInt?
+  rewardDesc      String?
+  
+  <span class="comment">// Dates</span>
+  submissionStart DateTime
+  submissionEnd   DateTime
+  votingEnd       DateTime?
+  
+  maxEntries      Int?
+  entryCount      Int               @default(0)
+  
+  coverUrl        String?
+  rules           String?
+  judgingCriteria String?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  entries         ChallengeEntry[]
+  
+  @@map("challenges")
+}
+
+model ChallengeEntry {
+  id            String    @id @default(cuid())
+  challengeId   String
+  challenge     Challenge @relation(fields: [challengeId], references: [id])
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  
+  title         String
+  description   String?
+  mediaUrl      String    <span class="comment">// Submission media</span>
+  mediaType     String    <span class="comment">// "audio", "image", "video", "text"</span>
+  
+  points        Int       @default(0)  <span class="comment">// Community votes</span>
+  rank          Int?
+  isWinner      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  votes         ChallengeVote[]
+  
+  @@unique([challengeId, userId])
+  @@map("challenge_entries")
+}
+
+model ChallengeVote {
+  id        String         @id @default(cuid())
+  entryId   String
+  entry     ChallengeEntry @relation(fields: [entryId], references: [id])
+  voterId   String
+  createdAt DateTime       @default(now())
+  
+  @@unique([entryId, voterId])
+  @@map("challenge_votes")
+}
+
+<span class="comment">// ── JOBS (MISSION WORK) ─────────────────────────────────────────</span>
+model Job {
+  id              String        @id @default(cuid())
+  posterId        String
+  poster          User          @relation("JobPoster", fields: [posterId], references: [id])
+  
+  title           String
+  description     String
+  category        String        <span class="comment">// "Music Production", "Design", etc.</span>
+  
+  <span class="comment">// Compensation</span>
+  budgetMIC       BigInt?
+  budgetType      String        <span class="comment">// "fixed", "hourly", "monthly"</span>
+  
+  <span class="comment">// Requirements</span>
+  requiredTier    CreatorTier?  <span class="comment">// Minimum tier to apply</span>
+  requiredSkills  String[]
+  locationType    String        <span class="comment">// "remote", "hybrid", "onsite"</span>
+  location        String?
+  
+  status          JobStatus     @default(OPEN)
+  applicationCount Int          @default(0)
+  
+  expiresAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  applications    JobApplication[]
+  
+  @@index([status, category])
+  @@map("jobs")
+}
+
+model JobApplication {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
+  applicantId String
+  applicant   User     @relation(fields: [applicantId], references: [id])
+  
+  coverLetter String?
+  proposedMIC BigInt?
+  
+  status      String   @default("pending")  <span class="comment">// pending, accepted, rejected</span>
+  reviewedAt  DateTime?
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([jobId, applicantId])
+  @@map("job_applications")
+}
+
+<span class="comment">// ── NOTIFICATIONS ───────────────────────────────────────────────</span>
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  data      Json?            <span class="comment">// Extra payload</span>
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+  
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+<span class="comment">// ── ADMIN ACTIVITY LOG ──────────────────────────────────────────</span>
+model AdminLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  action      String   <span class="comment">// "SEED_VERIFIED", "USER_BANNED", etc.</span>
+  targetId    String?  <span class="comment">// ID of affected entity</span>
+  targetType  String?  <span class="comment">// "SeedParticipant", "User", etc.</span>
+  details     Json?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+  
+  @@index([adminId])
+  @@index([action])
+  @@map("admin_logs")
+}
+
+<span class="comment">// ── SYSTEM CONFIG ───────────────────────────────────────────────</span>
+model SystemConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+  
+  @@map("system_config")
+}
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4 — API ENDPOINTS
+══════════════════════════════════════════ -->
+<section id="s4">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>API Endpoints</h2>
+  </div>
+
+  <div class="callout info">
+    <strong>Base URL:</strong> <code>https://api.missionchain.io/v1</code><br>
+    <strong>Auth:</strong> Bearer JWT token in <code>Authorization</code> header<br>
+    <strong>Format:</strong> JSON request/response. All timestamps ISO 8601 UTC.
+  </div>
+
+  <h3>Authentication</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/register</code></td><td>None</td><td>Email/password registration</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/login</code></td><td>None</td><td>Email/password login → JWT</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/wallet-login</code></td><td>None</td><td>Sign message with wallet → JWT</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/refresh</code></td><td>Refresh token</td><td>Get new access token</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/logout</code></td><td>JWT</td><td>Invalidate session</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/auth/nonce/:address</code></td><td>None</td><td>Get sign message nonce for wallet auth</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/verify-email</code></td><td>None</td><td>Verify email with token</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/forgot-password</code></td><td>None</td><td>Send password reset email</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/auth/reset-password</code></td><td>None</td><td>Reset password with token</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Users & Profiles</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/users/me</code></td><td>JWT</td><td>Get current user profile</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/users/me</code></td><td>JWT</td><td>Update profile (displayName, bio, etc.)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/users/:username</code></td><td>Optional</td><td>Public creator profile</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/users/me/wallets</code></td><td>JWT</td><td>List connected wallets</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/users/me/wallets</code></td><td>JWT</td><td>Add wallet (requires signature)</td></tr>
+        <tr><td><span class="badge-method DELETE">DELETE</span></td><td><code>/users/me/wallets/:id</code></td><td>JWT</td><td>Remove wallet</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/users/me/notifications</code></td><td>JWT</td><td>List notifications (paginated)</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/users/me/notifications/read</code></td><td>JWT</td><td>Mark notifications as read</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/users/leaderboard</code></td><td>None</td><td>Top creators by points</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Seed Round <span class="phase-badge p0">Phase 0</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/seed/register</code></td><td>None</td><td>Submit seed round registration (email, wallet, txid, package)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/seed/status/:txid</code></td><td>None</td><td>Check registration status by TXID</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/seed/stats</code></td><td>None</td><td>Public stats: total raised, participants, allocation remaining</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/seed/me</code></td><td>JWT</td><td>Get current user's seed participation(s)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>POST /seed/register — Request Body</h4>
+  <pre>
+{
+  "email": "john@example.com",
+  "recipientAddress": "0x742d35Cc6634C0532925a3b8D4C9c4e5F1234567",
+  "package": "EARLY_BIRD",          <span class="comment">// EARLY_BIRD | FOUNDING_I | FOUNDING_II | FOUNDING_III</span>
+  "txid": "0xabc123...",            <span class="comment">// BEP20 USDT transfer TXID</span>
+  "agreedToTerms": true
+}
+  </pre>
+
+  <h4>POST /seed/register — Response</h4>
+  <pre>
+{
+  "success": true,
+  "data": {
+    "id": "clxxx...",
+    "status": "PENDING",
+    "package": "EARLY_BIRD",
+    "amountUSDT": "1000.00",
+    "micAllocation": "400000000000000000000000",  <span class="comment">// BigInt as string</span>
+    "mfpNftCount": 20,
+    "estimatedVerificationHours": 24
+  }
+}
+  </pre>
+
+  <h3>Admin <span class="phase-badge p0">Phase 0</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/seed</code></td><td>ADMIN</td><td>List all seed participants (filterable: status, package, date)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/seed/:id</code></td><td>ADMIN</td><td>Get single participant details + BSCScan data</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/admin/seed/:id/verify</code></td><td>ADMIN</td><td>Mark as VERIFIED after manual check</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/admin/seed/:id/fulfill</code></td><td>ADMIN</td><td>Mark as FULFILLED after delivery</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/admin/seed/:id/reject</code></td><td>ADMIN</td><td>Reject with reason</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/stats</code></td><td>ADMIN</td><td>Dashboard stats (seed totals, user counts, etc.)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/users</code></td><td>ADMIN</td><td>List users (search, filter by role/tier)</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/admin/users/:id</code></td><td>ADMIN</td><td>Update user role/tier</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/logs</code></td><td>SUPER_ADMIN</td><td>Activity audit log</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/admin/config</code></td><td>ADMIN</td><td>System configuration</td></tr>
+        <tr><td><span class="badge-method PATCH">PATCH</span></td><td><code>/admin/config</code></td><td>SUPER_ADMIN</td><td>Update system config</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Blockchain Verification <span class="phase-badge p1">Phase 1</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/blockchain/verify-tx</code></td><td>JWT</td><td>Verify USDT transfer TX on BSC</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/blockchain/mic-balance/:address</code></td><td>None</td><td>Get MIC token balance</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/blockchain/mice/:address</code></td><td>None</td><td>Get MICE licenses for address</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/blockchain/nft/:address</code></td><td>None</td><td>Get NFT credentials for address</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/blockchain/liquidity</code></td><td>None</td><td>Current MIC/USDT liquidity band</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/blockchain/mice-price</code></td><td>None</td><td>Current MICE activation price</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Content <span class="phase-badge p2">Phase 2</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/content</code></td><td>None</td><td>List content (filter: type, lang, tag, published)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/content/:slug</code></td><td>None</td><td>Get single content item</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/content</code></td><td>ADMIN</td><td>Create content</td></tr>
+        <tr><td><span class="badge-method PUT">PUT</span></td><td><code>/content/:id</code></td><td>ADMIN</td><td>Update content</td></tr>
+        <tr><td><span class="badge-method DELETE">DELETE</span></td><td><code>/content/:id</code></td><td>ADMIN</td><td>Delete content</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/content/word/today</code></td><td>None</td><td>Today's SOPHIA WORD devotional</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Challenges <span class="phase-badge p2">Phase 2</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/challenges</code></td><td>None</td><td>List challenges (filter: category, status)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/challenges/:id</code></td><td>None</td><td>Challenge details + leaderboard</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/challenges/:id/entries</code></td><td>JWT</td><td>Submit entry</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/challenges/:id/entries</code></td><td>None</td><td>List entries (sorted by points)</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/challenges/entries/:entryId/vote</code></td><td>JWT</td><td>Vote for entry</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Jobs — Mission Work <span class="phase-badge p2">Phase 2</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/jobs</code></td><td>None</td><td>List jobs (filter: category, tier, location, budget)</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/jobs/:id</code></td><td>None</td><td>Job details</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/jobs</code></td><td>JWT</td><td>Post a job</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/jobs/:id/apply</code></td><td>JWT</td><td>Apply for job</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/jobs/:id/applications</code></td><td>JWT (poster)</td><td>View applications</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>NFT Credentials <span class="phase-badge p2">Phase 2</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/nft/credentials/me</code></td><td>JWT</td><td>My NFT credentials</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/nft/metadata/:tokenId</code></td><td>None</td><td>ERC-721 metadata (IPFS-compatible)</td></tr>
+        <tr><td><span class="badge-method POST">POST</span></td><td><code>/nft/mint</code></td><td>ADMIN</td><td>Trigger on-chain mint</td></tr>
+        <tr><td><span class="badge-method GET">GET</span></td><td><code>/nft/mfp/stats</code></td><td>None</td><td>MFP-NFT distribution stats</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>WebSocket Events</h3>
+  <div class="callout info">
+    <strong>WS URL:</strong> <code>wss://api.missionchain.io/v1/ws</code> — authenticate via query param <code>?token=JWT</code>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Direction</th><th>Payload</th></tr></thead>
+      <tbody>
+        <tr><td><code>seed:status_changed</code></td><td>Server → Client</td><td><code>{seedId, status, message}</code></td></tr>
+        <tr><td><code>challenge:vote_update</code></td><td>Server → Client</td><td><code>{entryId, points, rank}</code></td></tr>
+        <tr><td><code>notification:new</code></td><td>Server → Client</td><td><code>{id, type, title, body}</code></td></tr>
+        <tr><td><code>liquidity:update</code></td><td>Server → Client</td><td><code>{band, micePrice, twap7d}</code></td></tr>
+        <tr><td><code>admin:seed_submitted</code></td><td>Server → Admin</td><td><code>{seedId, email, package}</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5 — SMART CONTRACTS
+══════════════════════════════════════════ -->
+<section id="s5">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>Smart Contract Specifications</h2>
+  </div>
+
+  <div class="callout">
+    <strong>Network:</strong> BSC Mainnet (<code>chainId: 56</code>) + BSC Testnet (<code>chainId: 97</code>) for testing<br>
+    <strong>Framework:</strong> Hardhat + OpenZeppelin v5 + TypeChain for type-safe ABIs<br>
+    <strong>Audit:</strong> Required before mainnet deploy — use Testnet first for Phase 1
+  </div>
+
+  <h3>1. MIC Token (ERC-20)</h3>
+  <pre>
+<span class="comment">// contracts/contracts/MICToken.sol</span>
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+
+contract MICToken is ERC20, ERC20Burnable, ERC20Permit, AccessControl, Pausable {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
+    uint256 public constant MAX_SUPPLY = 7_000_000_000 * 10**18;  // 7B MIC
+    uint256 public constant PRE_ISSUED = 1_050_000_000 * 10**18;  // 15%
+
+    uint256 public totalMinted;
+
+    event TokensMinted(address indexed to, uint256 amount, string reason);
+
+    constructor(address treasury) ERC20("Mission Incentive Coin", "MIC") ERC20Permit("MIC") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(PAUSER_ROLE, msg.sender);
+        
+        // Mint pre-issued allocation to treasury
+        _mint(treasury, PRE_ISSUED);
+        totalMinted = PRE_ISSUED;
+    }
+
+    function mint(address to, uint256 amount, string calldata reason) 
+        external onlyRole(MINTER_ROLE) whenNotPaused 
+    {
+        require(totalMinted + amount <= MAX_SUPPLY, "MIC: Max supply exceeded");
+        totalMinted += amount;
+        _mint(to, amount);
+        emit TokensMinted(to, amount, reason);
+    }
+
+    function pause() external onlyRole(PAUSER_ROLE) { _pause(); }
+    function unpause() external onlyRole(PAUSER_ROLE) { _unpause(); }
+
+    function _update(address from, address to, uint256 value)
+        internal override whenNotPaused {
+        super._update(from, to, value);
+    }
+}
+  </pre>
+
+  <h3>2. Seed Sale Contract</h3>
+  <pre>
+<span class="comment">// contracts/contracts/SeedSale.sol</span>
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+/**
+ * @title SeedSale
+ * @notice Handles USDT payments for MIC seed round
+ * @dev Records purchases on-chain. Actual MIC/NFT delivery is off-chain via admin.
+ *      This contract serves as transparent proof of payment.
+ */
+contract SeedSale is Ownable, ReentrancyGuard, Pausable {
+    IERC20 public immutable usdt;
+    address public treasury;
+
+    uint256 public constant SEED_PRICE = 25;           // $0.0025 = 25 * 10^-4
+    uint256 public constant PRICE_DENOMINATOR = 10000;
+
+    // Package definitions
+    struct Package {
+        uint256 usdtAmount;    // in USDT wei (6 decimals on BSC)
+        uint256 micAmount;     // in MIC wei (18 decimals)
+        uint256 mfpNftCount;
+        bool active;
+    }
+
+    mapping(uint8 => Package) public packages;
+
+    struct Purchase {
+        address buyer;
+        uint8 packageId;
+        uint256 usdtPaid;
+        uint256 micAllocated;
+        uint256 mfpNfts;
+        uint256 timestamp;
+        bool fulfilled;
+    }
+
+    Purchase[] public purchases;
+    mapping(address => uint256[]) public buyerPurchases;
+
+    uint256 public totalRaised;     // USDT raised
+    uint256 public totalMICAllocated;
+
+    event PurchaseCreated(
+        uint256 indexed purchaseId,
+        address indexed buyer,
+        uint8 packageId,
+        uint256 usdtPaid,
+        uint256 micAllocated,
+        uint256 mfpNfts
+    );
+    event PurchaseFulfilled(uint256 indexed purchaseId);
+    event TreasuryUpdated(address indexed newTreasury);
+
+    constructor(address _usdt, address _treasury) Ownable(msg.sender) {
+        usdt = IERC20(_usdt);
+        treasury = _treasury;
+        _initPackages();
+    }
+
+    function _initPackages() internal {
+        // EARLY_BIRD: $1,000
+        packages[0] = Package(1000 * 10**18, 400_000_000 * 10**18, 20, true);
+        // FOUNDING_I: $2,500  
+        packages[1] = Package(2500 * 10**18, 1_000_000_000 * 10**18, 60, true);
+        // FOUNDING_II: $5,000
+        packages[2] = Package(5000 * 10**18, 2_000_000_000 * 10**18, 150, true);
+        // FOUNDING_III: $10,000
+        packages[3] = Package(10000 * 10**18, 4_000_000_000 * 10**18, 350, true);
+    }
+
+    function purchase(uint8 packageId) external nonReentrant whenNotPaused {
+        Package memory pkg = packages[packageId];
+        require(pkg.active, "SeedSale: Package not active");
+
+        bool sent = usdt.transferFrom(msg.sender, treasury, pkg.usdtAmount);
+        require(sent, "SeedSale: USDT transfer failed");
+
+        uint256 purchaseId = purchases.length;
+        purchases.push(Purchase({
+            buyer: msg.sender,
+            packageId: packageId,
+            usdtPaid: pkg.usdtAmount,
+            micAllocated: pkg.micAmount,
+            mfpNfts: pkg.mfpNftCount,
+            timestamp: block.timestamp,
+            fulfilled: false
+        }));
+
+        buyerPurchases[msg.sender].push(purchaseId);
+        totalRaised += pkg.usdtAmount;
+        totalMICAllocated += pkg.micAmount;
+
+        emit PurchaseCreated(purchaseId, msg.sender, packageId,
+            pkg.usdtAmount, pkg.micAmount, pkg.mfpNftCount);
+    }
+
+    function markFulfilled(uint256 purchaseId) external onlyOwner {
+        require(purchaseId < purchases.length, "SeedSale: Invalid id");
+        purchases[purchaseId].fulfilled = true;
+        emit PurchaseFulfilled(purchaseId);
+    }
+
+    function getBuyerPurchases(address buyer) external view returns (uint256[] memory) {
+        return buyerPurchases[buyer];
+    }
+
+    function getTotalPurchases() external view returns (uint256) {
+        return purchases.length;
+    }
+
+    function updateTreasury(address _treasury) external onlyOwner {
+        treasury = _treasury;
+        emit TreasuryUpdated(_treasury);
+    }
+
+    function pause() external onlyOwner { _pause(); }
+    function unpause() external onlyOwner { _unpause(); }
+}
+  </pre>
+
+  <h3>3. MFP-NFT (ERC-721)</h3>
+  <pre>
+<span class="comment">// contracts/contracts/MFPNft.sol</span>
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+
+/**
+ * @title MFPNft
+ * @notice Mission Founding Partner NFT — governance credential
+ * @dev 25,000 hard cap. Non-transferable (soulbound) option available per token.
+ */
+contract MFPNft is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, Pausable {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    uint256 public constant MAX_SUPPLY = 25_000;
+    uint256 private _nextTokenId;
+
+    // Soulbound: tokens marked as non-transferable
+    mapping(uint256 => bool) public soulbound;
+
+    event NFTMinted(address indexed to, uint256 tokenId, string uri);
+    event SoulboundSet(uint256 tokenId, bool isSoulbound);
+
+    constructor() ERC721("Mission Founding Partner NFT", "MFP") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+    }
+
+    function mint(address to, string calldata uri, bool _soulbound) 
+        external onlyRole(MINTER_ROLE) whenNotPaused 
+    {
+        require(_nextTokenId < MAX_SUPPLY, "MFPNft: Max supply reached");
+        uint256 tokenId = _nextTokenId++;
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+        soulbound[tokenId] = _soulbound;
+        emit NFTMinted(to, tokenId, uri);
+    }
+
+    function batchMint(address[] calldata recipients, string[] calldata uris, bool _soulbound)
+        external onlyRole(MINTER_ROLE) whenNotPaused 
+    {
+        require(recipients.length == uris.length, "MFPNft: Length mismatch");
+        require(_nextTokenId + recipients.length <= MAX_SUPPLY, "MFPNft: Exceeds max supply");
+        for (uint i = 0; i < recipients.length; i++) {
+            uint256 tokenId = _nextTokenId++;
+            _safeMint(recipients[i], tokenId);
+            _setTokenURI(tokenId, uris[i]);
+            soulbound[tokenId] = _soulbound;
+        }
+    }
+
+    function _update(address to, uint256 tokenId, address auth)
+        internal override(ERC721, ERC721Enumerable) returns (address) 
+    {
+        // Block transfers for soulbound tokens (except minting/burning)
+        address from = _ownerOf(tokenId);
+        if (soulbound[tokenId] && from != address(0) && to != address(0)) {
+            revert("MFPNft: Soulbound token is non-transferable");
+        }
+        return super._update(to, tokenId, auth);
+    }
+
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+        return super.tokenURI(tokenId);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public view override(ERC721, ERC721Enumerable, ERC721URIStorage, AccessControl) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function pause() external onlyRole(DEFAULT_ADMIN_ROLE) { _pause(); }
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) { _unpause(); }
+}
+  </pre>
+
+  <h3>4. MICE License (ERC-1155 or Standalone)</h3>
+  <pre>
+<span class="comment">// Interface — Full implementation in Phase 1</span>
+interface IMICELicense {
+    struct License {
+        uint256 id;
+        address owner;
+        uint256 activatedAt;
+        uint256 expiresAt;
+        uint256 priceUSDT;    // Price at activation (in USDT cents)
+        bool recycled;
+    }
+
+    event LicenseActivated(uint256 indexed licenseId, address indexed owner, uint256 price);
+    event LicenseRecycled(uint256 indexed licenseId, address indexed owner);
+    event MiningRewardClaimed(address indexed owner, uint256 amount);
+
+    function activate(uint256 licenseId) external;    // Pay 50% USDT + 50% MIC
+    function recycle(uint256 licenseId) external;     // Return license for credit
+    function claimReward(uint256 licenseId) external; // Claim daily MIC reward
+    function getLicense(uint256 id) external view returns (License memory);
+    function getActiveLicenses(address owner) external view returns (uint256[] memory);
+    function totalActive() external view returns (uint256);
+    function currentPrice() external view returns (uint256);  // Based on TWAP band
+}
+  </pre>
+
+  <h3>Contract Deployment Config</h3>
+  <pre>
+<span class="comment">// contracts/hardhat.config.ts</span>
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+import "@typechain/hardhat";
+
+const config: HardhatUserConfig = {
+  solidity: {
+    version: "0.8.24",
+    settings: {
+      optimizer: { enabled: true, runs: 200 },
+      viaIR: true
+    }
+  },
+  networks: {
+    bscTestnet: {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      chainId: 97,
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY!]
+    },
+    bscMainnet: {
+      url: "https://bsc-dataseed.binance.org/",
+      chainId: 56,
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY!]
+    }
+  },
+  etherscan: {
+    apiKey: { bsc: process.env.BSCSCAN_API_KEY! }
+  },
+  typechain: {
+    outDir: "typechain-types",
+    target: "ethers-v6"
+  }
+};
+export default config;
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6 — FRONTEND PAGES
+══════════════════════════════════════════ -->
+<section id="s6">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>Frontend Pages & Components</h2>
+  </div>
+
+  <h3>missionchain.io Pages <span class="phase-badge p0">Phase 0</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>Component File</th><th>Phase</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>/</code></td><td><code>app/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>Landing page — hero, ecosystem, tokenomics, roadmap (port current site)</td></tr>
+        <tr><td><code>/seed-round</code></td><td><code>app/seed-round/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>Seed Round — packages, ROI table, wallet connect + submission form</td></tr>
+        <tr><td><code>/whitepaper</code></td><td><code>app/whitepaper/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>White Paper v3.5 — styled HTML/Markdown renderer</td></tr>
+        <tr><td><code>/admin</code></td><td><code>app/admin/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>Admin dashboard — stats overview, quick actions</td></tr>
+        <tr><td><code>/admin/seed</code></td><td><code>app/admin/seed/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>Seed management — list, verify, fulfill, reject</td></tr>
+        <tr><td><code>/admin/users</code></td><td><code>app/admin/users/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>User management</td></tr>
+        <tr><td><code>/admin/settings</code></td><td><code>app/admin/settings/page.tsx</code></td><td><span class="phase-badge p1">1</span></td><td>System config, email templates</td></tr>
+        <tr><td><code>/announcement</code></td><td><code>app/announcement/page.tsx</code></td><td><span class="phase-badge p0">0</span></td><td>Special announcement page</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>missionchain.world Pages <span class="phase-badge p2">Phase 2</span></h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>/</code></td><td>World landing — two-layer architecture, stats, feature preview</td></tr>
+        <tr><td><code>/learn</code></td><td>Mission Learn — tracks, courses, enrollment</td></tr>
+        <tr><td><code>/work</code></td><td>Job marketplace — browse, filter, apply</td></tr>
+        <tr><td><code>/social</code></td><td>Community feed, Hub locations</td></tr>
+        <tr><td><code>/challenges</code></td><td>Active challenges, leaderboard, submit entry</td></tr>
+        <tr><td><code>/challenges/:id</code></td><td>Single challenge detail + entries</td></tr>
+        <tr><td><code>/profile/:username</code></td><td>Creator profile — portfolio, credentials, stats</td></tr>
+        <tr><td><code>/word</code></td><td>SOPHIA WORD — daily devotional, themes, audio</td></tr>
+        <tr><td><code>/sophia</code></td><td>SOPHIA bot interface — chat, job matching</td></tr>
+        <tr><td><code>/recognition</code></td><td>Builder/Maker/Luminary tier system explained</td></tr>
+        <tr><td><code>/settings</code></td><td>Account settings, wallet management</td></tr>
+        <tr><td><code>/login</code></td><td>Login — email/password or wallet sign</td></tr>
+        <tr><td><code>/register</code></td><td>Registration flow</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Key Component Architecture</h3>
+  <pre>
+<span class="comment">// apps/web-io/src/components/ structure</span>
+components/
+├── layout/
+│   ├── Header.tsx            <span class="comment">// Nav + wallet connect button</span>
+│   ├── Footer.tsx
+│   ├── AdminLayout.tsx       <span class="comment">// Sidebar layout for admin</span>
+│   └── AdminSidebar.tsx
+│
+├── seed/
+│   ├── PackageCard.tsx       <span class="comment">// Package selector (4 tiers)</span>
+│   ├── SeedForm.tsx          <span class="comment">// Registration form (email, wallet, txid)</span>
+│   ├── SeedStatus.tsx        <span class="comment">// Status tracker (Pending → Verified → Fulfilled)</span>
+│   ├── ROITable.tsx          <span class="comment">// Conservative/Moderate/Optimistic ROI</span>
+│   └── SeedStats.tsx         <span class="comment">// Live: total raised, participants</span>
+│
+├── wallet/
+│   ├── WalletButton.tsx      <span class="comment">// Connect/disconnect with RainbowKit</span>
+│   ├── WalletModal.tsx       <span class="comment">// Wallet selection modal</span>
+│   ├── NetworkGuard.tsx      <span class="comment">// Enforce BSC network</span>
+│   └── AddressDisplay.tsx    <span class="comment">// Truncated address + copy</span>
+│
+├── admin/
+│   ├── SeedTable.tsx         <span class="comment">// Filterable data table</span>
+│   ├── SeedDetailModal.tsx   <span class="comment">// Verify/reject actions</span>
+│   ├── StatsCard.tsx         <span class="comment">// KPI card</span>
+│   ├── StatusBadge.tsx       <span class="comment">// Color-coded status</span>
+│   └── UserTable.tsx
+│
+└── ui/ (from packages/ui)
+    ├── Button.tsx
+    ├── Card.tsx
+    ├── Modal.tsx
+    ├── Badge.tsx
+    ├── Input.tsx
+    ├── Toast.tsx
+    └── Spinner.tsx
+  </pre>
+
+  <h3>Design System Tokens</h3>
+  <pre>
+<span class="comment">// packages/config/tailwind.preset.ts</span>
+import type { Config } from "tailwindcss";
+
+export const missionChainPreset: Config["theme"] = {
+  extend: {
+    colors: {
+      navy: {
+        DEFAULT: "#0a1628",
+        mid:    "#112240",
+        light:  "#1a3358",
+        hover:  "#1e3d6b",
+      },
+      gold: {
+        DEFAULT: "#c9a84c",
+        light:   "#e8c87a",
+        dim:     "#8a6e2f",
+        pale:    "#f0dfa0",
+      },
+      success: "#27ae60",
+      warning: "#e67e22",
+      danger:  "#e74c3c",
+      info:    "#3498db",
+    },
+    fontFamily: {
+      sans: ['Rajdhani', "system-ui", "sans-serif"],
+      mono: ["JetBrains Mono", "Fira Code", "monospace"],
+    },
+    backgroundImage: {
+      "gold-gradient": "linear-gradient(135deg, #c9a84c 0%, #e8c87a 100%)",
+      "navy-gradient": "linear-gradient(135deg, #0a1628 0%, #112240 100%)",
+    },
+    boxShadow: {
+      "gold-glow": "0 0 20px rgba(201, 168, 76, 0.3)",
+      "card": "0 4px 24px rgba(0, 0, 0, 0.3)",
+    },
+    borderColor: {
+      gold: "rgba(201, 168, 76, 0.25)",
+    },
+  }
+};
+  </pre>
+
+  <h3>Wagmi + RainbowKit Config</h3>
+  <pre>
+<span class="comment">// packages/blockchain/src/wagmi.config.ts</span>
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { bsc, bscTestnet } from "wagmi/chains";
+
+export const wagmiConfig = getDefaultConfig({
+  appName: "Mission Chain",
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID!,
+  chains: [bsc, bscTestnet],
+  ssr: true,
+});
+
+<span class="comment">// Chain: force BSC only in production</span>
+export const SUPPORTED_CHAIN_ID = process.env.NODE_ENV === "production" ? 56 : 97;
+export const USDT_ADDRESS_BSC = "0x55d398326f99059fF775485246999027B3197955";
+export const TREASURY_ADDRESS = "0x185440aC3d7dbD26EB35470B7648d4D4e43Cf7ac";
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7 — DOCKER COMPOSE
+══════════════════════════════════════════ -->
+<section id="s7">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>Docker Compose — Production Setup</h2>
+  </div>
+
+  <h3>docker/docker-compose.yml</h3>
+  <pre>
+version: "3.9"
+
+services:
+  <span class="comment"># ── PostgreSQL ─────────────────────────────────────────────────</span>
+  postgres:
+    image: postgres:16-alpine
+    container_name: mc_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: missionchain
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  <span class="comment"># ── Redis ──────────────────────────────────────────────────────</span>
+  redis:
+    image: redis:7-alpine
+    container_name: mc_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+    networks:
+      - internal
+
+  <span class="comment"># ── API Server ─────────────────────────────────────────────────</span>
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    container_name: mc_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/missionchain
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      BSC_RPC_URL: ${BSC_RPC_URL}
+      BSCSCAN_API_KEY: ${BSCSCAN_API_KEY}
+      PINATA_API_KEY: ${PINATA_API_KEY}
+      PINATA_SECRET_KEY: ${PINATA_SECRET_KEY}
+      EMAIL_FROM: ${EMAIL_FROM}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      TREASURY_ADDRESS: ${TREASURY_ADDRESS}
+      MIC_CONTRACT: ${MIC_CONTRACT}
+      MFP_NFT_CONTRACT: ${MFP_NFT_CONTRACT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - internal
+      - external
+
+  <span class="comment"># ── missionchain.io frontend ───────────────────────────────────</span>
+  web-io:
+    build:
+      context: ..
+      dockerfile: apps/web-io/Dockerfile
+    container_name: mc_web_io
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: https://api.missionchain.io/v1
+      NEXT_PUBLIC_WS_URL: wss://api.missionchain.io/v1/ws
+      NEXT_PUBLIC_WALLETCONNECT_ID: ${WALLETCONNECT_PROJECT_ID}
+      NEXT_PUBLIC_CHAIN_ID: 56
+    depends_on:
+      - api
+    networks:
+      - internal
+
+  <span class="comment"># ── missionchain.world frontend ────────────────────────────────</span>
+  web-world:
+    build:
+      context: ..
+      dockerfile: apps/web-world/Dockerfile
+    container_name: mc_web_world
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: https://api.missionchain.io/v1
+      NEXT_PUBLIC_WS_URL: wss://api.missionchain.io/v1/ws
+      NEXT_PUBLIC_WALLETCONNECT_ID: ${WALLETCONNECT_PROJECT_ID}
+      NEXT_PUBLIC_CHAIN_ID: 56
+    depends_on:
+      - api
+    networks:
+      - internal
+
+  <span class="comment"># ── Nginx Reverse Proxy ────────────────────────────────────────</span>
+  nginx:
+    image: nginx:alpine
+    container_name: mc_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_certs:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    depends_on:
+      - web-io
+      - web-world
+      - api
+    networks:
+      - internal
+      - external
+
+volumes:
+  postgres_data:
+  redis_data:
+  certbot_certs:
+  certbot_www:
+
+networks:
+  internal:
+    driver: bridge
+  external:
+    driver: bridge
+  </pre>
+
+  <h3>Nginx Config — missionchain.io</h3>
+  <pre>
+<span class="comment"># docker/nginx/conf.d/missionchain-io.conf</span>
+server {
+    listen 80;
+    server_name missionchain.io www.missionchain.io;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name missionchain.io www.missionchain.io;
+
+    ssl_certificate /etc/letsencrypt/live/missionchain.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/missionchain.io/privkey.pem;
+
+    <span class="comment"># Security headers</span>
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    location / {
+        proxy_pass http://mc_web_io:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name api.missionchain.io;
+
+    <span class="comment"># WebSocket support</span>
+    location /v1/ws {
+        proxy_pass http://mc_api:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 86400;
+    }
+
+    location / {
+        proxy_pass http://mc_api:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 30s;
+        <span class="comment"># Rate limiting</span>
+        limit_req zone=api burst=20 nodelay;
+    }
+}
+  </pre>
+
+  <h3>Dockerfile — API</h3>
+  <pre>
+<span class="comment"># apps/api/Dockerfile</span>
+FROM node:20-alpine AS base
+RUN corepack enable pnpm
+
+FROM base AS deps
+WORKDIR /app
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/types/package.json ./packages/types/
+RUN pnpm install --frozen-lockfile --filter=api...
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
+COPY . .
+RUN pnpm --filter=api build
+RUN pnpm --filter=api prisma generate
+
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 fastify
+COPY --from=builder --chown=fastify:nodejs /app/apps/api/dist ./dist
+COPY --from=builder --chown=fastify:nodejs /app/apps/api/node_modules ./node_modules
+COPY --from=builder --chown=fastify:nodejs /app/apps/api/prisma ./prisma
+USER fastify
+EXPOSE 4000
+CMD ["node", "dist/index.js"]
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 8 — CLOUDFLARE SETUP
+══════════════════════════════════════════ -->
+<section id="s8">
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <h2>Cloudflare Setup</h2>
+  </div>
+
+  <div class="callout info">
+    <strong>Plan:</strong> Cloudflare Free tier covers DNS, CDN, DDoS protection, SSL. Upgrade to Pro ($20/mo) only if WAF rules needed. Budget-appropriate.
+  </div>
+
+  <h3>DNS Records</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Name</th><th>Value</th><th>Proxy</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td><code>@</code></td><td><code>VPS_IP</code></td><td>✅ Proxied</td><td>missionchain.io → web-io</td></tr>
+        <tr><td>A</td><td><code>www</code></td><td><code>VPS_IP</code></td><td>✅ Proxied</td><td>redirect to apex</td></tr>
+        <tr><td>A</td><td><code>api</code></td><td><code>VPS_IP</code></td><td>✅ Proxied</td><td>API server</td></tr>
+        <tr><td>A</td><td><code>missionchain.world</code></td><td><code>VPS_IP</code></td><td>✅ Proxied</td><td>web-world app</td></tr>
+        <tr><td>CNAME</td><td><code>www.missionchain.world</code></td><td><code>missionchain.world</code></td><td>✅ Proxied</td><td>www redirect</td></tr>
+        <tr><td>MX</td><td><code>@</code></td><td>Email provider MX</td><td>❌ DNS only</td><td>Transactional email</td></tr>
+        <tr><td>TXT</td><td><code>@</code></td><td>SPF record</td><td>❌ DNS only</td><td>Email auth</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>SSL/TLS Configuration</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Setting</th><th>Value</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>SSL Mode</td><td>Full (Strict)</td><td>Cloudflare ↔ Origin encrypted</td></tr>
+        <tr><td>Min TLS Version</td><td>TLS 1.2</td><td>Modern security, broad compatibility</td></tr>
+        <tr><td>HSTS</td><td>Enabled, max-age=1yr</td><td>Force HTTPS</td></tr>
+        <tr><td>Always HTTPS</td><td>Enabled</td><td>Redirect HTTP → HTTPS</td></tr>
+        <tr><td>Automatic HTTPS Rewrites</td><td>Enabled</td><td>Fix mixed content</td></tr>
+        <tr><td>Certificate Type</td><td>Universal SSL (free)</td><td>Auto-managed by Cloudflare</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Page Rules / Transform Rules</h3>
+  <pre>
+<span class="comment"># Rule 1: Redirect www → apex (missionchain.io)</span>
+Match: www.missionchain.io/*
+Action: Forwarding URL (301) → https://missionchain.io/$1
+
+<span class="comment"># Rule 2: Cache static assets aggressively</span>
+Match: missionchain.io/_next/static/*
+Action: Cache Level: Cache Everything, Edge Cache TTL: 1 month
+
+<span class="comment"># Rule 3: API — disable caching, allow all methods</span>
+Match: api.missionchain.io/*
+Action: Cache Level: Bypass, SSL: Full
+
+<span class="comment"># Rule 4: Redirect www.missionchain.world → apex</span>
+Match: www.missionchain.world/*
+Action: Forwarding URL (301) → https://missionchain.world/$1
+  </pre>
+
+  <h3>Security Rules (Free WAF)</h3>
+  <pre>
+<span class="comment"># WAF Custom Rules (Cloudflare Free: 5 rules)</span>
+
+<span class="comment"># Rule 1: Block common attack patterns on API</span>
+(http.request.uri.path matches "^/v1/" and 
+ http.request.method eq "POST" and 
+ not http.request.headers["content-type"] contains "application/json")
+→ BLOCK
+
+<span class="comment"># Rule 2: Rate limit seed registration (anti-spam)</span>
+(http.request.uri.path eq "/v1/seed/register" and 
+ http.request.method eq "POST")
+→ Rate Limit: 5 requests / 10 minutes per IP
+
+<span class="comment"># Rule 3: Block non-BSC wallet address patterns in params</span>
+(http.request.uri.query contains "SELECT" or 
+ http.request.uri.query contains "UNION" or 
+ http.request.uri.query contains "script>")
+→ BLOCK
+
+<span class="comment"># Rule 4: Allow only specific countries for admin routes</span>
+<span class="comment"># (Optional — configure if needed)</span>
+(http.request.uri.path starts_with "/admin" and 
+ not ip.geoip.country in {"VN" "US" "SG"})
+→ CHALLENGE (JS challenge)
+  </pre>
+
+  <h3>Cloudflare Workers (Optional — Budget Saver)</h3>
+  <div class="callout">
+    <strong>Optional:</strong> Use Cloudflare Workers (free 100K req/day) for lightweight API endpoints like <code>/seed/stats</code> that can be cached at edge, reducing VPS load.
+  </div>
+  <pre>
+<span class="comment">// cloudflare/workers/seed-stats.ts</span>
+export default {
+  async fetch(request: Request, env: Env): Promise&lt;Response&gt; {
+    const cached = await env.KV.get("seed_stats", "json");
+    if (cached) return Response.json(cached);
+
+    const fresh = await fetch("https://api.missionchain.io/v1/seed/stats");
+    const data = await fresh.json();
+    
+    await env.KV.put("seed_stats", JSON.stringify(data), { expirationTtl: 60 });
+    return Response.json(data);
+  }
+};
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 9 — ENV VARIABLES
+══════════════════════════════════════════ -->
+<section id="s9">
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <h2>Environment Variables</h2>
+  </div>
+
+  <div class="callout warn">
+    <strong>⚠ Security:</strong> Never commit <code>.env</code> files. Use <code>.env.example</code> as template. Store secrets in GitHub Actions Secrets or VPS environment.
+  </div>
+
+  <h3>.env.example (root)</h3>
+  <pre>
+<span class="comment"># ── Database ────────────────────────────────────────────────────</span>
+DB_USER=missionchain
+DB_PASSWORD=CHANGE_ME_STRONG_PASSWORD
+DATABASE_URL=postgresql://missionchain:CHANGE_ME@localhost:5432/missionchain
+
+<span class="comment"># ── Redis ───────────────────────────────────────────────────────</span>
+REDIS_PASSWORD=CHANGE_ME_REDIS_PASS
+REDIS_URL=redis://:CHANGE_ME_REDIS_PASS@localhost:6379
+
+<span class="comment"># ── JWT ─────────────────────────────────────────────────────────</span>
+JWT_SECRET=CHANGE_ME_64_CHAR_RANDOM_STRING
+JWT_REFRESH_SECRET=CHANGE_ME_ANOTHER_64_CHAR_STRING
+JWT_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
+
+<span class="comment"># ── Blockchain ──────────────────────────────────────────────────</span>
+BSC_RPC_URL=https://bsc-dataseed.binance.org/
+BSC_TESTNET_RPC_URL=https://data-seed-prebsc-1-s1.binance.org:8545/
+DEPLOYER_PRIVATE_KEY=CHANGE_ME_PRIVATE_KEY_NO_0x_PREFIX
+BSCSCAN_API_KEY=CHANGE_ME_BSCSCAN_KEY
+TREASURY_ADDRESS=0x185440aC3d7dbD26EB35470B7648d4D4e43Cf7ac
+MIC_CONTRACT=0x_DEPLOYED_MIC_ADDRESS
+MFP_NFT_CONTRACT=0x_DEPLOYED_NFT_ADDRESS
+SEED_SALE_CONTRACT=0x_DEPLOYED_SEED_CONTRACT
+
+<span class="comment"># ── IPFS / Pinata ───────────────────────────────────────────────</span>
+PINATA_API_KEY=CHANGE_ME
+PINATA_SECRET_KEY=CHANGE_ME
+PINATA_GATEWAY=https://gateway.pinata.cloud
+
+<span class="comment"># ── Email ───────────────────────────────────────────────────────</span>
+EMAIL_FROM=noreply@missionchain.io
+SMTP_HOST=smtp.your-provider.com
+SMTP_PORT=587
+SMTP_USER=CHANGE_ME
+SMTP_PASS=CHANGE_ME
+
+<span class="comment"># ── Frontend (NEXT_PUBLIC_ = exposed to browser) ────────────────</span>
+NEXT_PUBLIC_API_URL=https://api.missionchain.io/v1
+NEXT_PUBLIC_WS_URL=wss://api.missionchain.io/v1/ws
+NEXT_PUBLIC_WALLETCONNECT_ID=CHANGE_ME_WALLETCONNECT_PROJECT_ID
+NEXT_PUBLIC_CHAIN_ID=56
+NEXT_PUBLIC_USDT_BSC=0x55d398326f99059fF775485246999027B3197955
+NEXT_PUBLIC_TREASURY=0x185440aC3d7dbD26EB35470B7648d4D4e43Cf7ac
+NEXT_PUBLIC_GA_ID=G-CHANGE_ME_GOOGLE_ANALYTICS
+
+<span class="comment"># ── GitHub Actions Secrets (store in repo settings) ─────────────</span>
+<span class="comment"># VPS_SSH_KEY, VPS_HOST, VPS_USER</span>
+<span class="comment"># SLACK_WEBHOOK (optional deploy notifications)</span>
+  </pre>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 10 — ROADMAP
+══════════════════════════════════════════ -->
+<section id="s10">
+  <div class="section-header">
+    <div class="section-number">10</div>
+    <h2>Development Roadmap</h2>
+  </div>
+
+  <div class="callout">
+    <strong>Strategy:</strong> Ship revenue-generating features first (Seed Sale), then platform. Claude Code handles implementation sprint by sprint. Thomas reviews and approves.
+  </div>
+
+  <div class="timeline">
+    <!-- PHASE 0 -->
+    <div class="timeline-item">
+      <h3>🚀 Phase 0 — Seed Sale Live <span class="phase-badge p0">Weeks 1–3</span></h3>
+      <p style="color: var(--gray); font-size: 14px; margin-bottom: 12px;">Goal: Replace current static site with full Web3 Seed Sale platform. No smart contracts yet — off-chain tracking with BSCScan verification.</p>
+
+      <h4>Sprint 0.1 — Foundation (Days 1–3)</h4>
+      <ul class="tasks">
+        <li>Init monorepo with Turborepo + pnpm workspaces</li>
+        <li>Setup <code>packages/config</code> — ESLint, TypeScript, Tailwind preset (navy/gold design tokens)</li>
+        <li>Setup <code>packages/types</code> — shared domain types</li>
+        <li>Setup <code>packages/ui</code> — Button, Card, Badge, Modal, Input, Toast components</li>
+        <li>Setup Docker Compose dev environment (Postgres + Redis)</li>
+        <li>Init Prisma schema + first migration</li>
+        <li>GitHub repo structure + Actions CI pipeline</li>
+      </ul>
+
+      <h4>Sprint 0.2 — API Core (Days 4–7)</h4>
+      <ul class="tasks">
+        <li>Fastify server setup with TypeScript</li>
+        <li>Auth plugin (JWT access + refresh tokens)</li>
+        <li>CORS, rate limiting, request validation (Zod)</li>
+        <li><code>POST /auth/register</code>, <code>POST /auth/login</code></li>
+        <li><code>POST /seed/register</code> — save to DB, send confirmation email</li>
+        <li><code>GET /seed/stats</code> — public stats endpoint</li>
+        <li><code>GET /seed/status/:txid</code> — status check</li>
+        <li>BSCScan API integration for TX verification</li>
+        <li>Email service (Nodemailer / Resend API)</li>
+      </ul>
+
+      <h4>Sprint 0.3 — missionchain.io Frontend (Days 8–14)</h4>
+      <ul class="tasks">
+        <li>Next.js 14 App Router setup with Tailwind + design tokens</li>
+        <li>Port current landing page (hero, ecosystem, tokenomics, roadmap) to Next.js</li>
+        <li>RainbowKit + Wagmi integration — BSC wallet connect</li>
+        <li>NetworkGuard component — enforce BSC network</li>
+        <li><strong>Seed Round Page</strong> — packages, ROI table, live stats counter</li>
+        <li>Seed Registration Form — email, wallet, TXID submit with validation</li>
+        <li>TXID Status Tracker — polling for status updates</li>
+        <li>Responsive design — mobile-first</li>
+        <li>Dark mode (default navy theme)</li>
+      </ul>
+
+      <h4>Sprint 0.4 — Admin Dashboard (Days 15–20)</h4>
+      <ul class="tasks">
+        <li>Admin route group with auth guard</li>
+        <li>Admin login page (email/password, ADMIN role required)</li>
+        <li>Dashboard: KPIs — total raised, participants by package, pending verifications</li>
+        <li>Seed table: sortable, filterable, paginated list of all participants</li>
+        <li>Seed detail modal: view TX info, verify on BSCScan link, actions (Verify/Fulfill/Reject)</li>
+        <li>Admin audit log for all actions</li>
+        <li>Email notification to participant on status change</li>
+        <li>CSV export for seed participants</li>
+      </ul>
+
+      <h4>Sprint 0.5 — Production Deploy (Days 21–22)</h4>
+      <ul class="tasks">
+        <li>Docker production build + Compose</li>
+        <li>Nginx config for both domains</li>
+        <li>SSL via Let's Encrypt (Certbot) + Cloudflare DNS</li>
+        <li>GitHub Actions deploy workflow (SSH to VPS)</li>
+        <li>Smoke test + load test seed form</li>
+        <li>Monitoring: basic Nginx access logs + Postgres health</li>
+      </ul>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="timeline-item">
+      <h3>⛓ Phase 1 — Smart Contracts + Full Seed Flow <span class="phase-badge p1">Weeks 4–8</span></h3>
+      <p style="color: var(--gray); font-size: 14px; margin-bottom: 12px;">Goal: Deploy contracts to BSC Testnet, automate on-chain verification, integrate wallet auth.</p>
+
+      <h4>Sprint 1.1 — Smart Contract Development</h4>
+      <ul class="tasks">
+        <li>Hardhat setup with TypeScript + TypeChain</li>
+        <li>MICToken.sol — ERC-20, 7B max supply, role-based mint</li>
+        <li>SeedSale.sol — on-chain purchase recording, package validation</li>
+        <li>MFPNft.sol — ERC-721 with soulbound option, 25K cap</li>
+        <li>MICELicense.sol — 100K cap, dynamic pricing via TWAP bands</li>
+        <li>Deploy scripts + verification on BSCScan</li>
+        <li>Full unit test suite (>80% coverage)</li>
+        <li>BSC Testnet deploy + smoke test</li>
+      </ul>
+
+      <h4>Sprint 1.2 — On-Chain Integration</h4>
+      <ul class="tasks">
+        <li>Wallet authentication — sign message → verify → JWT</li>
+        <li>Auto-verify seed TXID via BSCScan API (cron job every 5 min)</li>
+        <li>WebSocket notifications: seed status changes push to user</li>
+        <li>MIC balance display in frontend wallet panel</li>
+        <li>NFT credential display on admin dashboard</li>
+        <li>Blockchain service — Ethers.js v6 provider management</li>
+        <li>Admin: one-click "Fulfill on-chain" button (trigger MIC transfer)</li>
+      </ul>
+
+      <h4>Sprint 1.3 — MICE License Flow</h4>
+      <ul class="tasks">
+        <li>MICE activation page on missionchain.io</li>
+        <li>Dynamic pricing display (current TWAP band)</li>
+        <li>License dashboard — active licenses, days remaining, mined MIC</li>
+        <li>Daily emission calculation engine (Hindex Algorithm)</li>
+        <li>Recycle license functionality</li>
+      </ul>
+
+      <h4>Sprint 1.4 — Security + Audit Prep</h4>
+      <ul class="tasks">
+        <li>Smart contract static analysis (Slither + MythX)</li>
+        <li>Prepare audit documentation</li>
+        <li>Mainnet deploy checklist review</li>
+        <li>Multi-sig treasury wallet setup (Gnosis Safe)</li>
+        <li>Emergency pause mechanism test</li>
+      </ul>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="timeline-item">
+      <h3>🌍 Phase 2 — missionchain.world + SOPHIA <span class="phase-badge p2">Weeks 9–20</span></h3>
+      <p style="color: var(--gray); font-size: 14px; margin-bottom: 12px;">Goal: Full community platform — learn, work, social, challenges, creator profiles, SOPHIA AI.</p>
+
+      <h4>Sprint 2.1 — Creator Platform Foundation</h4>
+      <ul class="tasks">
+        <li>missionchain.world Next.js app — full routing setup</li>
+        <li>User registration + profile creation flow</li>
+        <li>Creator profile page — portfolio, skills, credentials, stats</li>
+        <li>On-chain credential badges (Builder/Maker/Luminary NFTs)</li>
+        <li>Portfolio upload (Cloudflare R2 or S3 for media storage)</li>
+        <li>Rating and review system for completed jobs</li>
+      </ul>
+
+      <h4>Sprint 2.2 — Mission Work Marketplace</h4>
+      <ul class="tasks">
+        <li>Job posting flow — churches, ministries, businesses</li>
+        <li>Job listing — filterable by category, tier, budget, location</li>
+        <li>Application flow — cover letter, portfolio link, proposed rate</li>
+        <li>Job poster dashboard — manage listings, review applicants</li>
+        <li>MIC payment escrow (basic — milestone-based)</li>
+        <li>Job completion + rating workflow</li>
+      </ul>
+
+      <h4>Sprint 2.3 — Content Engine (Media)</h4>
+      <ul class="tasks">
+        <li>Podcast listing + audio player</li>
+        <li>Article CMS — rich text editor for admins</li>
+        <li>Short video embedding (YouTube/Vimeo)</li>
+        <li>Multi-language support (EN/ES/PT/KO/VI)</li>
+        <li>Content search + tag filtering</li>
+        <li>RSS feed for podcast</li>
+      </ul>
+
+      <h4>Sprint 2.4 — SOPHIA WORD</h4>
+      <ul class="tasks">
+        <li>Daily devotional page — verse + reflection</li>
+        <li>7 thematic streams (Scripture & AI, Blockchain, Creativity, etc.)</li>
+        <li>Audio devotional player (TTS or recorded)</li>
+        <li>Video reflection embeds</li>
+        <li>Multi-language devotionals (5 languages)</li>
+        <li>Email subscription for daily devotional</li>
+      </ul>
+
+      <h4>Sprint 2.5 — Challenge Module</h4>
+      <ul class="tasks">
+        <li>Challenge listing + detail pages</li>
+        <li>Entry submission — media upload, description</li>
+        <li>Community voting with anti-spam (1 vote/user/challenge)</li>
+        <li>Real-time leaderboard via WebSocket</li>
+        <li>Winner announcement + NFT reward distribution</li>
+        <li>Challenge creation admin interface</li>
+      </ul>
+
+      <h4>Sprint 2.6 — SOPHIA Bot Integration</h4>
+      <ul class="tasks">
+        <li>SOPHIA chat interface — floating assistant on .world</li>
+        <li>Job matching algorithm — match creators to open jobs</li>
+        <li>Profile coaching — suggest skills to improve tier</li>
+        <li>SOPHIA WORD delivery — personalized devotional selection</li>
+        <li>Integration with OpenAI API (or Anthropic) for natural language</li>
+        <li>Telegram bot integration for community updates</li>
+      </ul>
+
+      <h4>Sprint 2.7 — Mission Social + DAO</h4>
+      <ul class="tasks">
+        <li>Community feed — creator updates, achievements</li>
+        <li>Mission Hub directory — physical community locations</li>
+        <li>DAO voting interface — proposal submission, voting</li>
+        <li>MFP-NFT governance power display</li>
+        <li>Mission Learn track completion tracking</li>
+        <li>Staking interface for MIC (governance activation)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>GitHub Actions CI/CD Pipeline</h3>
+  <pre>
+# .github/workflows/deploy-io.yml
+name: Deploy missionchain.io
+
+on:
+  push:
+    branches: [main]
+    paths: ['apps/web-io/**', 'apps/api/**', 'packages/**']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo typecheck lint test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/mission-chain
+            git pull origin main
+            pnpm install --frozen-lockfile
+            pnpm turbo build --filter=web-io --filter=api
+            docker compose build api web-io
+            docker compose up -d api web-io
+            docker compose exec api pnpm prisma migrate deploy
+            docker system prune -f
+  </pre>
+
+  <h3>Cost Estimate (Monthly)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Service</th><th>Plan</th><th>Cost/month</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>VPS Hosting</td><td>4 vCPU / 8GB RAM (Hetzner/DigitalOcean)</td><td>~$20–40</td><td>Runs all Docker containers</td></tr>
+        <tr><td>Cloudflare</td><td>Free tier</td><td>$0</td><td>DNS, CDN, SSL, basic WAF</td></tr>
+        <tr><td>Email</td><td>Resend.com (free 3K/mo)</td><td>$0</td><td>Upgrade to $20/mo when needed</td></tr>
+        <tr><td>BSC RPC</td><td>Public BSC nodes</td><td>$0</td><td>Use NodeReal free tier if needed</td></tr>
+        <tr><td>Pinata (IPFS)</td><td>Free 1GB</td><td>$0</td><td>Upgrade when NFT volume grows</td></tr>
+        <tr><td>Domain</td><td>missionchain.io + .world</td><td>~$5</td><td>Already owned</td></tr>
+        <tr><td><strong>Total Phase 0</strong></td><td></td><td><strong>~$25–45/mo</strong></td><td>Ultra lean startup budget</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Quick Start Commands</h3>
+  <pre>
+# Clone and setup
+git clone https://github.com/mission-chain/mission-chain
+cd mission-chain
+pnpm install
+
+# Start dev environment
+cp .env.example .env.local
+docker compose -f docker/docker-compose.dev.yml up -d  # Postgres + Redis
+pnpm turbo dev --filter=api --filter=web-io
+
+# Run DB migrations
+pnpm --filter=api prisma migrate dev
+
+# Run all tests
+pnpm turbo test
+
+# Build for production
+pnpm turbo build
+
+# Deploy (via GitHub Actions on push to main)
+git push origin main
+  </pre>
+</section>
+
+</main>
+
+<footer>
+  <div class="logo">⛓ Mission Chain</div>
+  <p>"Inspired by Faith. Built for People."</p>
+  <p style="margin-top: 8px;">Full Stack Architecture Spec v1.0 — Prepared by Claudia (Strategic AI) · March 2026</p>
+  <p style="margin-top: 4px; font-size: 11px; color: var(--gold-dim);">
+    This document is intended for implementation use by Claude Code and the Mission Chain technical team.
+  </p>
+</footer>
+
+</body>
+</html>
