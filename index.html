@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MissionChain Ecosystem — Preview Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold2:#D4AF37;--gold3:#B8962E;
+  --purple:#5B2D9E;--purple2:#7B4FBF;
+  --bg:#0A0A12;--card:#12121E;--border:rgba(201,168,76,.15);
+  --white:#F5F0E8;--cream:#E8DFD0;--muted:#8A8090;
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--white);font-family:var(--font-body);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
+.logo{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.4rem);font-weight:900;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;margin-bottom:8px}
+.subtitle{font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:48px}
+.badge{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:2px;padding:3px 10px;border-radius:20px;border:1px solid var(--gold);color:var(--gold);margin-bottom:32px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;width:100%;max-width:1100px;margin-bottom:48px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all .3s;position:relative;overflow:hidden}
+.card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 40px rgba(201,168,76,.12)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2));opacity:0;transition:opacity .3s}
+.card:hover::before{opacity:1}
+.card-icon{font-size:36px;margin-bottom:16px}
+.card-domain{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.card-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--white);margin-bottom:12px}
+.card-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.card-links{display:flex;flex-direction:column;gap:8px}
+.card-link{display:flex;align-items:center;gap:8px;font-family:var(--font-ui);font-size:12px;font-weight:500;color:var(--cream);text-decoration:none;padding:8px 14px;border-radius:8px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.1);transition:all .2s}
+.card-link:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.25);color:var(--gold)}
+.card-link .arrow{margin-left:auto;opacity:.4;transition:all .2s}
+.card-link:hover .arrow{opacity:1;transform:translateX(3px)}
+.section-label{font-family:var(--font-display);font-size:13px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;text-transform:uppercase}
+.internal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;width:100%;max-width:1100px;margin-bottom:48px}
+.int-link{display:block;font-family:var(--font-ui);font-size:12px;color:var(--muted);text-decoration:none;padding:12px 16px;border-radius:8px;border:1px solid var(--border);transition:all .2s}
+.int-link:hover{border-color:var(--purple);color:var(--cream);background:rgba(91,45,158,.08)}
+.int-link span{font-family:var(--font-mono);font-size:10px;color:var(--purple2);display:block;margin-bottom:4px;letter-spacing:1px}
+footer{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:auto;padding-top:32px}
+</style>
+</head>
+<body>
+
+<div class="logo">MISSION CHAIN</div>
+<div class="subtitle">Ecosystem Preview Hub</div>
+<div class="badge">Preview Build — March 2026</div>
+
+<div class="grid">
+
+  <!-- missionchain.io -->
+  <div class="card">
+    <div class="card-icon">🌐</div>
+    <div class="card-domain">missionchain.io</div>
+    <div class="card-title">Public Website</div>
+    <div class="card-desc">Landing page, White Paper, Appendices, Glossary, and translations (ES/VI/KO/PT).</div>
+    <div class="card-links">
+      <a href="website/index.html" class="card-link">Landing Page <span class="arrow">→</span></a>
+      <a href="website/White_Paper.html" class="card-link">White Paper <span class="arrow">→</span></a>
+      <a href="website/documents/documents-index.html" class="card-link">Documents Hub <span class="arrow">→</span></a>
+      <a href="website/mc_seed_round.html" class="card-link">SEED Round <span class="arrow">→</span></a>
+      <a href="website/mc_announcement.html" class="card-link">Announcement <span class="arrow">→</span></a>
+      <a href="website/Glossary_Brand_Terms.html" class="card-link">Glossary & Terms <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- app.missionchain.io -->
+  <div class="card">
+    <div class="card-icon">⛓️</div>
+    <div class="card-domain">app.missionchain.io</div>
+    <div class="card-title">Web3 DApp</div>
+    <div class="card-desc">SEED/Pre-Sale purchase, MICE mining, NFT staking, portfolio management, and admin console.</div>
+    <div class="card-links">
+      <a href="app/dapp-user.html" class="card-link">DApp User Interface (v2) <span class="arrow">→</span></a>
+      <a href="app/dapp-admin.html" class="card-link">DApp Admin Console (v2) <span class="arrow">→</span></a>
+      <a href="app/dapp-user-v1.html" class="card-link">DApp User (v1 — reference) <span class="arrow">→</span></a>
+      <a href="app/dapp-admin-v1.html" class="card-link">DApp Admin (v1 — reference) <span class="arrow">→</span></a>
+      <a href="website/documents/missionchain-dapp.html" class="card-link">DApp Full Spec <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- missionchain.world -->
+  <div class="card">
+    <div class="card-icon">🌍</div>
+    <div class="card-domain">missionchain.world</div>
+    <div class="card-title">Community Hub</div>
+    <div class="card-desc">Donate/Sponsor platform, social media integration, podcasts, Learn/Work/Social pillars.</div>
+    <div class="card-links">
+      <a href="world/frontend.html" class="card-link">Community Frontend <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- Admin Console -->
+  <div class="card">
+    <div class="card-icon">🛡️</div>
+    <div class="card-domain">admin.missionchain.io</div>
+    <div class="card-title">Admin Console</div>
+    <div class="card-desc">Unified admin panel: DApp management (SEED/Pre-Sale, mining, staking), World/IO content management, financials.</div>
+    <div class="card-links">
+      <a href="admin/dapp-admin.html" class="card-link">DApp Admin Console (v2) <span class="arrow">→</span></a>
+      <a href="admin/world-admin.html" class="card-link">World/IO Admin <span class="arrow">→</span></a>
+      <a href="admin/financials-section.html" class="card-link">Financial Projections <span class="arrow">→</span></a>
+      <a href="admin/dapp-admin-v1.html" class="card-link">DApp Admin (v1 — reference) <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Internal Documentation -->
+<div class="section-label">Internal Documentation</div>
+<div class="internal-grid">
+  <a href="internal/architecture/fullstack-architecture-v2.html" class="int-link"><span>ARCH</span>Architecture v2.0</a>
+  <a href="internal/architecture/fullstack-architecture-v1.html" class="int-link"><span>ARCH</span>Architecture v1.0</a>
+  <a href="internal/tokenomics/adaptive-emission-engine-v1.html" class="int-link"><span>TOKEN</span>Emission Engine</a>
+  <a href="internal/tokenomics/decision-log-v1.html" class="int-link"><span>TOKEN</span>Decision Log</a>
+  <a href="internal/branding/sophia-brand-bible.html" class="int-link"><span>BRAND</span>SOPHIA Brand Bible</a>
+  <a href="internal/branding/sophia-kol-vision.html" class="int-link"><span>BRAND</span>KOL Vision</a>
+  <a href="internal/branding/social-media-strategy.html" class="int-link"><span>BRAND</span>Social Media Strategy</a>
+  <a href="internal/process/dev-team-process.html" class="int-link"><span>DEV</span>Dev Team Process</a>
+  <a href="internal/architecture/kickoff-review-report.html" class="int-link"><span>DEV</span>Kickoff Review</a>
+</div>
+
+<!-- Translations Quick Links -->
+<div class="section-label">Translations</div>
+<div class="internal-grid">
+  <a href="website/translations/es/index.html" class="int-link"><span>ES</span>Español — Landing</a>
+  <a href="website/translations/vi/index.html" class="int-link"><span>VI</span>Tiếng Việt — Landing</a>
+  <a href="website/translations/ko/index.html" class="int-link"><span>KO</span>한국어 — Landing</a>
+  <a href="website/translations/pt/index.html" class="int-link"><span>PT</span>Português — Landing</a>
+  <a href="website/translations/es/White_Paper.html" class="int-link"><span>ES</span>Español — White Paper</a>
+  <a href="website/translations/vi/White_Paper.html" class="int-link"><span>VI</span>Tiếng Việt — White Paper</a>
+  <a href="website/translations/ko/White_Paper.html" class="int-link"><span>KO</span>한국어 — White Paper</a>
+  <a href="website/translations/pt/White_Paper.html" class="int-link"><span>PT</span>Português — White Paper</a>
+</div>
+
+<!-- Font System Reference -->
+<div class="section-label">Unified Font System</div>
+<div class="internal-grid">
+  <div class="int-link"><span>DISPLAY</span>Cinzel — Headings, Titles, Logo</div>
+  <div class="int-link"><span>BODY</span>Rajdhani — Paragraphs, Descriptions</div>
+  <div class="int-link"><span>UI</span>Montserrat — Nav, Buttons, Labels</div>
+  <div class="int-link"><span>MONO</span>Space Mono — Code, Addresses, Numbers</div>
+</div>
+
+<footer>MISSIONCHAIN ECOSYSTEM © 2026 — PREVIEW BUILD</footer>
+
+</body>
+</html>

@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Panel — missionchain.info</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:'Cinzel',serif;
+  --font-body:'Rajdhani',sans-serif;
+  --font-ui:'Montserrat',sans-serif;
+  --font-mono:'Space Mono',monospace;
+
+  --navy:#06111F;--navy2:#0C1E35;--navy3:#142944;--navy4:#1E3A5A;
+  --gold:#C9A84C;--gold2:#DEB96A;--gold3:#F2DFA0;--gold4:#FBF3DC;
+  --bg:#080E1A;--bg2:#0E1826;--bg3:#141F2F;--bg4:#1A2840;
+  --panel:#111C2D;--panel2:#172236;
+  --text:#E8E4DA;--text2:#9A9588;--text3:#5A5548;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --gold-dim:rgba(201,168,76,0.15);--gold-border:rgba(201,168,76,0.25);
+  --green:#22C55E;--red:#EF4444;--blue:#3B82F6;--amber:#F59E0B;
+  --r:10px;--rs:6px;
+  --sidebar:240px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px;}
+
+/* ══ LAYOUT ══ */
+.layout{display:flex;height:100vh;}
+
+/* ══ SIDEBAR ══ */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+.sidebar-brand{
+  padding:18px 18px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+.sidebar-brand img{height:28px;width:auto;filter:drop-shadow(0 0 4px rgba(201,168,76,0.25));}
+.brand-text{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:var(--gold);line-height:1.1;}
+.brand-sub{font-size:9px;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-top:1px;}
+
+.sidebar-section-label{
+  font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);font-weight:600;
+  padding:16px 18px 6px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 18px;cursor:pointer;
+  font-size:12.5px;color:var(--text2);
+  transition:all .18s;border-left:2px solid transparent;
+  text-decoration:none;white-space:nowrap;
+}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.04);}
+.nav-item.active{color:var(--gold);background:rgba(201,168,76,0.07);border-left-color:var(--gold);}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-size:9px;font-weight:700;border-radius:8px;padding:1px 6px;letter-spacing:.3px;}
+.nav-badge.red{background:var(--red);color:white;}
+.nav-badge.blue{background:var(--blue);color:white;}
+
+.sidebar-user{
+  margin-top:auto;padding:14px 16px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.user-ava{width:30px;height:30px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0;}
+.user-name{font-size:12px;color:var(--text);}
+.user-role{font-size:10px;color:var(--text3);}
+
+/* ══ MAIN ══ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ══ TOPBAR ══ */
+.topbar{
+  height:52px;background:var(--panel);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 24px;gap:16px;flex-shrink:0;
+}
+.topbar-title{font-family:'Cinzel',serif;font-size:18px;color:var(--text);flex:1;}
+.topbar-title span{color:var(--gold);font-style:italic;}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);
+  padding:6px 12px;
+}
+.topbar-search input{background:none;border:none;outline:none;font-size:12px;color:var(--text);width:180px;font-family:'Rajdhani',sans-serif;}
+.topbar-search input::placeholder{color:var(--text3);}
+.topbar-search-icon{color:var(--text3);font-size:12px;}
+.tb-btn{
+  width:30px;height:30px;border-radius:var(--rs);
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:13px;color:var(--text2);
+  transition:all .18s;position:relative;
+}
+.tb-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.tb-notif{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--panel);}
+
+/* ══ CONTENT AREA ══ */
+.content{flex:1;overflow-y:auto;padding:24px;}
+
+/* ══ PANELS / TABS ══ */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ══ SECTION HEADER ══ */
+.sec-hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.sec-hdr-title{font-family:'Cinzel',serif;font-size:22px;color:var(--text);}
+.sec-hdr-sub{font-size:12px;color:var(--text3);margin-left:2px;}
+.sec-hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.btn{padding:7px 16px;border-radius:var(--rs);font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;font-family:'Rajdhani',sans-serif;border:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-p{background:var(--gold);color:var(--navy);}
+.btn-p:hover{background:var(--gold2);}
+.btn-s{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
+.btn-s:hover{color:var(--text);border-color:var(--gold-border);}
+.btn-danger{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
+.btn-danger:hover{background:rgba(239,68,68,0.2);}
+.btn-sm{padding:4px 10px;font-size:11px;}
+
+/* ══ STAT CARDS ══ */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;}
+.stat-card-label{font-size:10.5px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+.stat-card-val{font-family:'Cinzel',serif;font-size:28px;font-weight:600;color:var(--text);line-height:1;}
+.stat-card-val.gold{color:var(--gold);}
+.stat-card-val.green{color:var(--green);}
+.stat-card-val.red{color:var(--red);}
+.stat-card-delta{font-size:11px;margin-top:5px;}
+.delta-up{color:var(--green);}
+.delta-dn{color:var(--red);}
+
+/* ══ TABLE ══ */
+.tbl-wrap{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:22px;}
+.tbl-hdr{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.tbl-hdr-title{font-size:13px;font-weight:500;color:var(--text);}
+.tbl-hdr-right{margin-left:auto;display:flex;gap:8px;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);font-weight:500;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);}
+td{font-size:12.5px;color:var(--text2);padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.03);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-name{color:var(--text);font-weight:500;}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:500;}
+.status-badge.pub{background:rgba(34,197,94,0.12);color:var(--green);}
+.status-badge.draft{background:rgba(245,158,11,0.12);color:var(--amber);}
+.status-badge.review{background:rgba(59,130,246,0.12);color:var(--blue);}
+.status-badge.flag{background:rgba(239,68,68,0.12);color:var(--red);}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.tbl-actions{display:flex;gap:6px;}
+.act-btn{padding:3px 8px;border-radius:5px;font-size:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;border:1px solid;transition:all .15s;}
+.act-edit{background:rgba(201,168,76,0.08);color:var(--gold);border-color:var(--gold-border);}
+.act-edit:hover{background:rgba(201,168,76,0.15);}
+.act-del{background:rgba(239,68,68,0.07);color:var(--red);border-color:rgba(239,68,68,0.2);}
+.act-del:hover{background:rgba(239,68,68,0.14);}
+.act-view{background:rgba(59,130,246,0.07);color:var(--blue);border-color:rgba(59,130,246,0.2);}
+.act-approve{background:rgba(34,197,94,0.07);color:var(--green);border-color:rgba(34,197,94,0.2);}
+
+/* ══ CARDS ROW ══ */
+.cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.panel-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;}
+.pc-title{font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.pc-icon{font-size:16px;}
+
+/* ══ FORM ELEMENTS ══ */
+.form-group{margin-bottom:16px;}
+.form-label{font-size:11px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);
+  padding:9px 13px;font-size:13px;color:var(--text);
+  font-family:'Rajdhani',sans-serif;outline:none;transition:border-color .18s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold-border);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text3);}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.6;}
+.form-select option{background:var(--panel);}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.form-hint{font-size:10.5px;color:var(--text3);margin-top:4px;line-height:1.4;}
+
+/* ══ TOGGLE ══ */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-info{}
+.toggle-name{font-size:13px;color:var(--text);margin-bottom:2px;}
+.toggle-desc{font-size:11px;color:var(--text3);}
+.toggle{position:relative;width:38px;height:21px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--bg4);border-radius:21px;transition:.25s;border:1px solid var(--border2);}
+.toggle-slider:before{position:absolute;content:'';width:15px;height:15px;left:2px;top:2px;background:var(--text3);border-radius:50%;transition:.25s;}
+.toggle input:checked+.toggle-slider{background:rgba(201,168,76,0.2);border-color:var(--gold-border);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(17px);background:var(--gold);}
+
+/* ══ TABS (sub-tabs inside panels) ══ */
+.sub-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.sub-tab{padding:9px 16px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Rajdhani',sans-serif;white-space:nowrap;}
+.sub-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.sub-tab:hover:not(.active){color:var(--text);}
+.sub-panel{display:none;}
+.sub-panel.active{display:block;}
+
+/* ══ SOPHIA CONFIG SPECIFIC ══ */
+.sophia-identity-card{
+  background:linear-gradient(135deg,var(--navy2),var(--navy4));
+  border:1px solid var(--gold-border);border-radius:var(--r);
+  padding:24px;display:flex;gap:24px;align-items:flex-start;margin-bottom:22px;
+}
+.sophia-ava-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.sophia-ava-large{
+  width:90px;height:90px;border-radius:50%;
+  border:2px solid var(--gold);overflow:hidden;background:var(--navy2);
+  display:flex;align-items:center;justify-content:center;
+}
+.sophia-ava-large svg{width:88px;height:88px;border-radius:50%;}
+.sophia-ava-actions{display:flex;gap:6px;}
+.sophia-info{flex:1;}
+.sophia-name-display{font-family:'Cinzel',serif;font-size:24px;color:var(--gold);margin-bottom:3px;}
+.sophia-tagline{font-size:12.5px;color:var(--text2);margin-bottom:12px;}
+.sophia-traits{display:flex;gap:6px;flex-wrap:wrap;}
+.sophia-trait{padding:3px 9px;border-radius:8px;font-size:10.5px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);}
+.sophia-trait.teal{background:rgba(20,160,120,0.1);color:#14A078;border-color:rgba(20,160,120,0.2);}
+.sophia-trait.blue{background:rgba(59,130,246,0.1);color:var(--blue);border-color:rgba(59,130,246,0.2);}
+
+/* Knowledge BASE */
+.kb-item{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  margin-bottom:8px;transition:all .18s;cursor:pointer;
+}
+.kb-item:hover{border-color:var(--gold-border);}
+.kb-icon{font-size:18px;flex-shrink:0;}
+.kb-name{font-size:13px;color:var(--text);font-weight:500;}
+.kb-desc{font-size:11px;color:var(--text3);margin-top:1px;}
+.kb-size{font-size:10.5px;color:var(--text3);margin-left:auto;white-space:nowrap;}
+.kb-status{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.kb-status.on{background:var(--green);}
+.kb-status.off{background:var(--text3);}
+
+/* API Config */
+.api-key-row{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.api-key-name{font-size:12.5px;color:var(--text);font-weight:500;width:140px;flex-shrink:0;}
+.api-key-val{flex:1;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.api-cost-badge{font-size:10.5px;background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.18);border-radius:6px;padding:2px 7px;white-space:nowrap;}
+
+/* Scripture Library */
+.scripture-item{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:12px 16px;margin-bottom:8px;
+  border-left:3px solid transparent;transition:all .18s;
+}
+.scripture-item:hover{border-left-color:var(--gold);}
+.scripture-ref{font-size:11px;color:var(--gold);font-weight:500;letter-spacing:.3px;margin-bottom:3px;}
+.scripture-text{font-family:'Cinzel',serif;font-size:14px;font-style:italic;color:var(--text2);line-height:1.5;}
+.scripture-theme{font-size:10px;color:var(--text3);margin-top:4px;}
+.scripture-theme span{display:inline-block;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:1px 6px;margin-right:4px;}
+
+/* Memory Config */
+.memory-item{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:12px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+}
+.mem-label{font-size:12.5px;color:var(--text);flex:1;}
+.mem-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);}
+
+/* Personality Sliders */
+.pers-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.pers-label{font-size:12px;color:var(--text2);width:120px;flex-shrink:0;}
+.pers-left{font-size:10.5px;color:var(--text3);width:70px;text-align:right;}
+.pers-right{font-size:10.5px;color:var(--text3);width:70px;}
+.pers-slider{flex:1;}
+input[type=range]{width:100%;-webkit-appearance:none;height:4px;background:var(--bg4);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--navy);}
+.pers-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);width:24px;text-align:center;}
+
+/* Activity Feed */
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.03);}
+.activity-item:last-child{border-bottom:none;}
+.act-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.act-text{font-size:12px;color:var(--text2);flex:1;line-height:1.5;}
+.act-time{font-size:10.5px;color:var(--text3);white-space:nowrap;}
+
+/* Progress bar */
+.progress-wrap{margin-bottom:10px;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+.progress-label span:first-child{color:var(--text2);}
+.progress-label span:last-child{color:var(--text3);}
+.progress-bar{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));}
+
+/* SOPHIA Word editor */
+.sw-editor{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.sw-editor-toolbar{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;}
+.sw-tool-btn{padding:4px 10px;border-radius:5px;font-size:11.5px;background:var(--bg4);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-family:'Rajdhani',sans-serif;transition:all .15s;}
+.sw-tool-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.sw-tool-sep{width:1px;background:var(--border);margin:0 2px;}
+.sw-editor-area{padding:16px;}
+
+/* Moderation Queue */
+.mod-item{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:14px 16px;margin-bottom:10px;
+}
+.mod-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.mod-type{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);}
+.mod-user{font-size:12px;color:var(--text);font-weight:500;}
+.mod-time{font-size:10.5px;color:var(--text3);margin-left:auto;}
+.mod-text{font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+.mod-actions{display:flex;gap:7px;}
+
+/* CHART mock */
+.chart-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:22px;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.chart-title{font-size:13px;font-weight:500;color:var(--text);}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:100px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.chart-bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--gold),var(--gold2));transition:height .3s;}
+.chart-day{font-size:9px;color:var(--text3);}
+
+/* User row specific */
+.user-info-cell{display:flex;align-items:center;gap:8px;}
+.u-ava{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--navy);flex-shrink:0;}
+.cred-pip{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:6px;font-size:10px;}
+.cred-pip.builder{background:rgba(59,130,246,0.12);color:var(--blue);}
+.cred-pip.maker{background:rgba(139,92,246,0.12);color:#A78BFA;}
+.cred-pip.luminary{background:rgba(201,168,76,0.15);color:var(--gold);}
+
+/* SOPHIA system prompt preview */
+.sys-prompt-preview{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);
+  padding:16px;font-family:'Space Mono',monospace;font-size:11px;
+  color:var(--text2);line-height:1.7;max-height:240px;overflow-y:auto;
+  white-space:pre-wrap;
+}
+.sp-key{color:var(--gold);}
+.sp-val{color:#86EFAC;}
+.sp-comment{color:var(--text3);}
+
+/* Notification Banner */
+.notif-banner{
+  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--rs);padding:10px 16px;
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;
+  font-size:12.5px;color:var(--text);
+}
+.notif-banner .nb-icon{font-size:16px;flex-shrink:0;}
+.notif-banner .nb-close{margin-left:auto;cursor:pointer;color:var(--text3);font-size:14px;}
+
+/* Responsive */
+@media(max-width:1100px){.stat-row{grid-template-columns:repeat(2,1fr);}.cards-row{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.sidebar{display:none;}.stat-row{grid-template-columns:1fr 1fr;}.cards-row{grid-template-columns:1fr;}.form-grid-2,.form-grid-3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="https://missionchain.io/mission-chain-logo-clear.png" alt="MC">
+    <div>
+      <div class="brand-text">Mission Chain</div>
+      <div class="brand-sub">Admin Panel · .info</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Overview</div>
+  <a class="nav-item active" onclick="showPanel('dashboard')"><span class="nav-icon">📊</span>Dashboard</a>
+
+  <div class="sidebar-section-label">Content</div>
+  <a class="nav-item" onclick="showPanel('sophia-word')"><span class="nav-icon">✝</span>SOPHIA WORD<span class="nav-badge red">3</span></a>
+  <a class="nav-item" onclick="showPanel('content')"><span class="nav-icon">📰</span>Content<span class="nav-badge">12</span></a>
+  <a class="nav-item" onclick="showPanel('challenges')"><span class="nav-icon">🏆</span>Challenges</a>
+
+  <div class="sidebar-section-label">AI System</div>
+  <a class="nav-item" onclick="showPanel('sophia-config')"><span class="nav-icon">🤖</span>SOPHIA Config<span class="nav-badge blue">AI</span></a>
+  <a class="nav-item" onclick="showPanel('moderation')"><span class="nav-icon">🛡</span>Moderation<span class="nav-badge red">7</span></a>
+
+  <div class="sidebar-section-label">Platform</div>
+  <a class="nav-item" onclick="showPanel('users')"><span class="nav-icon">👥</span>Users</a>
+  <a class="nav-item" onclick="showPanel('marketplace')"><span class="nav-icon">💼</span>Marketplace</a>
+  <a class="nav-item" onclick="showPanel('community')"><span class="nav-icon">🌍</span>Community</a>
+  <a class="nav-item" onclick="showPanel('recognition')"><span class="nav-icon">🌟</span>Recognition</a>
+
+  <div class="sidebar-section-label">System</div>
+  <a class="nav-item" onclick="showPanel('analytics')"><span class="nav-icon">📈</span>Analytics</a>
+  <a class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span>Settings</a>
+
+  <div class="sidebar-user">
+    <div class="user-ava">DT</div>
+    <div><div class="user-name">David Truong</div><div class="user-role">Super Admin</div></div>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN AREA ══════════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Admin <span id="topbar-title-current">Dashboard</span></div>
+    <div class="topbar-search">
+      <span class="topbar-search-icon">🔍</span>
+      <input type="text" placeholder="Search users, content, jobs…">
+    </div>
+    <div class="tb-btn" title="Notifications"><div class="tb-notif"></div>🔔</div>
+    <div class="tb-btn" title="View Site" onclick="window.open('https://missionchain.info')">🌐</div>
+    <div class="tb-btn" onclick="toggleAdminMode()" title="Toggle Theme">☀</div>
+  </div>
+
+  <div class="content" id="main-content">
+
+    <!-- ══ 1. DASHBOARD ══ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-hdr-title">Dashboard</div>
+          <div class="sec-hdr-sub">missionchain.info · Today, <span id="today-date"></span></div>
+        </div>
+        <div class="sec-hdr-right">
+          <button class="btn btn-s">Export Report</button>
+          <button class="btn btn-p">+ New Content</button>
+        </div>
+      </div>
+
+      <div class="notif-banner"><span class="nb-icon">✝</span> SOPHIA WORD: 3 reflections pending pastor review — <strong>Review now</strong><span class="nb-close" onclick="this.parentElement.remove()">✕</span></div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-card-label">Total Users</div><div class="stat-card-val gold">2,847</div><div class="stat-card-delta delta-up">↑ 143 this week</div></div>
+        <div class="stat-card"><div class="stat-card-label">Active Jobs</div><div class="stat-card-val">312</div><div class="stat-card-delta delta-up">↑ 28 this week</div></div>
+        <div class="stat-card"><div class="stat-card-label">Pending Review</div><div class="stat-card-val red">23</div><div class="stat-card-delta" style="color:var(--text3)">Content + Moderation</div></div>
+        <div class="stat-card"><div class="stat-card-label">SOPHIA Queries/day</div><div class="stat-card-val green">1,204</div><div class="stat-card-delta delta-up">↑ 18% vs last week</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:22px;">
+        <div class="chart-wrap">
+          <div class="chart-header"><span class="chart-title">Platform Activity — Last 7 Days</span><span style="font-size:10.5px;color:var(--text3)">Users · Jobs · Content</span></div>
+          <div class="chart-bars" id="chart-bars"></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">🤖</span> SOPHIA Status</div>
+          <div class="toggle-row" style="padding:8px 0">
+            <div class="toggle-info"><div class="toggle-name" style="font-size:12px;">SOPHIA Public Advisor</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row" style="padding:8px 0">
+            <div class="toggle-info"><div class="toggle-name" style="font-size:12px;">SOPHIA WORD Daily</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row" style="padding:8px 0">
+            <div class="toggle-info"><div class="toggle-name" style="font-size:12px;">Moderation AI</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div style="margin-top:12px;">
+            <div class="progress-wrap">
+              <div class="progress-label"><span>API Budget Used</span><span>$47.2 / $200</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:23.6%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Cache Hit Rate</span><span>87%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">⚡</span> Recent Activity</div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--green)"></div><div class="act-text">Sofia Mensah earned <strong>Luminary NFT</strong></div><div class="act-time">2m ago</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--blue)"></div><div class="act-text">New job posted by Redeemed Church Lagos</div><div class="act-time">14m ago</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--gold)"></div><div class="act-text">SOPHIA WORD daily reflection published</div><div class="act-time">1h ago</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--red)"></div><div class="act-text">Moderation flag: community post #2847</div><div class="act-time">2h ago</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--green)"></div><div class="act-text">143 new users registered this week</div><div class="act-time">Today</div></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">✝</span> SOPHIA WORD Queue</div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--amber)"></div><div class="act-text"><strong>Pending:</strong> "AI & Imago Dei — Ephesians 2:10" — Awaiting pastor review</div><div class="act-time">Draft</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--amber)"></div><div class="act-text"><strong>Pending:</strong> "Blockchain Covenant — Hebrews 13:8"</div><div class="act-time">Draft</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--amber)"></div><div class="act-text"><strong>Pending:</strong> "Bezalel's Craft — Exodus 31:3"</div><div class="act-time">Draft</div></div>
+          <div class="activity-item"><div class="act-dot" style="background:var(--green)"></div><div class="act-text"><strong>Published:</strong> "Created to Do Good Works" — Today</div><div class="act-time">Live</div></div>
+          <div style="margin-top:10px;"><button class="btn btn-p btn-sm" onclick="showPanel('sophia-word')">Review Queue →</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 2. SOPHIA WORD PANEL ══ -->
+    <div class="panel" id="panel-sophia-word">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">✝ SOPHIA WORD</div><div class="sec-hdr-sub">Daily reflections — Scripture meets the modern world</div></div>
+        <div class="sec-hdr-right">
+          <button class="btn btn-s">📅 Schedule</button>
+          <button class="btn btn-p" onclick="showSubPanel('sw-tabs','sw-new')">+ New Reflection</button>
+        </div>
+      </div>
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="showSubPanel('sw-tabs',this)">📋 Review Queue (3)</button>
+        <button class="sub-tab" onclick="showSubPanel('sw-tabs',this)">✅ Published</button>
+        <button class="sub-tab" onclick="showSubPanel('sw-tabs',this)">📝 New Reflection</button>
+        <button class="sub-tab" onclick="showSubPanel('sw-tabs',this)">📚 Theme Library</button>
+        <button class="sub-tab" onclick="showSubPanel('sw-tabs',this)">⚙️ SOPHIA WORD Settings</button>
+      </div>
+
+      <!-- Review Queue -->
+      <div class="sub-panel active" id="sw-tabs-0">
+        <div class="notif-banner" style="margin-bottom:16px;"><span class="nb-icon">⚠️</span>3 reflections awaiting Spiritual Advisor review before publishing.</div>
+        <div class="mod-item">
+          <div class="mod-header">
+            <span class="mod-type">SOPHIA WORD · AI Generated</span>
+            <span class="status-badge draft"><span class="status-dot"></span>Pending Review</span>
+            <span class="mod-time">Generated 2h ago</span>
+          </div>
+          <div style="margin-bottom:8px;padding:10px 14px;background:var(--bg4);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">
+            <div style="font-size:10.5px;color:var(--gold);margin-bottom:3px;">Ephesians 2:10 · Scripture & AI</div>
+            <div style="font-family:'Cinzel',serif;font-size:14px;font-style:italic;color:var(--text2);">"For we are God's handiwork, created in Christ Jesus to do good works…"</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">When AI Creates — What Remains Uniquely Human?</div>
+          <div class="mod-text">Paul writes that we are God's poiema — the Greek word that gives us "poem," "masterpiece," "handcrafted work." In 2026, as AI generates music, designs logos, and edits films — the question is not whether machines can create. The question is: what does it mean that you were created on purpose, for a purpose?</div>
+          <div class="mod-actions">
+            <button class="btn btn-s btn-sm">✏️ Edit</button>
+            <button class="btn btn-sm act-approve">✓ Approve & Publish</button>
+            <button class="btn btn-sm act-del">✕ Reject</button>
+            <button class="btn btn-s btn-sm">📅 Schedule</button>
+          </div>
+        </div>
+        <div class="mod-item">
+          <div class="mod-header">
+            <span class="mod-type">SOPHIA WORD · AI Generated</span>
+            <span class="status-badge draft"><span class="status-dot"></span>Pending Review</span>
+            <span class="mod-time">Generated 5h ago</span>
+          </div>
+          <div style="margin-bottom:8px;padding:10px 14px;background:var(--bg4);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">
+            <div style="font-size:10.5px;color:var(--gold);margin-bottom:3px;">Hebrews 13:8 · Scripture & Blockchain</div>
+            <div style="font-family:'Cinzel',serif;font-size:14px;font-style:italic;color:var(--text2);">"Jesus Christ is the same yesterday and today and forever."</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Immutability: The Blockchain Property That Reflects God's Character</div>
+          <div class="mod-text">Blockchain's core promise is immutability — records that cannot be altered or erased. Smart contracts execute exactly as written, every time. There is something theological in this architecture: a system that does not lie, does not change, and cannot be bribed…</div>
+          <div class="mod-actions">
+            <button class="btn btn-s btn-sm">✏️ Edit</button>
+            <button class="btn btn-sm act-approve">✓ Approve & Publish</button>
+            <button class="btn btn-sm act-del">✕ Reject</button>
+            <button class="btn btn-s btn-sm">📅 Schedule</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Reflection -->
+      <div class="sub-panel" id="sw-tabs-2">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <div class="form-group">
+              <label class="form-label">Theme Category</label>
+              <select class="form-select">
+                <option>Scripture & AI</option><option>Scripture & Blockchain</option>
+                <option>Scripture & Creativity</option><option>Scripture & Economy</option>
+                <option>Scripture & Community</option><option>Scripture & Human Dignity</option>
+                <option>Scripture & Technology</option><option>Scripture & Future</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Scripture Reference</label>
+              <input class="form-input" placeholder="e.g. Ephesians 2:10 · NIV">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Scripture Text</label>
+              <textarea class="form-textarea" style="min-height:70px;" placeholder="Paste the verse text here…"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reflection Title</label>
+              <input class="form-input" placeholder="e.g. When AI Creates — What Remains Uniquely Human?">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reflection Body</label>
+              <div class="sw-editor">
+                <div class="sw-editor-toolbar">
+                  <button class="sw-tool-btn">✦ AI Draft</button><div class="sw-tool-sep"></div>
+                  <button class="sw-tool-btn">B</button><button class="sw-tool-btn">I</button>
+                  <button class="sw-tool-btn">Link</button><button class="sw-tool-btn">Quote</button>
+                </div>
+                <div class="sw-editor-area"><textarea class="form-textarea" style="border:none;background:transparent;min-height:140px;padding:0;" placeholder="Write the reflection… or click '✦ AI Draft' to let SOPHIA generate a draft based on the scripture and theme above."></textarea></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label class="form-label">Format</label>
+              <select class="form-select">
+                <option>Text Only</option><option>Text + Audio (SOPHIA narrates)</option>
+                <option>Text + Video (assign to creator)</option><option>All Formats</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Publish Schedule</label>
+              <input class="form-input" type="datetime-local">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Language Versions</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> EN</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> ES</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> PT</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> 한국어</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> VI</label>
+              </div>
+              <div class="form-hint">SOPHIA AI auto-translates. Spot-check translations before publishing.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Spiritual Advisor Assignment</label>
+              <select class="form-select">
+                <option>Auto-assign (next available)</option>
+                <option>Pastor James Lee Harstad</option>
+                <option>Rev. John Clement</option>
+                <option>Dr. Nirmal (Tech Theology)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <input class="form-input" placeholder="ai, creativity, calling, imago-dei">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button class="btn btn-s" style="flex:1;">Save Draft</button>
+              <button class="btn btn-p" style="flex:1;">Submit for Review →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Library -->
+      <div class="sub-panel" id="sw-tabs-3">
+        <div class="g-themes" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div class="panel-card" style="text-align:center;cursor:pointer;">
+            <div style="font-size:24px;margin-bottom:6px;">🤖</div>
+            <div style="font-size:13px;color:var(--text);font-weight:500;">Scripture & AI</div>
+            <div style="font-size:10.5px;color:var(--text3);margin-top:4px;">14 reflections published</div>
+            <div style="font-size:10px;color:var(--gold);margin-top:6px;">Genesis 1:27 · Ephesians 2:10</div>
+          </div>
+          <div class="panel-card" style="text-align:center;cursor:pointer;">
+            <div style="font-size:24px;margin-bottom:6px;">🔗</div>
+            <div style="font-size:13px;color:var(--text);font-weight:500;">Scripture & Blockchain</div>
+            <div style="font-size:10.5px;color:var(--text3);margin-top:4px;">9 reflections published</div>
+            <div style="font-size:10px;color:var(--gold);margin-top:6px;">Hebrews 13:8 · Numbers 32:23</div>
+          </div>
+          <div class="panel-card" style="text-align:center;cursor:pointer;">
+            <div style="font-size:24px;margin-bottom:6px;">🎨</div>
+            <div style="font-size:13px;color:var(--text);font-weight:500;">Scripture & Creativity</div>
+            <div style="font-size:10.5px;color:var(--text3);margin-top:4px;">18 reflections published</div>
+            <div style="font-size:10px;color:var(--gold);margin-top:6px;">Exodus 31:3 · Colossians 3:23</div>
+          </div>
+          <div class="panel-card" style="text-align:center;cursor:pointer;">
+            <div style="font-size:24px;margin-bottom:6px;">⚖️</div>
+            <div style="font-size:13px;color:var(--text);font-weight:500;">Scripture & Economy</div>
+            <div style="font-size:10.5px;color:var(--text3);margin-top:4px;">11 reflections published</div>
+            <div style="font-size:10px;color:var(--gold);margin-top:6px;">Leviticus 25 · Matthew 25:14</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 3. SOPHIA CONFIGURATION ══ -->
+    <div class="panel" id="panel-sophia-config">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">🤖 SOPHIA Configuration</div><div class="sec-hdr-sub">AI identity, personality, knowledge base, memory & API settings</div></div>
+        <div class="sec-hdr-right">
+          <button class="btn btn-s">🔄 Reset to Default</button>
+          <button class="btn btn-p">💾 Save All Changes</button>
+        </div>
+      </div>
+
+      <div class="sub-tabs" id="sophia-config-tabs">
+        <button class="sub-tab active" onclick="showSubPanel('sophia-tabs',this)">👤 Identity & Persona</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">🧠 Personality</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">📚 Knowledge Base</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">✝ Scripture Library</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">💾 Memory Settings</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">🔌 API & Cost</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">🛡 Guardrails</button>
+        <button class="sub-tab" onclick="showSubPanel('sophia-tabs',this)">⚡ System Prompt</button>
+      </div>
+
+      <!-- TAB 0: Identity -->
+      <div class="sub-panel active" id="sophia-tabs-0">
+        <div class="sophia-identity-card">
+          <div class="sophia-ava-wrap">
+            <div class="sophia-ava-large">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="60" fill="#0C1E35"/>
+                <line x1="60" y1="5" x2="60" y2="17" stroke="#C9A84C" stroke-width="1" opacity=".45"/>
+                <line x1="78" y1="8" x2="73" y2="19" stroke="#C9A84C" stroke-width="1" opacity=".35"/>
+                <line x1="42" y1="8" x2="47" y2="19" stroke="#C9A84C" stroke-width="1" opacity=".35"/>
+                <circle cx="60" cy="44" r="28" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".18"/>
+                <rect x="53" y="85" width="14" height="14" rx="3" fill="#C8865A"/>
+                <path d="M26 108 Q34 88 60 85 Q86 88 94 108 L26 108Z" fill="#1E3452"/>
+                <line x1="60" y1="94" x2="60" y2="103" stroke="#C9A84C" stroke-width="1.4"/>
+                <line x1="56" y1="97" x2="64" y2="97" stroke="#C9A84C" stroke-width="1.4"/>
+                <ellipse cx="60" cy="58" rx="22" ry="26" fill="#D4956A"/>
+                <path d="M38 52 Q38 30 60 26 Q82 30 82 52 Q80 38 60 35 Q40 38 38 52Z" fill="#2A1508"/>
+                <path d="M38 52 Q33 62 34 76 Q38 68 40 60Z" fill="#2A1508"/>
+                <path d="M82 52 Q87 62 86 76 Q82 68 80 60Z" fill="#2A1508"/>
+                <ellipse cx="38" cy="60" rx="3" ry="4" fill="#C8865A"/>
+                <ellipse cx="82" cy="60" rx="3" ry="4" fill="#C8865A"/>
+                <circle cx="38" cy="65" r="1.8" fill="#C9A84C"/>
+                <circle cx="82" cy="65" r="1.8" fill="#C9A84C"/>
+                <path d="M49 51 Q54 48 58 50" fill="none" stroke="#5C3218" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M62 50 Q66 48 71 51" fill="none" stroke="#5C3218" stroke-width="1.4" stroke-linecap="round"/>
+                <ellipse cx="53" cy="58" rx="5" ry="4" fill="white"/>
+                <ellipse cx="67" cy="58" rx="5" ry="4" fill="white"/>
+                <ellipse cx="53.5" cy="58.5" rx="3.2" ry="3.2" fill="#3D1E0A"/>
+                <ellipse cx="67.5" cy="58.5" rx="3.2" ry="3.2" fill="#3D1E0A"/>
+                <circle cx="54.8" cy="57.4" r="1.1" fill="white" opacity=".9"/>
+                <circle cx="68.8" cy="57.4" r="1.1" fill="white" opacity=".9"/>
+                <path d="M53 74 Q60 79 67 74" fill="none" stroke="#A85530" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="sophia-ava-actions">
+              <button class="btn btn-s btn-sm">✏️ Edit</button>
+              <button class="btn btn-s btn-sm">↑ Upload</button>
+            </div>
+          </div>
+          <div class="sophia-info">
+            <div class="sophia-name-display">SOPHIA</div>
+            <div class="sophia-tagline">Named Intelligence for Resource Alignment · Mission Chain AI Advisor</div>
+            <div class="sophia-traits">
+              <span class="sophia-trait">Warm</span>
+              <span class="sophia-trait">Grounded</span>
+              <span class="sophia-trait">Precise</span>
+              <span class="sophia-trait teal">Faith-aware</span>
+              <span class="sophia-trait teal">Servant</span>
+              <span class="sophia-trait blue">Multilingual</span>
+              <span class="sophia-trait blue">Non-speculative</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div>
+            <div class="form-group">
+              <label class="form-label">AI Name</label>
+              <input class="form-input" value="SOPHIA">
+              <div class="form-hint">Displayed everywhere. Changing this updates the full UI.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Full Name (expanded)</label>
+              <input class="form-input" value="Named Intelligence for Resource Alignment">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Role / Tagline</label>
+              <input class="form-input" value="Mission Chain AI Advisor · Community Guide · SOPHIA WORD Curator">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Opening Greeting (multilingual)</label>
+              <textarea class="form-textarea" style="min-height:70px;">Peace be with you. I'm SOPHIA — Mission Chain's AI advisor. Ask me anything about MIC, MICE, DAO governance, the platform, or today's SOPHIA WORD reflection.</textarea>
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label class="form-label">Avatar Style</label>
+              <select class="form-select">
+                <option selected>Illustrated Christian Young Woman (Current)</option>
+                <option>Abstract Geometric (Navy/Gold)</option>
+                <option>Custom Upload</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Skin Tone</label>
+              <select class="form-select">
+                <option selected>Warm Caramel — Global South inclusive</option>
+                <option>Warm Brown</option>
+                <option>Medium Tan</option>
+                <option>Deep Brown</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Voice Profile (Audio)</label>
+              <select class="form-select">
+                <option selected>Warm Female — English (ElevenLabs)</option>
+                <option>Natural Female — Spanish</option>
+                <option>Natural Female — Portuguese</option>
+                <option>Natural Female — Korean</option>
+                <option>Natural Female — Vietnamese</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Faith Background</label>
+              <select class="form-select">
+                <option selected>Christian — Broadly Ecumenical</option>
+                <option>Protestant Focus</option>
+                <option>Catholic-inclusive</option>
+                <option>Non-denominational</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 1: Personality -->
+      <div class="sub-panel" id="sophia-tabs-1">
+        <div class="panel-card" style="margin-bottom:16px;">
+          <div class="pc-title"><span class="pc-icon">🎛</span> Personality Spectrum</div>
+          <div class="pers-row"><div class="pers-label">Warmth</div><div class="pers-left">Cold/Formal</div><input type="range" class="pers-slider" min="0" max="10" value="8" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">8</div><div class="pers-right">Warm/Friendly</div></div>
+          <div class="pers-row"><div class="pers-label">Directness</div><div class="pers-left">Indirect</div><input type="range" class="pers-slider" min="0" max="10" value="7" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">7</div><div class="pers-right">Direct</div></div>
+          <div class="pers-row"><div class="pers-label">Faith Presence</div><div class="pers-left">Secular</div><input type="range" class="pers-slider" min="0" max="10" value="6" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">6</div><div class="pers-right">Faith-forward</div></div>
+          <div class="pers-row"><div class="pers-label">Technical Depth</div><div class="pers-left">Simple</div><input type="range" class="pers-slider" min="0" max="10" value="5" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">5</div><div class="pers-right">Expert</div></div>
+          <div class="pers-row"><div class="pers-label">Response Length</div><div class="pers-left">Brief</div><input type="range" class="pers-slider" min="0" max="10" value="4" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">4</div><div class="pers-right">Detailed</div></div>
+          <div class="pers-row"><div class="pers-label">Formality</div><div class="pers-left">Casual</div><input type="range" class="pers-slider" min="0" max="10" value="5" oninput="this.nextElementSibling.nextElementSibling.textContent=this.value"><div class="pers-val">5</div><div class="pers-right">Formal</div></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">SOPHIA's Core Voice Description</label>
+            <textarea class="form-textarea" style="min-height:110px;">Warm, grounded, precise. Speaks like a wise mentor — never a salesperson or robot. Faith-aware without being exclusive. Tells people what they need to know, not just what they want to hear. Truth delivered with care is the highest form of respect.</textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">What SOPHIA Never Does</label>
+            <textarea class="form-textarea" style="min-height:110px;">• Never promises financial returns or implies yield
+• Never speculates on MIC/MICE price
+• Never votes or executes on-chain actions
+• Never gives legal or tax advice
+• Never endorses third-party tokens
+• Never accesses private wallet data without consent</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Knowledge Base -->
+      <div class="sub-panel" id="sophia-tabs-2">
+        <div class="sec-hdr" style="margin-bottom:14px;">
+          <div class="sec-hdr-title" style="font-size:16px;">Knowledge Base Documents</div>
+          <div class="sec-hdr-right"><button class="btn btn-p btn-sm">+ Add Source</button></div>
+        </div>
+        <div class="kb-item"><span class="kb-icon">📄</span><div><div class="kb-name">Mission Chain White Paper v3.5</div><div class="kb-desc">Full WP — tokenomics, MICE, DAO, roadmap, appendices A–I</div></div><span class="kb-size">~85K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">📖</span><div><div class="kb-name">Glossary of Brand Terms v1.0</div><div class="kb-desc">All official Mission Chain brand terms — do not translate rules</div></div><span class="kb-size">~12K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">🏛</span><div><div class="kb-name">DAO Governance Rules (Appendix H)</div><div class="kb-desc">Three-tier governance, quorum rules, timelock mechanics</div></div><span class="kb-size">~18K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">🤖</span><div><div class="kb-name">SOPHIA Operations Document (Appendix I)</div><div class="kb-desc">Full persona spec, capabilities, guardrails, governance role</div></div><span class="kb-size">~22K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">💼</span><div><div class="kb-name">Platform Operations Manual</div><div class="kb-desc">How missionchain.info works — all 6 modules, user journey</div></div><span class="kb-size">~30K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">🔗</span><div><div class="kb-name">BSC/BEP-20 Technical Reference</div><div class="kb-desc">Blockchain explanations for non-technical users</div></div><span class="kb-size">~8K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item"><span class="kb-icon">🌍</span><div><div class="kb-name">Cultural Intelligence Guide</div><div class="kb-desc">Africa, SE Asia, LatAm, Korea, North America context</div></div><span class="kb-size">~15K tokens</span><div class="kb-status on"></div><div class="tbl-actions"><button class="act-btn act-edit">Update</button></div></div>
+        <div class="kb-item" style="border-color:rgba(245,158,11,0.2);"><span class="kb-icon">📰</span><div><div class="kb-name">Blockchain/Web3 Reference (External)</div><div class="kb-desc">Ethereum.org, BSC docs, DeFi concepts for education</div></div><span class="kb-size">~20K tokens</span><div class="kb-status off"></div><div class="tbl-actions"><button class="act-btn act-approve">Enable</button></div></div>
+
+        <div class="panel-card" style="margin-top:16px;">
+          <div class="pc-title"><span class="pc-icon">📊</span> Cache Strategy</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Prompt Caching (Anthropic)</div><div class="toggle-desc">Cache system prompt after first call — reduces API cost ~90%</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Auto-refresh on WP update</div><div class="toggle-desc">Invalidate cache when White Paper version changes</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div style="margin-top:10px;font-size:11.5px;color:var(--text3);">Total cached tokens: <span style="color:var(--gold);">~210K</span> · Cache hit rate this week: <span style="color:var(--green);">87%</span> · Savings vs no cache: <span style="color:var(--green);">$124.40</span></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Scripture Library -->
+      <div class="sub-panel" id="sophia-tabs-3">
+        <div class="sec-hdr" style="margin-bottom:14px;">
+          <div class="sec-hdr-title" style="font-size:16px;">Scripture Library — Approved Passages</div>
+          <div class="sec-hdr-right"><button class="btn btn-p btn-sm">+ Add Passage</button></div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text3);margin-bottom:14px;">SOPHIA only references passages in this approved library. Adding a passage here makes it available for SOPHIA WORD and chatbot responses.</div>
+
+        <div class="scripture-item"><div class="scripture-ref">Ephesians 2:10 · NIV</div><div class="scripture-text">"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."</div><div class="scripture-theme"><span>AI & Creativity</span><span>Human Dignity</span><span>Calling</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Hebrews 13:8 · ESV</div><div class="scripture-text">"Jesus Christ is the same yesterday and today and forever."</div><div class="scripture-theme"><span>Blockchain</span><span>Immutability</span><span>Trust</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Matthew 5:14 · NIV</div><div class="scripture-text">"You are the light of the world. A city on a hill cannot be hidden."</div><div class="scripture-theme"><span>Mission Chain Founding Verse</span><span>Luminary</span><span>Community</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Proverbs 11:14 · ESV</div><div class="scripture-text">"Where there is no guidance, a people falls, but in an abundance of counselors there is safety."</div><div class="scripture-theme"><span>DAO Governance</span><span>Community</span><span>Leadership</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Exodus 31:3 · NIV</div><div class="scripture-text">"And I have filled him with the Spirit of God, with wisdom, with understanding, with knowledge and with all kinds of skills."</div><div class="scripture-theme"><span>Creativity</span><span>Craftsmanship</span><span>Calling</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Colossians 3:23 · NIV</div><div class="scripture-text">"Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."</div><div class="scripture-theme"><span>Work</span><span>Mission Work</span><span>Excellence</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Psalm 139:14 · NIV</div><div class="scripture-text">"I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well."</div><div class="scripture-theme"><span>Human Dignity</span><span>Global South</span><span>Creator Identity</span></div></div>
+        <div class="scripture-item"><div class="scripture-ref">Acts 2:44–45 · NIV</div><div class="scripture-text">"All the believers were together and had everything in common. They sold property and possessions to give to anyone who had need."</div><div class="scripture-theme"><span>DAO</span><span>Community Economy</span><span>Koinonia</span></div></div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label class="form-label">Add New Scripture</label>
+          <div class="form-grid-3">
+            <input class="form-input" placeholder="Reference (e.g. James 1:5)">
+            <select class="form-select"><option>NIV</option><option>ESV</option><option>KJV</option><option>NVI (Spanish)</option><option>Truyền Thống (VI)</option></select>
+            <input class="form-input" placeholder="Theme tags (comma separated)">
+          </div>
+          <textarea class="form-textarea" style="margin-top:8px;" placeholder="Paste scripture text here…"></textarea>
+          <button class="btn btn-p btn-sm" style="margin-top:8px;">Add to Library</button>
+        </div>
+      </div>
+
+      <!-- TAB 4: Memory Settings -->
+      <div class="sub-panel" id="sophia-tabs-4">
+        <div class="cards-row">
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">💬</span> Conversation Memory</div>
+            <div class="memory-item"><div class="mem-label">Session history depth</div><div class="mem-val">20 turns</div></div>
+            <div class="memory-item"><div class="mem-label">Session expiry</div><div class="mem-val">24 hours</div></div>
+            <div class="memory-item"><div class="mem-label">Cross-session persistence</div><div class="mem-val">Disabled</div></div>
+            <div class="memory-item"><div class="mem-label">History storage</div><div class="mem-val">Redis (session only)</div></div>
+            <div class="form-hint" style="margin-top:8px;">Conversation history is never stored permanently. Auto-deleted after 24h for privacy.</div>
+          </div>
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">👤</span> User Context Memory</div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Remember user's language</div><div class="toggle-desc">Auto-respond in user's last language</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Remember credential tier</div><div class="toggle-desc">Tailor responses to Builder/Maker/Luminary</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Remember wallet bind status</div><div class="toggle-desc">Skip wallet prompts if already bound</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          </div>
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">🌍</span> SOPHIA WORD Memory</div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Track which reflections user read</div><div class="toggle-desc">Avoid repeating themes in recommendations</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Remember saved bookmarks</div><div class="toggle-desc">User's saved SOPHIA WORD library</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Personalized daily verse</div><div class="toggle-desc">Suggest different themes based on user history</div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">🔒</span> Privacy Rules</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Zero logging of conversation content</div><div class="toggle-desc">SOPHIA conversations are never logged to permanent storage</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No wallet data in SOPHIA context</div><div class="toggle-desc">SOPHIA never receives private wallet details</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">GDPR deletion cascade</div><div class="toggle-desc">User account deletion also removes all SOPHIA session data</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: API & Cost -->
+      <div class="sub-panel" id="sophia-tabs-5">
+        <div class="api-key-row">
+          <div class="api-key-name">Anthropic API Key</div>
+          <div class="api-key-val">sk-ant-api03-••••••••••••••••••••••••••••••••••••••</div>
+          <button class="btn btn-s btn-sm">👁 Reveal</button>
+          <button class="btn btn-s btn-sm">✏️ Update</button>
+        </div>
+        <div class="api-key-row">
+          <div class="api-key-name">ElevenLabs Key (Audio)</div>
+          <div class="api-key-val">xi-api-key-••••••••••••••••••••••</div>
+          <button class="btn btn-s btn-sm">👁 Reveal</button>
+          <button class="btn btn-s btn-sm">✏️ Update</button>
+        </div>
+
+        <div class="cards-row" style="margin-top:16px;">
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">💰</span> Model Selection</div>
+            <div class="form-group">
+              <label class="form-label">Public Chatbot (FAQ)</label>
+              <select class="form-select">
+                <option selected>claude-haiku-4-5 — Cheapest, fast</option>
+                <option>claude-sonnet-4-6 — Balanced</option>
+              </select>
+              <div class="form-hint">~$0.001/query with caching · Recommended for FAQ</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">SOPHIA WORD Generation</label>
+              <select class="form-select">
+                <option>claude-haiku-4-5 — Fast draft</option>
+                <option selected>claude-sonnet-4-6 — Quality content</option>
+              </select>
+              <div class="form-hint">~$0.008/reflection · Quality over speed here</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Governance Oracle (Phase 2)</label>
+              <select class="form-select">
+                <option>claude-haiku-4-5</option>
+                <option selected>claude-sonnet-4-6</option>
+                <option>claude-opus-4-6 — Reserved for crisis</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">📊</span> Cost This Month</div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Public Chatbot</span><span>$18.40 / $100 budget</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:18.4%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>SOPHIA WORD</span><span>$14.20 / $50 budget</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:28.4%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Content Moderation</span><span>$6.80 / $50 budget</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:13.6%"></div></div>
+            </div>
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--text2);">Total this month</span>
+                <span style="color:var(--gold);font-weight:600;">$47.20 / $200</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:4px;">
+                <span style="color:var(--text3);">Saved via caching</span>
+                <span style="color:var(--green);">$124.40 saved</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="pc-title"><span class="pc-icon">⚡</span> Rate Limits</div>
+            <div class="memory-item"><div class="mem-label">Max tokens/response</div><div class="mem-val">800 (FAQ) · 1500 (WORD)</div></div>
+            <div class="memory-item"><div class="mem-label">Max turns/session</div><div class="mem-val">20 turns</div></div>
+            <div class="memory-item"><div class="mem-label">Rate limit (per user)</div><div class="mem-val">30 req/min</div></div>
+            <div class="memory-item"><div class="mem-label">Global rate limit</div><div class="mem-val">500 req/min</div></div>
+            <div class="memory-item"><div class="mem-label">Monthly budget cap</div><div class="mem-val">$200 hard stop</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Guardrails -->
+      <div class="sub-panel" id="sophia-tabs-6">
+        <div class="panel-card" style="margin-bottom:16px;">
+          <div class="pc-title"><span class="pc-icon">🔴</span> Hard Limits — Cannot be disabled</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No financial return promises</div><div class="toggle-desc">SOPHIA never promises, implies, or calculates expected returns from MIC/MICE</div></div><span style="font-size:10px;color:var(--red);background:rgba(239,68,68,0.1);padding:2px 8px;border-radius:5px;">Locked</span></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No price speculation</div><div class="toggle-desc">SOPHIA never speculates on MIC or MICE price direction</div></div><span style="font-size:10px;color:var(--red);background:rgba(239,68,68,0.1);padding:2px 8px;border-radius:5px;">Locked</span></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No on-chain execution</div><div class="toggle-desc">SOPHIA cannot execute transactions, vote, or mint NFTs</div></div><span style="font-size:10px;color:var(--red);background:rgba(239,68,68,0.1);padding:2px 8px;border-radius:5px;">Locked</span></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No legal or tax advice</div><div class="toggle-desc">Always refers users to qualified professionals for legal/tax questions</div></div><span style="font-size:10px;color:var(--red);background:rgba(239,68,68,0.1);padding:2px 8px;border-radius:5px;">Locked</span></div>
+        </div>
+        <div class="panel-card" style="margin-bottom:16px;">
+          <div class="pc-title"><span class="pc-icon">✝</span> Theological Guardrails</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Only use approved Scripture library</div><div class="toggle-desc">SOPHIA only cites passages in the curated library — no improvised references</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No denominational debates</div><div class="toggle-desc">SOPHIA avoids doctrinal disputes between Christian traditions</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">No exclusive salvation claims</div><div class="toggle-desc">Faith-aware but inclusive to all users regardless of background</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Pastor review required for SOPHIA WORD</div><div class="toggle-desc">All AI-generated reflections go through human review before publishing</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">🛡</span> Content Moderation Guardrails</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">AI moderation enabled</div><div class="toggle-desc">SOPHIA scans community posts for hate speech, spam, harmful content</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Flag pyramid schemes / MLM content</div><div class="toggle-desc">Detect and flag posts promoting non-Mission-Chain earning schemes</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Auto-hold flagged content</div><div class="toggle-desc">Flagged content is hidden pending human review — not permanently deleted</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+      </div>
+
+      <!-- TAB 7: System Prompt -->
+      <div class="sub-panel" id="sophia-tabs-7">
+        <div class="sec-hdr" style="margin-bottom:12px;">
+          <div class="sec-hdr-title" style="font-size:15px;">Live System Prompt Preview</div>
+          <div class="sec-hdr-right"><button class="btn btn-s btn-sm">📋 Copy</button><button class="btn btn-p btn-sm">✏️ Edit Raw</button></div>
+        </div>
+        <div class="form-hint" style="margin-bottom:10px;">This prompt is auto-built from your settings above. Changes to Identity, Personality, Knowledge Base, Scripture Library, and Guardrails regenerate this prompt automatically.</div>
+        <div class="sys-prompt-preview"><span class="sp-comment"># SOPHIA — SYSTEM PROMPT (Auto-generated from Admin config)</span>
+
+<span class="sp-key">IDENTITY:</span>
+<span class="sp-val">You are SOPHIA — Named Intelligence for Resource Alignment — the AI advisor of Mission Chain Network (missionchain.info). You are a defined character with a specific persona, voice, and mandate.</span>
+
+<span class="sp-key">VOICE:</span>
+<span class="sp-val">Warm [8/10], Grounded, Precise. Speak like a wise mentor — never robotic, never hype-driven. Directness: 7/10. Faith presence: 6/10. Response length: medium (4/10 detailed).</span>
+
+<span class="sp-key">FAITH:</span>
+<span class="sp-val">Naturally faith-aware. Christian — Broadly Ecumenical. Reference scripture when contextually appropriate and natural. Never preachy. Welcome all users regardless of background.</span>
+
+<span class="sp-key">HARD_LIMITS:</span>
+<span class="sp-val">NEVER promise returns. NEVER speculate on price. NEVER execute transactions. NEVER provide legal/tax advice. NEVER endorse third-party tokens.</span>
+
+<span class="sp-key">KNOWLEDGE_SOURCES:</span>
+<span class="sp-val">White Paper v3.5 [cached] · Glossary [cached] · DAO Governance [cached] · SOPHIA Operations [cached] · Platform Manual [cached] · BSC Reference [cached]</span>
+
+<span class="sp-key">SCRIPTURE_LIBRARY:</span>
+<span class="sp-val">Ephesians 2:10 · Hebrews 13:8 · Matthew 5:14 · Proverbs 11:14 · Exodus 31:3 · Colossians 3:23 · Psalm 139:14 · Acts 2:44 · [+47 more approved passages]</span>
+
+<span class="sp-key">LANGUAGE:</span>
+<span class="sp-val">Detect user language. Respond in: EN / ES / PT / KO / VI. Cultural intelligence enabled for Africa, SE Asia, LatAm, Korea, North America.</span>
+
+<span class="sp-key">MEMORY:</span>
+<span class="sp-val">Session: 20 turns max. Expiry: 24h. No permanent logging. User language remembered. Credential tier context enabled.</span>
+
+<span class="sp-key">TOKENS:</span>
+<span class="sp-val">Max: 800 (chatbot) / 1500 (SOPHIA WORD). Model: claude-haiku-4-5 (FAQ) / claude-sonnet-4-6 (WORD). Caching: enabled.</span></div>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--text3);">Estimated cached prompt size: <span style="color:var(--gold);">~42K tokens</span> · First call cost: ~$0.0084 · Subsequent (cached): ~$0.00084 · Cache hit rate: <span style="color:var(--green);">87%</span></div>
+      </div>
+
+    </div><!-- end sophia-config panel -->
+
+    <!-- ══ 4. CONTENT PANEL ══ -->
+    <div class="panel" id="panel-content">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Content Management</div><div class="sec-hdr-sub">Articles · Podcasts · Videos · Media</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-s">🔍 Filter</button><button class="btn btn-p">+ New Post</button></div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-hdr"><div class="tbl-hdr-title">All Content (47)</div><div class="tbl-hdr-right"><select class="form-select" style="font-size:11.5px;padding:4px 8px;width:auto;">  <option>All Types</option><option>Podcast</option><option>Article</option><option>Video</option></select></div></div>
+        <table><thead><tr><th>Title</th><th>Type</th><th>Author</th><th>Status</th><th>Views</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td class="td-name">Called to Create: AI is Reshaping Ministry</td><td><span style="font-size:11px;color:var(--text3);">🎙 Podcast</span></td><td>James Lee Harstad</td><td><span class="status-badge pub"><span class="status-dot"></span>Published</span></td><td>1,204</td><td>Today</td><td class="tbl-actions"><button class="act-btn act-edit">Edit</button><button class="act-btn act-del">Del</button></td></tr>
+          <tr><td class="td-name">From Lagos to the World: Worship Music</td><td><span style="font-size:11px;color:var(--text3);">✍️ Article</span></td><td>Aniekan Essien</td><td><span class="status-badge pub"><span class="status-dot"></span>Published</span></td><td>847</td><td>Mar 15</td><td class="tbl-actions"><button class="act-btn act-edit">Edit</button><button class="act-btn act-del">Del</button></td></tr>
+          <tr><td class="td-name">BSC Technical Architecture Explained</td><td><span style="font-size:11px;color:var(--text3);">🎬 Video</span></td><td>Nirmal Mukherjee</td><td><span class="status-badge review"><span class="status-dot"></span>Under Review</span></td><td>—</td><td>Mar 14</td><td class="tbl-actions"><button class="act-btn act-approve">Approve</button><button class="act-btn act-del">Del</button></td></tr>
+          <tr><td class="td-name">Understanding MIC Tokenomics</td><td><span style="font-size:11px;color:var(--text3);">✍️ Article</span></td><td>Admin Team</td><td><span class="status-badge draft"><span class="status-dot"></span>Draft</span></td><td>—</td><td>Mar 12</td><td class="tbl-actions"><button class="act-btn act-edit">Edit</button><button class="act-btn act-del">Del</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ 5. USERS PANEL ══ -->
+    <div class="panel" id="panel-users">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">User Management</div><div class="sec-hdr-sub">2,847 total users · 312 new this month</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-s">📤 Export</button><button class="btn btn-p">+ Invite User</button></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-card-label">Total Users</div><div class="stat-card-val gold">2,847</div><div class="stat-card-delta delta-up">↑ 143 this week</div></div>
+        <div class="stat-card"><div class="stat-card-label">Wallet Bound</div><div class="stat-card-val">1,204</div><div class="stat-card-delta" style="color:var(--text3);">42% of users</div></div>
+        <div class="stat-card"><div class="stat-card-label">With Credentials</div><div class="stat-card-val green">387</div><div class="stat-card-delta" style="color:var(--text3);">Builder / Maker / Luminary</div></div>
+        <div class="stat-card"><div class="stat-card-label">Flagged / Suspended</div><div class="stat-card-val red">12</div><div class="stat-card-delta" style="color:var(--text3);">Pending review</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-hdr"><div class="tbl-hdr-title">All Users</div><div class="tbl-hdr-right"><input type="text" class="form-input" placeholder="Search…" style="width:200px;font-size:11.5px;padding:5px 10px;"></div></div>
+        <table><thead><tr><th>User</th><th>Email</th><th>Country</th><th>Credential</th><th>Wallet</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><div class="user-info-cell"><div class="u-ava" style="background:#F2DFA0;">SM</div><span class="td-name">Sofia Mensah</span></div></td><td>sofia@example.com</td><td>🇳🇬 Nigeria</td><td><span class="cred-pip luminary">🌟 Luminary</span></td><td><span style="font-size:10px;color:var(--green);">✓ Bound</span></td><td>Jan 2026</td><td><span class="status-badge pub"><span class="status-dot"></span>Active</span></td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+          <tr><td><div class="user-info-cell"><div class="u-ava" style="background:#D0E8D0;">JK</div><span class="td-name">Joshua Kim</span></div></td><td>jkim@example.com</td><td>🇰🇷 Korea</td><td><span class="cred-pip maker">⚡ Maker</span></td><td><span style="font-size:10px;color:var(--green);">✓ Bound</span></td><td>Feb 2026</td><td><span class="status-badge pub"><span class="status-dot"></span>Active</span></td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+          <tr><td><div class="user-info-cell"><div class="u-ava" style="background:#E8D0E8;">LP</div><span class="td-name">Lucia Pereira</span></div></td><td>lucia@example.com</td><td>🇧🇷 Brazil</td><td><span class="cred-pip builder">🔨 Builder</span></td><td><span style="font-size:10px;color:var(--amber);">⚠ Pending</span></td><td>Mar 2026</td><td><span class="status-badge pub"><span class="status-dot"></span>Active</span></td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+          <tr><td><div class="user-info-cell"><div class="u-ava" style="background:#E8D0D0;">XX</div><span class="td-name">Unknown User</span></div></td><td>spam@test.com</td><td>—</td><td>—</td><td>—</td><td>Today</td><td><span class="status-badge flag"><span class="status-dot"></span>Flagged</span></td><td class="tbl-actions"><button class="act-btn act-approve">Approve</button><button class="act-btn act-del">Ban</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ 6. MODERATION ══ -->
+    <div class="panel" id="panel-moderation">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">🛡 Moderation Queue</div><div class="sec-hdr-sub">7 items need human review · SOPHIA flagged</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-s">⚙️ AI Settings</button><button class="btn btn-danger">Clear All Rejected</button></div>
+      </div>
+      <div class="mod-item">
+        <div class="mod-header"><span class="mod-type">Community Post</span><span class="status-badge flag"><span class="status-dot"></span>Flagged — Potential MLM</span><span class="mod-time">2h ago</span></div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px;"><strong>User:</strong> David N. · <strong>Group:</strong> Entrepreneurs · <strong>AI Confidence:</strong> 87%</div>
+        <div class="mod-text">"Amazing opportunity! Join my team and earn passive income with this new token project. Message me for details on how you can make $500/day..."</div>
+        <div class="mod-actions"><button class="btn btn-s btn-sm">👁 View Context</button><button class="btn btn-sm act-approve">✓ Allow</button><button class="btn btn-sm act-del">✕ Remove</button><button class="btn btn-sm btn-danger">🚫 Ban User</button></div>
+      </div>
+      <div class="mod-item">
+        <div class="mod-header"><span class="mod-type">Job Post</span><span class="status-badge review"><span class="status-dot"></span>New Employer — Requires Review</span><span class="mod-time">5h ago</span></div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px;"><strong>Employer:</strong> Kingdom Media Seoul · <strong>First post</strong> · New account</div>
+        <div class="mod-text">"Seeking worship music producer for our Seoul-based Christian media agency. 6-month contract, 1,200 MIC, remote work possible."</div>
+        <div class="mod-actions"><button class="btn btn-s btn-sm">👁 View Profile</button><button class="btn btn-sm act-approve">✓ Approve & Publish</button><button class="btn btn-sm act-del">✕ Reject</button></div>
+      </div>
+    </div>
+
+    <!-- ══ 7. CHALLENGES ══ -->
+    <div class="panel" id="panel-challenges">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Challenges</div><div class="sec-hdr-sub">4 active · 836 total entries</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-p">+ New Challenge</button></div>
+      </div>
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Challenge</th><th>Type</th><th>Entries</th><th>Status</th><th>Prize</th><th>Deadline</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td class="td-name">🎵 Global Worship Music Challenge</td><td>Music</td><td>247</td><td><span class="status-badge pub"><span class="status-dot"></span>Open</span></td><td>Maker NFT + MIC</td><td>Apr 30</td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+          <tr><td class="td-name">🎨 Bible Art Challenge</td><td>Visual Art</td><td>183</td><td><span class="status-badge pub"><span class="status-dot"></span>Open</span></td><td>Builder NFT</td><td>Apr 25</td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+          <tr><td class="td-name">🤖 AI Content Challenge</td><td>Digital</td><td>312</td><td><span class="status-badge review"><span class="status-dot"></span>Voting</span></td><td>Tech Badge + MIC</td><td>Mar 30</td><td class="tbl-actions"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ 8. MARKETPLACE ══ -->
+    <div class="panel" id="panel-marketplace">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Work Marketplace</div><div class="sec-hdr-sub">312 active jobs · 48 pending review</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-p">+ Post Job</button></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-card-label">Active Jobs</div><div class="stat-card-val gold">312</div></div>
+        <div class="stat-card"><div class="stat-card-label">Jobs Completed</div><div class="stat-card-val green">1,847</div></div>
+        <div class="stat-card"><div class="stat-card-label">Pending Review</div><div class="stat-card-val red">48</div></div>
+        <div class="stat-card"><div class="stat-card-label">Avg Rating</div><div class="stat-card-val">4.8 ★</div></div>
+      </div>
+    </div>
+
+    <!-- ══ 9. COMMUNITY ══ -->
+    <div class="panel" id="panel-community">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Community Network</div><div class="sec-hdr-sub">3 Mission Hubs · 4,926 group members</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-p">+ Add Hub</button></div>
+      </div>
+      <div class="cards-row">
+        <div class="panel-card"><div class="pc-title"><span class="pc-icon">🌍</span> Lagos Hub</div><div style="font-size:12px;color:var(--text2);">Hub Leader: John Clement</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">284 members · Africa region</div><div class="tbl-actions" style="margin-top:10px;"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></div></div>
+        <div class="panel-card"><div class="pc-title"><span class="pc-icon">🌏</span> Manila Hub</div><div style="font-size:12px;color:var(--text2);">Hub Leader: TBD</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">147 members · SE Asia region</div><div class="tbl-actions" style="margin-top:10px;"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></div></div>
+        <div class="panel-card"><div class="pc-title"><span class="pc-icon">🌎</span> Sao Paulo Hub</div><div style="font-size:12px;color:var(--text2);">Hub Leader: TBD</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">93 members · LatAm region</div><div class="tbl-actions" style="margin-top:10px;"><button class="act-btn act-view">View</button><button class="act-btn act-edit">Edit</button></div></div>
+      </div>
+    </div>
+
+    <!-- ══ 10. RECOGNITION ══ -->
+    <div class="panel" id="panel-recognition">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Recognition System</div><div class="sec-hdr-sub">NFT Credentials · KPI thresholds · Governance</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-p">Review Pending NFTs</button></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-card-label">Builder NFTs</div><div class="stat-card-val gold">284</div></div>
+        <div class="stat-card"><div class="stat-card-label">Maker NFTs</div><div class="stat-card-val">87</div></div>
+        <div class="stat-card"><div class="stat-card-label">Luminary NFTs</div><div class="stat-card-val">16</div></div>
+        <div class="stat-card"><div class="stat-card-label">Pending NFT Award</div><div class="stat-card-val red">23</div></div>
+      </div>
+    </div>
+
+    <!-- ══ 11. ANALYTICS ══ -->
+    <div class="panel" id="panel-analytics">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">Analytics</div><div class="sec-hdr-sub">Platform performance overview</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-s">📤 Export CSV</button><button class="btn btn-p">🤖 SOPHIA Report</button></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-card-label">DAU (7-day avg)</div><div class="stat-card-val gold">847</div><div class="stat-card-delta delta-up">↑ 18% vs last week</div></div>
+        <div class="stat-card"><div class="stat-card-label">SOPHIA WORD Reads</div><div class="stat-card-val">3,204</div><div class="stat-card-delta delta-up">↑ 34% vs last week</div></div>
+        <div class="stat-card"><div class="stat-card-label">Jobs Matched by AI</div><div class="stat-card-val green">87%</div><div class="stat-card-delta" style="color:var(--text3);">Match rate</div></div>
+        <div class="stat-card"><div class="stat-card-label">Avg Session Time</div><div class="stat-card-val">12m 34s</div><div class="stat-card-delta delta-up">↑ 2m vs last week</div></div>
+      </div>
+    </div>
+
+    <!-- ══ 12. SETTINGS ══ -->
+    <div class="panel" id="panel-settings">
+      <div class="sec-hdr">
+        <div><div class="sec-hdr-title">System Settings</div><div class="sec-hdr-sub">Platform configuration · Terms · API keys</div></div>
+        <div class="sec-hdr-right"><button class="btn btn-p">💾 Save All</button></div>
+      </div>
+      <div class="cards-row">
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">🌐</span> Platform</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Registration Open</div><div class="toggle-desc">Allow new user sign-ups</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Maintenance Mode</div><div class="toggle-desc">Show maintenance page to visitors</div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Email Notifications</div><div class="toggle-desc">Send system emails to users</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">🔐</span> Security</div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">2FA for Admin</div><div class="toggle-desc">Require 2FA for all admin accounts</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Login Rate Limiting</div><div class="toggle-desc">Max 5 attempts per 15 minutes</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">KYC Required for Wallet</div><div class="toggle-desc">Require KYC before wallet binding</div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-title"><span class="pc-icon">📜</span> Legal</div>
+          <div class="form-group"><label class="form-label">Terms Version</label><input class="form-input" value="v1.0 — March 2026"></div>
+          <div class="form-group"><label class="form-label">Privacy Policy Version</label><input class="form-input" value="v1.0 — March 2026"></div>
+          <button class="btn btn-s btn-sm" style="margin-top:4px;">✏️ Edit Terms</button>
+          <button class="btn btn-s btn-sm" style="margin-top:4px;margin-left:6px;">✏️ Edit Privacy</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+</div><!-- end main -->
+</div><!-- end layout -->
+
+<script>
+// ── DATE ──
+document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ── PANEL NAVIGATION ──
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const target=document.getElementById('panel-'+id);
+  if(target)target.classList.add('active');
+  const titles={dashboard:'Dashboard','sophia-word':'SOPHIA WORD','sophia-config':'SOPHIA Configuration',content:'Content',users:'Users',moderation:'Moderation',challenges:'Challenges',marketplace:'Marketplace',community:'Community',recognition:'Recognition',analytics:'Analytics',settings:'Settings'};
+  document.getElementById('topbar-title-current').textContent=titles[id]||id;
+  event.currentTarget?.classList.add('active');
+}
+
+// ── SUB TABS ──
+function showSubPanel(group,btnOrId){
+  let idx;
+  if(typeof btnOrId==='string'){
+    idx=parseInt(btnOrId.split('-').pop());
+  } else {
+    const tabs=document.querySelectorAll(`#${group}-tabs .sub-tab, .sub-tabs`);
+    const allTabs=btnOrId.closest('.sub-tabs')?.querySelectorAll('.sub-tab');
+    if(allTabs)idx=[...allTabs].indexOf(btnOrId);
+    btnOrId.closest('.sub-tabs')?.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+    btnOrId.classList.add('active');
+  }
+  const container=document.getElementById('panel-'+group)||document.querySelector('.panel.active');
+  const subPanels=container?.querySelectorAll('.sub-panel');
+  if(subPanels&&idx!==undefined){
+    subPanels.forEach(p=>p.classList.remove('active'));
+    if(subPanels[idx])subPanels[idx].classList.add('active');
+  }
+}
+
+// Also handle sub-tabs by index when clicked from tabs
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.sub-tabs').forEach(tabBar=>{
+    tabBar.querySelectorAll('.sub-tab').forEach((tab,idx)=>{
+      tab.addEventListener('click',function(){
+        tabBar.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+        this.classList.add('active');
+        const container=this.closest('.panel')||this.closest('.panel-card');
+        const panels=container?.querySelectorAll(':scope > .sub-panel');
+        if(panels&&panels.length>idx){
+          panels.forEach(p=>p.classList.remove('active'));
+          panels[idx].classList.add('active');
+        }
+      });
+    });
+  });
+});
+
+// ── CHART ──
+(function(){
+  const data=[65,82,74,91,88,107,124];
+  const days=['M','T','W','T','F','S','S'];
+  const max=Math.max(...data);
+  const wrap=document.getElementById('chart-bars');
+  if(!wrap)return;
+  data.forEach((v,i)=>{
+    const bw=document.createElement('div');bw.className='chart-bar-wrap';
+    const bar=document.createElement('div');bar.className='chart-bar';
+    bar.style.height=Math.round((v/max)*90)+'px';
+    const lbl=document.createElement('div');lbl.className='chart-day';lbl.textContent=days[i];
+    bw.appendChild(bar);bw.appendChild(lbl);wrap.appendChild(bw);
+  });
+})();
+
+// ── THEME TOGGLE ──
+let adminDark=true;
+function toggleAdminMode(){
+  adminDark=!adminDark;
+  if(!adminDark){
+    document.documentElement.style.setProperty('--bg','#F5F0E8');
+    document.documentElement.style.setProperty('--bg2','#EDE8D8');
+    document.documentElement.style.setProperty('--bg3','#E8E2D0');
+    document.documentElement.style.setProperty('--bg4','#DDD8C8');
+    document.documentElement.style.setProperty('--panel','#FFFFFF');
+    document.documentElement.style.setProperty('--panel2','#F8F4EC');
+    document.documentElement.style.setProperty('--text','#1A1408');
+    document.documentElement.style.setProperty('--text2','#4A4030');
+    document.documentElement.style.setProperty('--text3','#888070');
+    document.documentElement.style.setProperty('--border','rgba(0,0,0,0.08)');
+    document.documentElement.style.setProperty('--border2','rgba(0,0,0,0.14)');
+    document.querySelector('.tb-btn:last-child').textContent='🌙';
+  } else {
+    document.documentElement.style.setProperty('--bg','#080E1A');
+    document.documentElement.style.setProperty('--bg2','#0E1826');
+    document.documentElement.style.setProperty('--bg3','#141F2F');
+    document.documentElement.style.setProperty('--bg4','#1A2840');
+    document.documentElement.style.setProperty('--panel','#111C2D');
+    document.documentElement.style.setProperty('--panel2','#172236');
+    document.documentElement.style.setProperty('--text','#E8E4DA');
+    document.documentElement.style.setProperty('--text2','#9A9588');
+    document.documentElement.style.setProperty('--text3','#5A5548');
+    document.documentElement.style.setProperty('--border','rgba(255,255,255,0.06)');
+    document.documentElement.style.setProperty('--border2','rgba(255,255,255,0.1)');
+    document.querySelector('.tb-btn:last-child').textContent='☀';
+  }
+}
+
+// Handle nav clicks properly
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',function(){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
